@@ -82,7 +82,7 @@ dependencies {
 
     // Glide
     implementation(libs.glide)
-    implementation(libs.glide.compiler)
+    //implementation(libs.glide.compiler)
     // endregion
 
     // ViewModel and LiveData
