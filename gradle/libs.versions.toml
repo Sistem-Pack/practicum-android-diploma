@@ -49,8 +49,8 @@ retrofit-converterGson = "com.squareup.retrofit2:converter-gson:2.9.0"
 retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
 
 # Glide
-glide = "com.github.bumptech.glide:glide:4.16"
-glide-compiler = "com.github.bumptech.glide:compiler:4.16"
+# glide = "com.github.bumptech.glide:glide:4.16"
+# glide-compiler = "com.github.bumptech.glide:compiler:4.16"
 
 # Fragments
 fragments-navigationFragment = "androidx.navigation:navigation-fragment-ktx:2.7.7"
