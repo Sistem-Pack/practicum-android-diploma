@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("kotlin-kapt")
 }
 
 android {
@@ -55,4 +56,53 @@ dependencies {
     androidTestImplementation(libs.uiTests.junitExt)
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
+
+    // Coroutines
+    implementation(libs.coroutines)
+    // endregion
+
+    // Koin
+    implementation(libs.koin)
+    // endregion
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converterGson)
+    // endregion
+
+    // Gson
+    implementation(libs.gson)
+    // endregion
+
+    // Fragments, NavigationGraph and JetpackNavigation
+    implementation(libs.fragments.navigationFragment)
+    implementation(libs.fragments.navigationUi)
+    implementation(libs.fragments.fragmentKtx)
+    // endregion
+
+    // Glide
+    implementation(libs.glide)
+    implementation(libs.glide.compiler)
+    // endregion
+
+    // ViewModel and LiveData
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    // endregion
+
+    // ViewPager
+    implementation(libs.viewPager)
+    // endregion
+
+    // Bindings
+    implementation(libs.viewBinding)
+    // endregion
+
+    // Room
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
+    // endregion
+
 }
