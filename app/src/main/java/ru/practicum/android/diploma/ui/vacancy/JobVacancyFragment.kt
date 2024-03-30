@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.job_vacancy
+package ru.practicum.android.diploma.ui.vacancy
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentJobVacancyBinding
-import ru.practicum.android.diploma.presentation.job_vacancy.JobVacancyViewModel
+import ru.practicum.android.diploma.presentation.vacancy.JobVacancyViewModel
 
-class JobVacancyFragment() : Fragment() {
+class JobVacancyFragment : Fragment() {
 
     private var binding: FragmentJobVacancyBinding? = null
 

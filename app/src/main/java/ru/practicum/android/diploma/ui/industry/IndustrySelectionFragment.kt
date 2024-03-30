@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.select_country
+package ru.practicum.android.diploma.ui.industry
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
-import ru.practicum.android.diploma.presentation.select_country.SelectCountryViewModel
+import ru.practicum.android.diploma.databinding.FragmentIndustrySelectionBinding
+import ru.practicum.android.diploma.presentation.industry.IndustrySelectionViewModel
 
-class SelectCountryFragment() : Fragment() {
+class IndustrySelectionFragment : Fragment() {
 
-    private var binding: FragmentSelectCountryBinding? = null
+    private var binding: FragmentIndustrySelectionBinding? = null
 
-    private val viewModel by viewModel<SelectCountryViewModel>()
+    private val viewModel by viewModel<IndustrySelectionViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSelectCountryBinding.inflate(inflater, container, false)
+        binding = FragmentIndustrySelectionBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 

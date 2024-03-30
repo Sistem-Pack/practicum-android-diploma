@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.filtering_settings
+package ru.practicum.android.diploma.ui.region
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
-import ru.practicum.android.diploma.presentation.filtering_settings.FilteringSettingsViewModel
+import ru.practicum.android.diploma.databinding.FragmentRegionSelectionBinding
+import ru.practicum.android.diploma.presentation.region.RegionSelectionViewModel
 
-class FilteringSettingsFragment() : Fragment() {
+class RegionSelectionFragment : Fragment() {
 
-    private var binding: FragmentFilteringSettingsBinding? = null
+    private var binding: FragmentRegionSelectionBinding? = null
 
-    private val viewModel by viewModel<FilteringSettingsViewModel>()
+    private val viewModel by viewModel<RegionSelectionViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentFilteringSettingsBinding.inflate(inflater, container, false)
+        binding = FragmentRegionSelectionBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 

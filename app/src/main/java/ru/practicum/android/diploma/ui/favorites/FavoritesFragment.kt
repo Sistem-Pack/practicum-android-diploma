@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.presentation.favorites.FavoritesViewModel
 
-class FavoritesFragment() : Fragment() {
+class FavoritesFragment : Fragment() {
 
     private var binding: FragmentFavoritesBinding? = null
 

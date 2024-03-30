@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.industry_selection
+package ru.practicum.android.diploma.ui.place
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.databinding.FragmentIndustrySelectionBinding
-import ru.practicum.android.diploma.presentation.industry_selection.IndustrySelectionViewModel
+import ru.practicum.android.diploma.databinding.FragmentPlacesOfWorkBinding
+import ru.practicum.android.diploma.presentation.place.PlacesOfWorkViewModel
 
-class IndustrySelectionFragment() : Fragment() {
+class PlacesOfWorkFragment : Fragment() {
 
-    private var binding: FragmentIndustrySelectionBinding? = null
+    private var binding: FragmentPlacesOfWorkBinding? = null
 
-    private val viewModel by viewModel<IndustrySelectionViewModel>()
+    private val viewModel by viewModel<PlacesOfWorkViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentIndustrySelectionBinding.inflate(inflater, container, false)
+        binding = FragmentPlacesOfWorkBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 

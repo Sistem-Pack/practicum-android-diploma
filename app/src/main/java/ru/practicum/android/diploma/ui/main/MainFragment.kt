@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 
-class MainFragment(): Fragment() {
+class MainFragment: Fragment() {
 
     private var binding: FragmentMainBinding? = null
 

@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.ui.places_of_work
+package ru.practicum.android.diploma.ui.country
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.databinding.FragmentPlacesOfWorkBinding
-import ru.practicum.android.diploma.presentation.places_of_work.PlacesOfWorkViewModel
+import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
+import ru.practicum.android.diploma.presentation.country.SelectCountryViewModel
 
-class PlacesOfWorkFragment() : Fragment() {
+class SelectCountryFragment : Fragment() {
 
-    private var binding: FragmentPlacesOfWorkBinding? = null
+    private var binding: FragmentSelectCountryBinding? = null
 
-    private val viewModel by viewModel<PlacesOfWorkViewModel>()
+    private val viewModel by viewModel<SelectCountryViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentPlacesOfWorkBinding.inflate(inflater, container, false)
+        binding = FragmentSelectCountryBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
