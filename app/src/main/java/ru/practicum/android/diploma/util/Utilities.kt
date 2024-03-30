@@ -28,15 +28,16 @@ class Utilities(private val context: Context) {
         ) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
-                    NetworkCapabilities.TRANSPORT_WIFI
-                ) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-            ) {
-                return true
+        return if (capabilities != null) {
+            when {
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
             }
+        } else {
+            false
         }
-        return false
     }
 
 }
