@@ -3,20 +3,19 @@ package ru.practicum.android.diploma.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class Utilities(private val context: Context) {
     private var event = true
 
-    fun eventDebounce(debounceDelay: Long): Boolean {
+    fun eventDebounce(coroutineScope: CoroutineScope, debounceDelayMillis: Long): Boolean {
         val current = event
         if (event) {
             event = false
-            GlobalScope.launch {
-                delay(debounceDelay)
+            coroutineScope.launch {
+                delay(debounceDelayMillis)
                 event = true
             }
         }
