@@ -2,9 +2,12 @@ package ru.practicum.android.diploma.data.network
 
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
+import ru.practicum.android.diploma.data.dto.VacancyDetailsResponse
+import ru.practicum.android.diploma.data.dto.VacancyResponse
 
 interface HHApi {
 
@@ -15,7 +18,7 @@ interface HHApi {
     @GET("/vacancies/")
     suspend fun searchVacancies(
         @QueryMap params: Map<String, String>
-    )
+    ): VacancyResponse
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
@@ -24,6 +27,13 @@ interface HHApi {
     @GET("/vacancies/")
     suspend fun searchVacancies(
         @Query("text") query: String
+    ): VacancyResponse
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: DiplomPracticumWithHH"
     )
+    @GET("/vacancies/{vacancy_id}")
+    suspend fun searchVacancyDetails(@Path("vacancy_id") id: String): VacancyDetailsResponse
 
 }
