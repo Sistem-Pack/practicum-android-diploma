@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="zero_space">0dp</dimen>
+    <dimen name="one_point_space">1dp</dimen>
     <dimen name="half_space">2dp</dimen>
     <dimen name="one_space">4dp</dimen>
     <dimen name="two_space">8dp</dimen>
