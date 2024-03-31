@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+
+    //Команда
+    <string name="text_team">Команда</string>
+    <string name="text_developer_worker">Над приложением работали</string>
+    <string name="text_developer_name_first">Александр Нешев</string>
+    <string name="text_developer_name_second">Антон Бабайлов</string>
+    <string name="text_developer_name_third">Даниил Космачев</string>
+    <string name="text_developer_name_four">Евгений Лебедев</string>
+    <string name="text_developer_name_five">Екатерина Седова</string>
+
 </resources>

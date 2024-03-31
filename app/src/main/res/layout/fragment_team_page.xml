@@ -1,19 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.team.TeamPageFragment">
 
     <TextView
+        android:id="@+id/text_team"
+        style="@style/Text_Medium_22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Страница команды"
-        android:textSize="40sp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/five_space"
+        android:text="@string/text_team"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_worked_application"
+        style="@style/Text_Bold_32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/eleven_space"
+        android:text="@string/text_developer_worker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_team" />
+
+    <TextView
+        android:id="@+id/text_developer_name_first"
+        style="@style/Text_Medium_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/eight_space"
+        android:text="@string/text_developer_name_first"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_worked_application"
+        />
+
+    <TextView
+        android:id="@+id/text_developer_name_second"
+        style="@style/Text_Medium_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/four_space"
+        android:text="@string/text_developer_name_second"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_first" />
+
+    <TextView
+        android:id="@+id/text_developer_name_third"
+        style="@style/Text_Medium_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/four_space"
+        android:text="@string/text_developer_name_third"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_second" />
+
+    <TextView
+        android:id="@+id/text_developer_name_fourth"
+        style="@style/Text_Medium_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/four_space"
+        android:text="@string/text_developer_name_four"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_third" />
+
+    <TextView
+        android:id="@+id/text_developer_name_fifth"
+        style="@style/Text_Medium_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/four_space"
+        android:text="@string/text_developer_name_five"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_fourth" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
