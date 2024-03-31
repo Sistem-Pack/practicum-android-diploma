@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero_space">0dp</dimen>
+    <dimen name="half_space">2dp</dimen>
+    <dimen name="one_space">4dp</dimen>
+    <dimen name="two_space">8dp</dimen>
+    <dimen name="three_space">12dp</dimen>
+    <dimen name="three_and_a_half_space">14dp</dimen>
+    <dimen name="four_space">16dp</dimen>
+    <dimen name="four_and_a_half_space">18dp</dimen>
+    <dimen name="five_space">20dp</dimen>
+    <dimen name="six_space">24dp</dimen>
+    <dimen name="seven_space">28dp</dimen>
+    <dimen name="eight_space">32dp</dimen>
+    <dimen name="nine_space">36dp</dimen>
+    <dimen name="nine_and_a_half_space">38dp</dimen>
+    <dimen name="ten_space">40dp</dimen>
+    <dimen name="eleven_space">44dp</dimen>
+    <dimen name="twelve_space">48dp</dimen>
+    <dimen name="twelve_and_a_half_space">50dp</dimen>
+    <dimen name="fourteen_space">56dp</dimen>
+    <dimen name="fifteen_space">60dp</dimen>
+    <dimen name="twenty_space">80dp</dimen>
+    <dimen name="twenty_six_space">104dp</dimen>
+    <dimen name="thirty_three_space">132dp</dimen>
+    <dimen name="sixty_six_and_a_half_space">266dp</dimen>
+    <dimen name="seventy_two_and_a_half_space">290dp</dimen>
+    <dimen name="ninety_six_space">384dp</dimen>
+
+    <dimen name="eleven_size_text">11sp</dimen>
+    <dimen name="twelve_size_text">12sp</dimen>
+    <dimen name="thirteen_size_text">13sp</dimen>
+    <dimen name="fourteen_size_text">14sp</dimen>
+    <dimen name="sixteen_size_text">16sp</dimen>
+    <dimen name="eighteen_size_text">18sp</dimen>
+    <dimen name="nineteen_size_text">19sp</dimen>
+    <dimen name="twenty_two_size_text">22sp</dimen>
+    <dimen name="twenty_four_size_text">24sp</dimen>
+</resources>
