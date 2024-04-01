@@ -15,7 +15,6 @@ interface HHApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: DiplomPracticumWithHH"
     )
-
     @GET("/vacancies/")
     suspend fun searchVacancies(
         @QueryMap params: Map<String, String>
