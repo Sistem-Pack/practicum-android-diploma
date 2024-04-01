@@ -19,11 +19,11 @@ data class VacancyEntity(
     val areaId: String, // Id региона
     @ColumnInfo(name = "area_region")
     val areaRegion: String, // Регион
-    @ColumnInfo(name = "contacts-email")
+    @ColumnInfo(name = "contacts_email")
     val contactsEmail: String, // Контакты Эл.почта
-    @ColumnInfo(name = "contacts-name")
+    @ColumnInfo(name = "contacts_name")
     val contactsName: String, // Контактное лицо
-    @ColumnInfo(name = "contacts-phones")
+    @ColumnInfo(name = "contacts_phones")
     val contactsPhones: String, // Контакты Телефоны
     @ColumnInfo(name = "description")
     val description: String, // Описание вакансии
