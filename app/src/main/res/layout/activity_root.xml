@@ -23,7 +23,7 @@
         android:id="@+id/bottom_navigation_view_line_top"
         android:layout_width="match_parent"
         android:layout_height="@dimen/one_point_space"
-        android:background="@color/gray"
+        android:background="@color/light_gray"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
