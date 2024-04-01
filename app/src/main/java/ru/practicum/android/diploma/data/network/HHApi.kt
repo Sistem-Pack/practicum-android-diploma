@@ -15,24 +15,17 @@ interface HHApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: DiplomPracticumWithHH"
     )
+
     @GET("/vacancies/")
     suspend fun searchVacancies(
         @QueryMap params: Map<String, String>
     ): VacancyResponse
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: DiplomPracticumWithHH"
-    )
     @GET("/vacancies/")
     suspend fun searchVacancies(
         @Query("text") query: String
     ): VacancyResponse
 
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: DiplomPracticumWithHH"
-    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun searchVacancyDetails(@Path("vacancy_id") id: String): VacancyDetailsResponse
 
