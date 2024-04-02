@@ -13,5 +13,5 @@
     <item
         android:id="@+id/teamPageFragment"
         android:icon="@drawable/ic_team"
-        android:title="@string/team" />
+        android:title="@string/text_team" />
 </menu>
