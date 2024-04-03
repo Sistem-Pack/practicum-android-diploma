@@ -43,6 +43,7 @@
         style="@style/Search"
         android:background="@drawable/rounded_search_edit_text"
         android:focusableInTouchMode="true"
+        android:lines="1"
         android:hint="@string/enter_request"
         android:paddingStart="@dimen/three_and_a_half_space"
         android:paddingTop="@dimen/three_space"
@@ -64,5 +65,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSearchVacancies" />
 
+    <ImageView
+        android:id="@+id/ivSearchPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitStart"
+        android:src="@drawable/placeholder_search"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/twelve_space"
+        android:layout_height="@dimen/twelve_space"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/twenty_space"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/rightBorder"
+        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
