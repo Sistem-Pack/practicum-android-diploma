@@ -53,6 +53,7 @@
         <item name="android:inputType">text</item>
         <item name="android:imeOptions">actionDone|flagNoExtractUi</item>
         <item name="android:singleLine">true</item>
+        <item name="android:background">@null</item>
     </style>
 
     <style name="PlaceholderMessage">
