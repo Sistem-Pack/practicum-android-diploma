@@ -18,7 +18,6 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val vacancySalary: TextView = itemView.findViewById(R.id.tvVacancySalary)
 
     fun bind(model: Vacancy) {
-
         vacancyName.text = model.vacancyName
         vacancyEmployer.text = model.employer
         vacancySalary.text = SalaryInfo().getSalaryInfo(

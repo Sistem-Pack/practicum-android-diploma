@@ -17,7 +17,6 @@ class SalaryInfo {
     )
 
     fun getSalaryInfo(salaryCurrency: String?, salaryFrom: String?, salaryTo: String?): String {
-
         val salary = if (salaryTo.isNullOrEmpty() && salaryFrom.isNullOrEmpty()) {
             "зарплата не указана"
         } else if (salaryTo.isNullOrEmpty()) {
@@ -32,21 +31,18 @@ class SalaryInfo {
 
     private fun splitIntoThousands(salary: String): String {
         val result: StringBuilder = StringBuilder()
-        if (salary.length > 3) {
-            for (i in 1..salary.length / 3) {
-                val subStr = " " + salary.substring((salary.length - 3 * i), salary.length - 3 * i + 3)
+        if (salary.length > THREE) {
+            for (i in 1..salary.length / THREE) {
+                val subStr = " " + salary.substring(salary.length - THREE * i, salary.length - THREE * i + THREE)
                 result.insert(0, subStr)
             }
-            result.insert(0, salary.substring(0, salary.length - 3 * (salary.length / 3)))
+            result.insert(0, salary.substring(0, salary.length - 3 * (salary.length / THREE)))
             return result.toString().trim()
         } else {
             return salary
         }
     }
+    companion object{
+        val THREE = 3
+    }
 }
-
-
-
-
-
-

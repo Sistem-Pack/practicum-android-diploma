@@ -13,7 +13,7 @@ class VacancyAdapter(
     var itemClickListener: ((Vacancy) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_vacancy, parent, false)
-        return  VacancyViewHolder(view)
+        return VacancyViewHolder(view)
     }
 
     override fun getItemCount(): Int {
