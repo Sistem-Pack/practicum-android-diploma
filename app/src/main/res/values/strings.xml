@@ -14,7 +14,9 @@
     <string name="text_developer_name_four">Евгений Лебедев</string>
     <string name="text_developer_name_five">Екатерина Седова</string>
 
+    //Экраны
     <string name="vacancies_search">Поиск вакансий</string>
+    <string name="enter_request">Введите запрос</string>
     <string name="empty_list">Список пуст</string>
     <string name="failed_request">Не удалось получить\nсписок вакансий</string>
 

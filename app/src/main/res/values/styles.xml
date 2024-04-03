@@ -43,9 +43,10 @@
     </style>
 
     <style name="Search">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">@dimen/fourteen_space</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginTop">@dimen/seven_space</item>
+        <item name="android:textColor">@color/black_white</item>
         <item name="android:textColorHint">@color/gray_white</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/sixteen_size_text</item>
@@ -66,7 +67,7 @@
     </style>
 
     <style name="VacancyHeadline">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/four_space</item>
         <item name="android:layout_marginTop">@dimen/five_space</item>
