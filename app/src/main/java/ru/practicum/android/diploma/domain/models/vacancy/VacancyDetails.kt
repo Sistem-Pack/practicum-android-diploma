@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.domain.models
+package ru.practicum.android.diploma.domain.models.vacancy
 
 data class VacancyDetails(
     val vacancyId: String, // ID вакансии
@@ -14,9 +14,9 @@ data class VacancyDetails(
     val description: String, // Описание вакансии
     val employmentName: String, // Тип занятости
     val experienceName: String, // Опыт работы
-    val salaryCurrency: String?, // ЗП Валюта
-    val salaryFrom: String?, // ЗП от
-    val salaryTo: String?, // ЗП до
+    val salaryCurrency: String, // ЗП Валюта
+    val salaryFrom: String, // ЗП от
+    val salaryTo: String, // ЗП до
     val keySkills: String, // Ключевые обязанности
     val artworkUrl: String, // Изображение
     val isFavorite: Boolean = false // В избранном
