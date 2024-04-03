@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.domain.models
 
-data class VacancyShort (
+data class VacancyShort(
     val vacancyId: String, // ID вакансии
     val vacancyName: String, // Название проффесии
     val employer: String, // Работадатель

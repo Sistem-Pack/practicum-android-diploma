@@ -19,5 +19,5 @@ data class VacancyDetails(
     val salaryTo: String?, // ЗП до
     val keySkills: String, // Ключевые обязанности
     val artworkUrl: String, // Изображение
-    var isFavorite: Boolean = false // В избранном
+    val isFavorite: Boolean = false // В избранном
 )
