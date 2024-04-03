@@ -36,13 +36,14 @@ class SalaryInfo {
                 val subStr = " " + salary.substring(salary.length - THREE * i, salary.length - THREE * i + THREE)
                 result.insert(0, subStr)
             }
-            result.insert(0, salary.substring(0, salary.length - 3 * (salary.length / THREE)))
+            result.insert(0, salary.substring(0, salary.length - THREE * (salary.length / THREE)))
             return result.toString().trim()
         } else {
             return salary
         }
     }
-    companion object{
-        val THREE = 3
+
+    companion object {
+        const val THREE = 3
     }
 }
