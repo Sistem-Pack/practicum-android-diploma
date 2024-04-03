@@ -15,5 +15,7 @@
     <string name="text_developer_name_five">Екатерина Седова</string>
 
     <string name="vacancies_search">Поиск вакансий</string>
+    <string name="empty_list">Список пуст</string>
+    <string name="failed_request">Не удалось получить\nсписок вакансий</string>
 
 </resources>
