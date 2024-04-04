@@ -19,12 +19,12 @@ class SalaryInfo(private val context: Context) {
         "KGT" to " с" // Киргизский сом (KGT)
     )
 
-    fun getSalaryInfo(salaryCurrency: String?, salaryFrom: String?, salaryTo: String?): String {
-        val salary = if (salaryTo.isNullOrEmpty() && salaryFrom.isNullOrEmpty()) {
+    fun getSalaryInfo(salaryCurrency: String, salaryFrom: String, salaryTo: String): String {
+        val salary = if (salaryTo.isEmpty() && salaryFrom.isEmpty()) {
             context.getString(R.string.salary_not_specified)
-        } else if (salaryTo.isNullOrEmpty()) {
-            "от ${splitIntoThousands(salaryFrom!!)}"
-        } else if (salaryFrom.isNullOrEmpty()) {
+        } else if (salaryTo.isEmpty()) {
+            "от ${splitIntoThousands(salaryFrom)}"
+        } else if (salaryFrom.isEmpty()) {
             "до ${splitIntoThousands(salaryTo)}"
         } else {
             "от ${splitIntoThousands(salaryFrom)} до ${splitIntoThousands(salaryTo)}"
