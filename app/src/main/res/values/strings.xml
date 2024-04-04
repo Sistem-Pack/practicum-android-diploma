@@ -21,5 +21,6 @@
     <string name="failed_request">Не удалось получить\nсписок вакансий</string>
     <string name="error_no_internet">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="no_vacansy">Таких вакансий нет</string>
 
 </resources>
