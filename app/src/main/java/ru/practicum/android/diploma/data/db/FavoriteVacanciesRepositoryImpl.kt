@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.db
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
@@ -28,6 +29,7 @@ class FavoriteVacanciesRepositoryImpl(
                 favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
             emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
         } catch (e: Exception) {
+            Log.e("AAA", "$e")
             emit(FavoriteVacancyState.FailedRequest)
         }
     }
