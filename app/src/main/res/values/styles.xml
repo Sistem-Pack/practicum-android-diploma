@@ -78,6 +78,12 @@
         <item name="android:textSize">@dimen/sixteen_size_text</item>
     </style>
 
+    <style name="VacancyName">
+        <item name="android:textColor">@color/black_white</item>
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textSize">@dimen/thirty_two_size_text</item>
+    </style>
+
     <style name="VacancyHeadline">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
