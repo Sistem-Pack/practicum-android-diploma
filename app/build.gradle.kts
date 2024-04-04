@@ -82,8 +82,8 @@ dependencies {
     // endregion
 
     // Glide
-    // implementation(libs.glide)
-    // annotationProcessor(libs.glide.compiler)
+    implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
     // endregion
 
     // ViewModel and LiveData
