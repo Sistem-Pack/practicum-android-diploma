@@ -20,7 +20,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(model: Vacancy) {
         vacancyName.text = model.vacancyName
         vacancyEmployer.text = model.employer
-        vacancySalary.text = SalaryInfo().getSalaryInfo(
+        vacancySalary.text = SalaryInfo(itemView.context).getSalaryInfo(
             salaryCurrency = model.salaryCurrency,
             salaryFrom = model.salaryFrom,
             salaryTo = model.salaryTo

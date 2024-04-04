@@ -1,6 +1,9 @@
 package ru.practicum.android.diploma.util
 
-class SalaryInfo {
+import android.content.Context
+import ru.practicum.android.diploma.R
+
+class SalaryInfo(private val context: Context) {
 
     private val mapOfCurrency = mutableMapOf(
         "RUR" to " ₽", // Российский рубль (RUR / RUB)
@@ -18,7 +21,7 @@ class SalaryInfo {
 
     fun getSalaryInfo(salaryCurrency: String?, salaryFrom: String?, salaryTo: String?): String {
         val salary = if (salaryTo.isNullOrEmpty() && salaryFrom.isNullOrEmpty()) {
-            "зарплата не указана"
+            context.getString(R.string.salary_not_specified)
         } else if (salaryTo.isNullOrEmpty()) {
             "от ${splitIntoThousands(salaryFrom!!)}"
         } else if (salaryFrom.isNullOrEmpty()) {
