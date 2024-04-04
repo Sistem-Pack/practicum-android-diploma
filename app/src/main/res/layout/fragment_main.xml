@@ -44,8 +44,8 @@
         style="@style/Search"
         android:background="@drawable/rounded_search_edit_text"
         android:focusableInTouchMode="true"
-        android:lines="1"
         android:hint="@string/enter_request"
+        android:lines="1"
         android:paddingStart="@dimen/three_and_a_half_space"
         android:textCursorDrawable="@drawable/cursor_search"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder_search"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -88,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvNoInternetPlaceholder"
@@ -113,11 +113,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvNoVacanciesPlaceholder"
+        android:id="@+id/tvFailedRequestPlaceholder"
         style="@style/PlaceholderMessage"
         android:text="@string/failed_request"
         android:visibility="gone"
-        app:drawableTopCompat="@drawable/placeholder_no_vacancies"
+        app:drawableTopCompat="@drawable/placeholder_failed_request"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -126,8 +126,8 @@
     <com.google.android.material.chip.Chip
         android:id="@+id/chip"
         style="@style/ChipMessage"
-        android:text="@string/no_vacansy"
-        android:visibility="visible"
+        android:text="@string/no_vacancy"
+        android:visibility="gone"
         app:chipBackgroundColor="@color/blue"
         app:chipCornerRadius="@dimen/corner_radius_12"
         app:chipStrokeColor="@color/blue"
@@ -141,25 +141,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/two_space"
-        android:animationCache="true"
-        android:visibility="visible"
         android:layout_marginBottom="@dimen/four_space"
+        android:animationCache="true"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/pbLoading"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintBottom_toTopOf="@+id/pbLoading"
         app:layout_constraintTop_toBottomOf="@id/chip"
-        app:layout_constrainedHeight="true"
-        tools:listitem="@layout/item_vacansy" />
+        tools:listitem="@layout/item_vacancy" />
 
     <ProgressBar
         android:id="@id/pbLoading"
         android:layout_width="@dimen/twelve_space"
         android:layout_height="@dimen/twelve_space"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/twenty_space"
+        android:layout_marginBottom="@dimen/four_space"
         android:indeterminateTint="@color/blue"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder" />
