@@ -27,7 +27,7 @@ class FavoriteVacanciesRepositoryImpl(
             val convertedFavoriteVacancy =
                 favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
             emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
-        } catch (e: Throwable) {
+        } catch (e: Exception) {
             emit(FavoriteVacancyState.FailedRequest)
         }
     }
