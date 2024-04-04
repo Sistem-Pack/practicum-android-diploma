@@ -150,7 +150,7 @@
         app:layout_constraintBottom_toTopOf="@+id/pbLoading"
         app:layout_constraintTop_toBottomOf="@id/chip"
         app:layout_constrainedHeight="true"
-        tools:listitem="@layout/item_search" />
+        tools:listitem="@layout/item_vacansy" />
 
     <ProgressBar
         android:id="@id/pbLoading"
