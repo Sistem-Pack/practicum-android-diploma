@@ -18,5 +18,6 @@
     <string name="empty_list">Список пуст</string>
     <string name="failed_request">Не удалось получить\nсписок вакансий</string>
     <string name="salary_not_specified">зарплата не указана</string>
+    <string name="seporator">,</string>
 
 </resources>
