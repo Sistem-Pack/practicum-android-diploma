@@ -25,7 +25,8 @@
         style="@style/VacancyHeadline"
         android:text="@string/vacancies_search"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00" />
 
     <ImageView
         android:id="@+id/ivFilter"
@@ -46,8 +47,6 @@
         android:lines="1"
         android:hint="@string/enter_request"
         android:paddingStart="@dimen/three_and_a_half_space"
-        android:paddingTop="@dimen/three_space"
-        android:paddingBottom="@dimen/three_space"
         android:textCursorDrawable="@drawable/cursor_search"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -65,16 +64,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvSearchVacancies" />
 
+
     <ImageView
         android:id="@+id/ivSearchPlaceholder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:scaleType="fitStart"
+        android:scaleType="centerCrop"
         android:src="@drawable/placeholder_search"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
@@ -82,12 +82,35 @@
         android:layout_width="@dimen/twelve_space"
         android:layout_height="@dimen/twelve_space"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/twenty_space"
+        android:layout_marginTop="@dimen/thirty_three_space"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/rightBorder"
-        app:layout_constraintStart_toStartOf="@id/leftBorder"
-        />
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvNoInternetPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/error_no_internet"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvServerErrorPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/server_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_server_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

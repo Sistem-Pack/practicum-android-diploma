@@ -57,13 +57,15 @@
     </style>
 
     <style name="PlaceholderMessage">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_white</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/twenty_two_size_text</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_marginTop">@dimen/four_space</item>
+        <item name="android:padding">@dimen/eleven_space</item>
+        <item name="android:drawablePadding">@dimen/four_space</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="VacancyHeadline">
