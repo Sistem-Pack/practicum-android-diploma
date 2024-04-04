@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.team.TeamPageFragment">
+
+    <TextView
+        android:id="@+id/text_team"
+        style="@style/VacancyHeadline"
+        android:text="@string/text_team"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_worked_application"
+        style="@style/WorkedApplication"
+        android:text="@string/text_developer_worker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_team" />
+
+    <TextView
+        android:id="@+id/text_developer_name_first"
+        style="@style/DeveloperNameFirst"
+        android:text="@string/text_developer_name_first"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_worked_application" />
+
+    <TextView
+        android:id="@+id/text_developer_name_second"
+        style="@style/DeveloperName"
+        android:text="@string/text_developer_name_second"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_first" />
+
+    <TextView
+        android:id="@+id/text_developer_name_third"
+        style="@style/DeveloperName"
+        android:text="@string/text_developer_name_third"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_second" />
+
+    <TextView
+        android:id="@+id/text_developer_name_fourth"
+        style="@style/DeveloperName"
+        android:text="@string/text_developer_name_four"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_third" />
+
+    <TextView
+        android:id="@+id/text_developer_name_fifth"
+        style="@style/DeveloperName"
+        android:text="@string/text_developer_name_five"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_developer_name_fourth" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
