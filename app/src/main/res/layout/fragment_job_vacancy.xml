@@ -1,19 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.vacancy.JobVacancyFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ru.practicum.android.diploma.ui.vacancy.JobVacancyFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Экран Вакансии"
-        android:textSize="40sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginBottom="@dimen/six_space"
+        tools:context=".ui.vacancy.JobVacancyFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sixteen_space"
+            app:contentInsetStart="@dimen/zero_space"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/one_space"
+                android:layout_marginTop="@dimen/two_space"
+                android:layout_marginBottom="@dimen/two_space"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/tvVacancyHeadline"
+                android:layout_width="wrap_content"
+                style="@style/VacancyHeadline"
+                android:text="@string/vacancy"
+                android:layout_marginStart="@dimen/one_space"
+                app:layout_constraintStart_toEndOf="@id/ivBack" />
+
+            <ImageView
+                android:id="@+id/ivFavorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/two_space"
+                android:layout_marginEnd="@dimen/two_space"
+                android:src="@drawable/ic_favorites_off" />
+
+            <ImageView
+                android:id="@+id/ivShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/one_space"
+                android:src="@drawable/ic_share"
+                app:layout_constraintStart_toEndOf="@id/ivBack" />
+        </androidx.appcompat.widget.Toolbar>
+
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvVacancyName, tvSalary, VacancyCard" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/four_space" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/four_space" />
+
+        <TextView
+            android:id="@+id/tvVacancyName"
+            style="@style/VacancyName"
+            android:text="@string/android_developer"
+            tools:text="@string/android_developer"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+        <TextView
+            android:id="@+id/tvSalary"
+            style="@style/VacancyHeadline"
+            android:text="@string/rate_money"
+            tools:text="@string/rate_money"
+            android:layout_width="@dimen/zero_space"
+            android:layout_marginStart="@dimen/zero_space"
+            android:layout_marginTop="@dimen/one_space"
+            app:layout_constraintTop_toBottomOf="@id/tvVacancyName"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/VacancyCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/six_space"
+            android:background="@drawable/vacancy_card"
+            android:padding="@dimen/four_space"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@id/tvSalary">
+
+            <ImageView
+                android:id="@+id/ivLogoPlug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_plug"
+                android:background="@drawable/vacancy_card"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCompanyName"
+                style="@style/VacancyHeadline"
+                android:text="@string/company_name"
+                tools:text="@string/company_name"
+                android:textColor="@color/black"
+                android:background="@drawable/vacancy_card"
+                android:layout_marginStart="@dimen/two_space"
+                android:layout_marginTop="@dimen/zero_space"
+                app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCity"
+                style="@style/VacancyDescription"
+                android:text="@string/city"
+                tools:text="@string/city"
+                android:background="@drawable/vacancy_card"
+                app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
+                app:layout_constraintTop_toBottomOf="@id/tvCompanyName" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

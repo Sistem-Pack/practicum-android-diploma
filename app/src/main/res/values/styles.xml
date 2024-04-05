@@ -79,9 +79,13 @@
     </style>
 
     <style name="VacancyName">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/six_space</item>
         <item name="android:textColor">@color/black_white</item>
         <item name="android:fontFamily">@font/ys_display_bold</item>
         <item name="android:textSize">@dimen/thirty_two_size_text</item>
+
     </style>
 
     <style name="VacancyHeadline">
@@ -95,9 +99,12 @@
     </style>
 
     <style name="VacancyDescription">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black_white</item>
+        <item name="android:layout_marginStart">@dimen/two_space</item>
+        <item name="android:layout_marginTop">@dimen/one_point_space</item>
+        <item name="android:layout_marginBottom">@dimen/half_space</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/sixteen_size_text</item>
     </style>

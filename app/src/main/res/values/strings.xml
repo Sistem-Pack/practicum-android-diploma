@@ -5,7 +5,7 @@
     <string name="main">Главная</string>
     <string name="favorite">Избранное</string>
 
-    //Команда
+    //Экран "Команда"
     <string name="text_team">Команда</string>
     <string name="text_developer_worker">Над приложением работали</string>
     <string name="text_developer_name_first">Александр Нешев</string>
@@ -14,7 +14,7 @@
     <string name="text_developer_name_four">Евгений Лебедев</string>
     <string name="text_developer_name_five">Екатерина Седова</string>
 
-    //Экраны
+    //Экран "Поиска"
     <string name="vacancies_search">Поиск вакансий</string>
     <string name="enter_request">Введите запрос</string>
     <string name="empty_list">Список пуст</string>
@@ -24,5 +24,13 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="no_vacancy">Таких вакансий нет</string>
+
+    //Экран "Детали вакансии"
+    <string name="vacancy">Вакансия</string>
+    <string name="android_developer">Android-разработчик</string>
+    <string name="rate_money">от 100 000 ₽</string>
+    <string name="company_name">Еда</string>
+    <string name="city">Москва</string>
+
 
 </resources>

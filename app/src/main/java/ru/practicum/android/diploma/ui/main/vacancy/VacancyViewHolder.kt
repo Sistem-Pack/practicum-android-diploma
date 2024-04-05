@@ -34,4 +34,3 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .into(logo)
     }
 }
-
