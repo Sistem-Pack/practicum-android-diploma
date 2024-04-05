@@ -7,52 +7,52 @@
     tools:context=".ui.team.TeamPageFragment">
 
     <TextView
-        android:id="@+id/text_team"
+        android:id="@+id/tvTeam"
         style="@style/VacancyHeadline"
         android:text="@string/text_team"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_worked_application"
+        android:id="@+id/tvWorkedApplication"
         style="@style/WorkedApplication"
         android:text="@string/text_developer_worker"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_team" />
+        app:layout_constraintTop_toBottomOf="@id/tvTeam" />
 
     <TextView
-        android:id="@+id/text_developer_name_first"
+        android:id="@+id/tvDeveloperNameFirst"
         style="@style/DeveloperNameFirst"
         android:text="@string/text_developer_name_first"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_worked_application" />
+        app:layout_constraintTop_toBottomOf="@id/tvWorkedApplication" />
 
     <TextView
-        android:id="@+id/text_developer_name_second"
+        android:id="@+id/tvDeveloperNameSecond"
         style="@style/DeveloperName"
         android:text="@string/text_developer_name_second"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_developer_name_first" />
+        app:layout_constraintTop_toBottomOf="@id/tvDeveloperNameFirst" />
 
     <TextView
-        android:id="@+id/text_developer_name_third"
+        android:id="@+id/tvDeveloperNameThird"
         style="@style/DeveloperName"
         android:text="@string/text_developer_name_third"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_developer_name_second" />
+        app:layout_constraintTop_toBottomOf="@id/tvDeveloperNameSecond" />
 
     <TextView
-        android:id="@+id/text_developer_name_fourth"
+        android:id="@+id/tvDeveloperNameFourth"
         style="@style/DeveloperName"
         android:text="@string/text_developer_name_four"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_developer_name_third" />
+        app:layout_constraintTop_toBottomOf="@id/tvDeveloperNameThird" />
 
     <TextView
-        android:id="@+id/text_developer_name_fifth"
+        android:id="@+id/tvDeveloperNameFifth"
         style="@style/DeveloperName"
         android:text="@string/text_developer_name_five"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_developer_name_fourth" />
+        app:layout_constraintTop_toBottomOf="@id/tvDeveloperNameFourth" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
