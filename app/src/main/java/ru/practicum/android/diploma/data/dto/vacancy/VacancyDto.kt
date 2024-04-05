@@ -13,9 +13,10 @@ package ru.practicum.android.diploma.data.dto.vacancy
  */
 
 data class VacancyDto(
-    val id: String?,
+    val id: String,
     val name: String?,
     val salary: SalaryDto?,
     val employer: EmployerDto?,
-    val address: AddressDto
+    val address: AddressDto?,
+    val area: AreaDto?
 )
