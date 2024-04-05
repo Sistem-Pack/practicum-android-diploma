@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.network
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.Response
@@ -26,6 +27,7 @@ class RetrofitNetworkClient(
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (e: UnknownHostException) {
+                    Log.d("Exception", "$e")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
