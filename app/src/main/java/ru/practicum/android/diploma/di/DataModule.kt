@@ -20,7 +20,7 @@ val dataModule = module {
     }
 
     factory<NetworkClient> {
-        RetrofitNetworkClient(get())
+        RetrofitNetworkClient(get(), get())
     }
 
     factory {

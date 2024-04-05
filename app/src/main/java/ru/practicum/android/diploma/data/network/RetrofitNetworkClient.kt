@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.UnknownHostException
 
 class RetrofitNetworkClient(
     private val hhApi: HHApi,
@@ -24,7 +25,7 @@ class RetrofitNetworkClient(
                     responce.apply {
                         resultResponse = ResponseStatus.OK
                     }
-                } catch (e: Exception) {
+                } catch (e: UnknownHostException) {
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
