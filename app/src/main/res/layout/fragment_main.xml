@@ -68,27 +68,27 @@
     <ImageView
         android:id="@+id/ivSearchPlaceholder"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/two_space"
         android:src="@drawable/placeholder_search"
         android:visibility="visible"
+        app:layout_constraintDimensionRatio="h,328:223"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
     <ProgressBar
         android:id="@+id/pbSearch"
         android:layout_width="@dimen/twelve_space"
         android:layout_height="@dimen/twelve_space"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/thirty_three_space"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
     <TextView
         android:id="@+id/tvNoInternetPlaceholder"
@@ -99,7 +99,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
     <TextView
         android:id="@+id/tvServerErrorPlaceholder"
@@ -110,7 +110,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
     <TextView
         android:id="@+id/tvFailedRequestPlaceholder"
@@ -121,7 +121,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/chip" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip"
