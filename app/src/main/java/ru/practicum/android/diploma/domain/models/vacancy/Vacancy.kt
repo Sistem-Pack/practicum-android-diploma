@@ -5,6 +5,6 @@ data class Vacancy(
     val vacancyName: String, // Название проффесии
     val employer: String, // Работадатель
     val areaRegion: String, // Регион (в документации НН указано название города "Москва")
-    val salary: String?, // ЗП до
+    val salary: String, // ЗП до
     val artworkUrl: String, // Изображение
 )
