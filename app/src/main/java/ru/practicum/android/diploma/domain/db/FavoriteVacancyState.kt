@@ -4,7 +4,8 @@ import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 
 sealed interface FavoriteVacancyState {
 
-    object FailedRequest : FavoriteVacancyState
     data class SuccessfulRequest(val vacancy: VacancyDetails) : FavoriteVacancyState
+
+    data class FailedRequest(val error: String) : FavoriteVacancyState
 
 }
