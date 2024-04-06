@@ -29,28 +29,36 @@ class VacancyRepositoryImpl(
                 }
                 emit(
                     VacancySearchResult(
-                        vacancies, ResponseStatus.OK, response.found ?: 0, response.page ?: 0, response.pages ?: 0
+                        vacancies,
+                        ResponseStatus.OK,
+                        response.found ?: 0,
+                        response.page ?: 0,
+                        response.pages ?: 0
                     )
                 )
             }
-
             ResponseStatus.NO_CONNECTION -> {
                 emit(
-                    VacancySearchResult(emptyList(), ResponseStatus.NO_CONNECTION, 0, 0, 0)
+                    VacancySearchResult(
+                        emptyList(),
+                        ResponseStatus.NO_CONNECTION,
+                        0,
+                        0,
+                        0)
                 )
             }
-
             ResponseStatus.BAD -> {
                 emit(
-                    VacancySearchResult(emptyList(), ResponseStatus.BAD, 0, 0, 0)
+                    VacancySearchResult(
+                        emptyList(),
+                        ResponseStatus.BAD,
+                        0,
+                        0,
+                        0)
                 )
             }
-
             else -> {
-
-            }
-        }
-    }
+            } } }
 
     private fun checkSalaryCurrency(vacancyDto: VacancyDto): Vacancy {
         return Vacancy(
