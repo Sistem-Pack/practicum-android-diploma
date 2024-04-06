@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
-import ru.practicum.android.diploma.util.SalaryInfo
 
 class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -18,13 +17,10 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val vacancySalary: TextView = itemView.findViewById(R.id.tvVacancySalary)
 
     fun bind(model: Vacancy) {
-        vacancyName.text = model.vacancyName + itemView.context.getString(R.string.seporator) + model.areaRegion
+        vacancyName.text = model.vacancyName + ", " + model.areaRegion
         vacancyEmployer.text = model.employer
-        vacancySalary.text = SalaryInfo(itemView.context).getSalaryInfo(
-            salaryCurrency = model.salaryCurrency,
-            salaryFrom = model.salaryFrom,
-            salaryTo = model.salaryTo
-        )
+        vacancySalary.text = model.salary
+
 
         Glide.with(itemView)
             .load(model.artworkUrl)
