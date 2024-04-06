@@ -10,7 +10,6 @@ val interactorModule = module {
     factory<VacancyInteractor> {
         VacancyInteractorImpl(get())
     }
-    
     single<FavoriteVacanciesInteractor> {
         FavoriteVacanciesInteractorImpl(get())
     }
