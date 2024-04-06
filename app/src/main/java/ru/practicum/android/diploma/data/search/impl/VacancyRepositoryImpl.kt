@@ -30,9 +30,9 @@ class VacancyRepositoryImpl(
                         employer = it.employer?.name.toString(),
                         areaRegion = it.area?.name.toString(),
                         salary = utils.getSalaryInfo(
-                            it.salary?.currency.toString(),
-                            it.salary?.from.toString(),
-                            it.salary?.to.toString()
+                            if (it.salary?.currency == null) "" else it.salary.currency.toString(),
+                            if (it.salary?.from == null) "" else it.salary.from.toString(),
+                            if (it.salary?.to == null) "" else it.salary.toString()
                         ),
                         artworkUrl = it.employer?.logoUrls?.smallLogoUrl90.toString()
                     )
@@ -61,7 +61,5 @@ class VacancyRepositoryImpl(
             }
 
             else -> {
-            }
-        }
-    }
+            } } }
 }
