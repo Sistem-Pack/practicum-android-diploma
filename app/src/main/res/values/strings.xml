@@ -31,6 +31,11 @@
     <string name="rate_money">от 100 000 ₽</string>
     <string name="company_name">Еда</string>
     <string name="city">Москва</string>
+    <string name="required_experience_field">Требуемый опыт</string>
+    <string name="experience_field">От 1 года до 3 лет</string>
+    <string name="type_of_employment">Полная занятость, Удаленная работа</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_description_value">Обязанности, Требования, Условия</string>
 
 
 </resources>
