@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.search.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.data.network.NetworkClient
@@ -24,26 +25,10 @@ class VacancyRepositoryImpl(
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies!!.map {
-                    Vacancy(
-                        vacancyId = it.id,
-                        vacancyName = it.name.toString(),
-                        employer = it.employer?.name.toString(),
-                        areaRegion = it.area?.name.toString(),
-                        salary = utils.getSalaryInfo(
-                            if (it.salary?.currency == null) "" else it.salary.currency.toString(),
-                            if (it.salary?.from == null) "" else it.salary.from.toString(),
-                            if (it.salary?.to == null) "" else it.salary.toString()
-                        ),
-                        artworkUrl = it.employer?.logoUrls?.smallLogoUrl90.toString()
-                    )
+                    checkSalaryCurrency(it)
                 }
                 emit(
-                    VacancySearchResult(
-                        vacancies,
-                        ResponseStatus.OK,
-                        response.found ?: 0,
-                        response.page ?: 0,
-                        response.pages ?: 0
+                    VacancySearchResult(vacancies, ResponseStatus.OK, response.found ?: 0, response.page ?: 0, response.pages ?: 0
                     )
                 )
             }
@@ -59,5 +44,22 @@ class VacancyRepositoryImpl(
             }
 
             else -> {
-            } } }
+            }
+        }
+    }
+
+    private fun checkSalaryCurrency(vacancyDto: VacancyDto): Vacancy {
+        return Vacancy(
+            vacancyId = vacancyDto.id,
+            vacancyName = vacancyDto.name.toString(),
+            employer = vacancyDto.employer?.name.toString(),
+            areaRegion = vacancyDto.area?.name.toString(),
+            salary = utils.getSalaryInfo(
+                if (vacancyDto.salary?.currency == null) "" else vacancyDto.salary.currency.toString(),
+                if (vacancyDto.salary?.from == null) "" else vacancyDto.salary.from.toString(),
+                if (vacancyDto.salary?.to == null) "" else vacancyDto.salary.toString()
+            ),
+            artworkUrl = vacancyDto.employer?.logoUrls?.smallLogoUrl90.toString()
+        )
+    }
 }
