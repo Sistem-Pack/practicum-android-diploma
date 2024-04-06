@@ -49,9 +49,7 @@ class VacancyRepositoryImpl(
             }
 
             ResponseStatus.NO_CONNECTION -> {
-                emit(
-                    VacancySearchResult(emptyList(), ResponseStatus.NO_CONNECTION, 0, 0, 0)
-                )
+                emit(VacancySearchResult(emptyList(), ResponseStatus.NO_CONNECTION, 0, 0, 0))
             }
 
             ResponseStatus.BAD -> {
