@@ -39,21 +39,14 @@ class VacancyRepositoryImpl(
             }
             ResponseStatus.NO_CONNECTION -> {
                 emit(
-                    VacancySearchResult(
-                        emptyList(),
-                        ResponseStatus.NO_CONNECTION,
-                        0, 0, 0
-                    )
+                    NO_CONNECTION
                 )
             }
             ResponseStatus.BAD -> {
                 emit(
-                    VacancySearchResult(
-                        emptyList(),
-                        ResponseStatus.BAD,
-                        0, 0, 0
-                    )
-                ) }
+                    BAD_RESPONSE
+                )
+            }
             else -> {
             } } }
 
@@ -69,6 +62,20 @@ class VacancyRepositoryImpl(
                 if (vacancyDto.salary?.to == null) "" else vacancyDto.salary.toString()
             ),
             artworkUrl = vacancyDto.employer?.logoUrls?.smallLogoUrl90.toString()
+        )
+    }
+
+    companion object {
+        val BAD_RESPONSE = VacancySearchResult(
+            emptyList(),
+            ResponseStatus.BAD,
+            0, 0, 0
+        )
+
+        val NO_CONNECTION = VacancySearchResult(
+            emptyList(),
+            ResponseStatus.NO_CONNECTION,
+            0, 0, 0
         )
     }
 }
