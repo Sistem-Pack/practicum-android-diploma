@@ -42,9 +42,7 @@ class VacancyRepositoryImpl(
                     VacancySearchResult(
                         emptyList(),
                         ResponseStatus.NO_CONNECTION,
-                        0,
-                        0,
-                        0
+                        0, 0, 0
                     )
                 )
             }
@@ -53,9 +51,7 @@ class VacancyRepositoryImpl(
                     VacancySearchResult(
                         emptyList(),
                         ResponseStatus.BAD,
-                        0,
-                        0,
-                        0
+                        0, 0, 0
                     )
                 ) }
             else -> {
