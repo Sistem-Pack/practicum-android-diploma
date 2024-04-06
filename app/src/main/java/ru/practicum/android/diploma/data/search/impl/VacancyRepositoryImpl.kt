@@ -44,7 +44,8 @@ class VacancyRepositoryImpl(
                         ResponseStatus.NO_CONNECTION,
                         0,
                         0,
-                        0)
+                        0
+                    )
                 )
             }
             ResponseStatus.BAD -> {
@@ -54,7 +55,8 @@ class VacancyRepositoryImpl(
                         ResponseStatus.BAD,
                         0,
                         0,
-                        0)
+                        0
+                    )
                 )
             }
             else -> {
