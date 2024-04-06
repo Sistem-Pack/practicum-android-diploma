@@ -207,12 +207,175 @@
                 app:layout_constraintTop_toBottomOf="@id/tvVacancyDescription"
                 tools:text="@string/vacancy_description_value" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/KeySkillsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/six_space"
+                app:layout_constraintTop_toBottomOf="@id/tvVacancyDescriptionValue">
+
+                <TextView
+                    android:id="@+id/tvKeySkills"
+                    style="@style/VacancyHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/zero_space"
+                    android:layout_marginTop="@dimen/zero_space"
+                    android:text="@string/key_skills"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/key_skills" />
+
+                <TextView
+                    android:id="@+id/tvKeySkillsDescription"
+                    style="@style/VacancyDetails"
+                    android:layout_marginStart="@dimen/six_space"
+                    android:layout_marginTop="@dimen/four_space"
+                    android:text="@string/key_kills_description"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvKeySkills"
+                    tools:text="@string/key_kills_description" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ContactBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/six_space"
+                app:layout_constraintTop_toBottomOf="@id/KeySkillsBox">
+
+                <TextView
+                    android:id="@+id/tvContact"
+                    style="@style/VacancyHeadline"
+                    android:text="@string/contact"
+                    tools:text="@string/contact"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/zero_space"
+                    android:layout_marginTop="@dimen/zero_space"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvContactPerson"
+                    style="@style/VacancyDetailsCategory"
+                    android:text="@string/contact_person"
+                    tools:text="@string/contact_person"
+                    android:layout_marginTop="@dimen/four_space"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContact" />
+
+                <TextView
+                    android:id="@+id/tvContactPersonValue"
+                    style="@style/VacancyDetails"
+                    android:text="@string/contact_person_value"
+                    tools:text="@string/contact_person_value"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactPerson" />
+
+                <TextView
+                    android:id="@+id/tvContactEmail"
+                    style="@style/VacancyDetailsCategory"
+                    android:text="@string/contact_email"
+                    tools:text="@string/contact_email"
+                    android:layout_marginTop="@dimen/four_space"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactPersonValue" />
+
+                <TextView
+                    android:id="@+id/tvContactEmailValue"
+                    style="@style/VacancyDetails"
+                    android:text="@string/email_value"
+                    tools:text="@string/email_value"
+                    android:layout_marginTop="@dimen/one_space"
+                    android:textColor="@color/blue"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactEmail" />
+
+                <TextView
+                    android:id="@+id/tvContactPhone"
+                    style="@style/VacancyDetailsCategory"
+                    android:text="@string/contact_phone"
+                    tools:text="@string/contact_phone"
+                    android:layout_marginTop="@dimen/four_space"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactEmailValue" />
+
+                <TextView
+                    android:id="@+id/tvContactPhoneValue"
+                    style="@style/VacancyDetails"
+                    android:text="@string/phone_value"
+                    tools:text="@string/phone_value"
+                    android:layout_marginTop="@dimen/one_space"
+                    android:textColor="@color/blue"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactPhone" />
+
+                <TextView
+                    android:id="@+id/tvComment"
+                    style="@style/VacancyDetailsCategory"
+                    android:text="@string/comment"
+                    tools:text="@string/comment"
+                    android:layout_marginTop="@dimen/four_space"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContactPhoneValue" />
+
+                <TextView
+                    android:id="@+id/tvCommentValue"
+                    style="@style/VacancyDetails"
+                    android:text="@string/contact_comment_value"
+                    tools:text="@string/contact_comment_value"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvComment" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ProgressBar
+            android:id="@+id/pbVacancy"
+            android:layout_width="@dimen/twelve_space"
+            android:layout_height="@dimen/twelve_space"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/seventy_space"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+        <TextView
+            android:id="@+id/tvNoInternetPlaceholderVacancy"
+            style="@style/PlaceholderMessage"
+            android:layout_marginTop="@dimen/fifty_space"
+            android:text="@string/error_no_internet"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/placeholder_no_internet"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintStart_toEndOf="@id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-
-
+        <TextView
+            android:id="@+id/tvServerErrorVacancyPlaceholder"
+            style="@style/PlaceholderMessage"
+            android:layout_marginTop="@dimen/fifty_space"
+            android:text="@string/server_error"
+            android:visibility="gone"
+            app:drawableTopCompat="@drawable/placeholder_server_error_vacancy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rightBorder"
+            app:layout_constraintStart_toEndOf="@id/leftBorder"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
