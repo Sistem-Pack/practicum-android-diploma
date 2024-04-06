@@ -37,7 +37,7 @@
     <string name="vacancy_description">Описание вакансии</string>
     <string name="vacancy_description_value">Обязанности, Требования, Условия</string>
     <string name="key_skills">Ключевые навыки</string>
-    <string name="key_kills_description">Знание классических алгоритмов и структуры данных\nПрограммирование для Android больше одного года\nЗнание WebRTC</string>
+    <string name="key_kills_description">•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
     <string name="contact">Контакты</string>
     <string name="contact_person">Контактное лицо</string>
     <string name="contact_person_value">Ирина</string>
@@ -47,6 +47,12 @@
     <string name="phone_value">+7 (904) 329-27-71</string>
     <string name="comment">Комментарий</string>
     <string name="contact_comment_value">Заполнить анкету по форме можно на нашем сайте</string>
+    <string name="responsibilities">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="responsibilities_value">•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
+    <string name="requirements_value">•  100% Kotlin\n•  WebRTC\n•  CI по модели Trunk Based Development</string>
+    <string name="conditions_value">•  сильная команда, с которой можно расти\n•  возможность влиять на процесс и результат\n•  расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
 
 
 </resources>
