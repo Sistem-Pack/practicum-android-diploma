@@ -69,13 +69,17 @@ class VacancyRepositoryImpl(
         val BAD_RESPONSE = VacancySearchResult(
             emptyList(),
             ResponseStatus.BAD,
-            0, 0, 0
+            0,
+            0,
+            0
         )
 
         val NO_CONNECTION = VacancySearchResult(
             emptyList(),
             ResponseStatus.NO_CONNECTION,
-            0, 0, 0
+            0,
+            0,
+            0
         )
     }
 }
