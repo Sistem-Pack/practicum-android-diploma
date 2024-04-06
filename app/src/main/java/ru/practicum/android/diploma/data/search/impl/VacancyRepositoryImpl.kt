@@ -28,13 +28,16 @@ class VacancyRepositoryImpl(
                     checkSalaryCurrency(it)
                 }
                 emit(
-                    VacancySearchResult(vacancies, ResponseStatus.OK, response.found ?: 0, response.page ?: 0, response.pages ?: 0
+                    VacancySearchResult(
+                        vacancies, ResponseStatus.OK, response.found ?: 0, response.page ?: 0, response.pages ?: 0
                     )
                 )
             }
 
             ResponseStatus.NO_CONNECTION -> {
-                emit(VacancySearchResult(emptyList(), ResponseStatus.NO_CONNECTION, 0, 0, 0))
+                emit(
+                    VacancySearchResult(emptyList(), ResponseStatus.NO_CONNECTION, 0, 0, 0)
+                )
             }
 
             ResponseStatus.BAD -> {
@@ -44,6 +47,7 @@ class VacancyRepositoryImpl(
             }
 
             else -> {
+
             }
         }
     }
