@@ -20,7 +20,7 @@ interface HHApi {
         @QueryMap params: Map<String, String>
     ): VacancyResponse
 
-    @GET("/vacancies/")
+    @GET("/vacancies?search_field=name")
     suspend fun searchVacancies(
         @Query("text") query: String
     ): VacancyResponse
