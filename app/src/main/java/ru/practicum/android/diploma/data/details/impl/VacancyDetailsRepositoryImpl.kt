@@ -27,24 +27,37 @@ class VacancyDetailsRepositoryImpl(
                     VacancyDetailsResult(
                         responseVacancy,
                         ResponseStatus.OK,
+                        response.resultCode
                     )
                 )
             }
 
             ResponseStatus.NO_CONNECTION -> {
                 emit(
-                    NO_CONNECTION
+                    VacancyDetailsResult(
+                        null,
+                        ResponseStatus.NO_CONNECTION,
+                        response.resultCode
+                    )
                 )
             }
 
             ResponseStatus.BAD -> {
                 emit(
-                    BAD_RESPONSE
+                    VacancyDetailsResult(
+                        null,
+                        ResponseStatus.BAD,
+                        response.resultCode
+                    )
                 )
             }
 
             ResponseStatus.DEFAULT -> emit(
-                DEFAULT
+                VacancyDetailsResult(
+                    null,
+                    ResponseStatus.DEFAULT,
+                    response.resultCode
+                )
             )
         }
     }
@@ -82,24 +95,6 @@ class VacancyDetailsRepositoryImpl(
             }
         }
         return phonesList
-    }
-
-
-    companion object {
-        val BAD_RESPONSE = VacancyDetailsResult(
-            null,
-            ResponseStatus.BAD,
-        )
-
-        val NO_CONNECTION = VacancyDetailsResult(
-            null,
-            ResponseStatus.NO_CONNECTION,
-        )
-
-        val DEFAULT = VacancyDetailsResult(
-            null,
-            ResponseStatus.DEFAULT,
-        )
     }
 
 }
