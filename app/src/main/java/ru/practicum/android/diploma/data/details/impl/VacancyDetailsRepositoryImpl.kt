@@ -24,40 +24,22 @@ class VacancyDetailsRepositoryImpl(
                 val responseVacancy: VacancyDetails =
                     formatToVacancyDetails((response as VacancyDetailsResponse).vacancy)
                 emit(
-                    VacancyDetailsResult(
-                        responseVacancy,
-                        ResponseStatus.OK,
-                        response.resultCode
-                    )
+                    VacancyDetailsResult(responseVacancy, ResponseStatus.OK, response.resultCode)
                 )
             }
 
             ResponseStatus.NO_CONNECTION -> {
                 emit(
-                    VacancyDetailsResult(
-                        null,
-                        ResponseStatus.NO_CONNECTION,
-                        response.resultCode
-                    )
+                    VacancyDetailsResult(null, ResponseStatus.NO_CONNECTION, response.resultCode)
                 )
             }
 
             ResponseStatus.BAD -> {
-                emit(
-                    VacancyDetailsResult(
-                        null,
-                        ResponseStatus.BAD,
-                        response.resultCode
-                    )
-                )
+                emit(VacancyDetailsResult(null, ResponseStatus.BAD, response.resultCode))
             }
 
-            ResponseStatus.DEFAULT -> emit(
-                VacancyDetailsResult(
-                    null,
-                    ResponseStatus.DEFAULT,
-                    response.resultCode
-                )
+            else -> emit(
+                VacancyDetailsResult(null, ResponseStatus.DEFAULT, response.resultCode)
             )
         }
     }
