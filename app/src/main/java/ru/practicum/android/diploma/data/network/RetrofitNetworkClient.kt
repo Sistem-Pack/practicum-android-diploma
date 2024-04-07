@@ -22,8 +22,8 @@ class RetrofitNetworkClient(
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
-                    val responce = hhApi.searchVacancies(request.expression)
-                    responce.apply {
+                    val response = hhApi.searchVacancies(request.expression)
+                    response.apply {
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (e: UnknownHostException) {

@@ -24,9 +24,9 @@ class VacancyRepositoryImpl(
         val response = networkClient.doVacancySearch(VacancySearchRequest(expression))
         when (response.resultResponse) {
             ResponseStatus.OK -> {
-                val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies!!.map {
-                    checkSalaryCurrency(it)
-                }
+                val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
+                    formatToVacancy(it)
+                } ?: emptyList()
                 emit(
                     VacancySearchResult(
                         vacancies,
@@ -47,21 +47,23 @@ class VacancyRepositoryImpl(
                     BAD_RESPONSE
                 )
             }
-            else -> {
-            } } }
+            ResponseStatus.DEFAULT -> emit(
+                DEFAULT
+            )
+        } }
 
-    private fun checkSalaryCurrency(vacancyDto: VacancyDto): Vacancy {
+    private fun formatToVacancy(vacancyDto: VacancyDto): Vacancy {
         return Vacancy(
             vacancyId = vacancyDto.id,
             vacancyName = vacancyDto.name.toString(),
-            employer = vacancyDto.employer?.name.toString(),
-            areaRegion = vacancyDto.area?.name.toString(),
+            employer = vacancyDto.employer?.name ?: "",
+            areaRegion = vacancyDto.area?.name ?: "",
             salary = utils.getSalaryInfo(
-                if (vacancyDto.salary?.currency == null) "" else vacancyDto.salary.currency.toString(),
-                if (vacancyDto.salary?.from == null) "" else vacancyDto.salary.from.toString(),
-                if (vacancyDto.salary?.to == null) "" else vacancyDto.salary.toString()
+                vacancyDto.salary?.currency ?: "",
+                (vacancyDto.salary?.from ?: "").toString(),
+                (vacancyDto.salary?.to ?: "").toString()
             ),
-            artworkUrl = vacancyDto.employer?.logoUrls?.smallLogoUrl90.toString()
+            artworkUrl = vacancyDto.employer?.logoUrls?.smallLogoUrl90 ?: ""
         )
     }
 
@@ -77,6 +79,14 @@ class VacancyRepositoryImpl(
         val NO_CONNECTION = VacancySearchResult(
             emptyList(),
             ResponseStatus.NO_CONNECTION,
+            0,
+            0,
+            0
+        )
+
+        val DEFAULT = VacancySearchResult(
+            emptyList(),
+            ResponseStatus.DEFAULT,
             0,
             0,
             0
