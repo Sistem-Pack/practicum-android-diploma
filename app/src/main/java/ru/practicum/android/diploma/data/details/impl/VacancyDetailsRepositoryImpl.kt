@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsResponse
+import ru.practicum.android.diploma.data.dto.vacancy.PhonesDto
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.details.VacancyDetailsRepository
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -59,7 +60,7 @@ class VacancyDetailsRepositoryImpl(
             areaRegion = vacancyDetailsDto.area?.name.toString(),
             contactsEmail = vacancyDetailsDto.contacts?.email.toString(),
             contactsName = vacancyDetailsDto.contacts?.name.toString(),
-            contactsPhones = vacancyDetailsDto.contacts?.phones.toString(),
+            contactsPhones = phonesMap(vacancyDetailsDto.contacts?.phones),
             description = vacancyDetailsDto.description.toString(),
             employmentType = vacancyDetailsDto.employment?.name.toString(),
             experienceName = vacancyDetailsDto.experience?.name.toString(),
@@ -72,6 +73,17 @@ class VacancyDetailsRepositoryImpl(
             artworkUrl = vacancyDetailsDto.employer?.logoUrls?.smallLogoUrl90 ?: ""
         )
     }
+
+    private fun phonesMap(phones: List<PhonesDto>?): String {
+        var phonesList = ""
+        if (phones != null) {
+            for (i in phones) {
+                phonesList += "+${i.country}${i.city}${i.number}\n"
+            }
+        }
+        return phonesList
+    }
+
 
     companion object {
         val BAD_RESPONSE = VacancyDetailsResult(
