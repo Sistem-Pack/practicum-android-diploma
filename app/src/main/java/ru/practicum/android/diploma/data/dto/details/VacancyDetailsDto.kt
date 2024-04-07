@@ -25,7 +25,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.SalaryDto
  * @see EmploymentDto
  */
 
-data class VacancyDetailsDto (
+data class VacancyDetailsDto(
     val id: String,
     val name: String?,
     val salary: SalaryDto?,
