@@ -26,7 +26,9 @@
     <dimen name="twenty_six_space">104dp</dimen>
     <dimen name="thirty_three_space">132dp</dimen>
     <dimen name="thirty_three_space_and_half">136dp</dimen>
+    <dimen name="fifty_space">200dp</dimen>
     <dimen name="sixty_six_and_a_half_space">266dp</dimen>
+    <dimen name="seventy_space">280dp</dimen>
     <dimen name="seventy_two_and_a_half_space">290dp</dimen>
     <dimen name="ninety_six_space">384dp</dimen>
 

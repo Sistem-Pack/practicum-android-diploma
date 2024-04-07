@@ -5,7 +5,7 @@
     <string name="main">Главная</string>
     <string name="favorite">Избранное</string>
 
-    //Команда
+    //Экран "Команда"
     <string name="text_team">Команда</string>
     <string name="text_developer_worker">Над приложением работали</string>
     <string name="text_developer_name_first">Александр Нешев</string>
@@ -14,7 +14,7 @@
     <string name="text_developer_name_four">Евгений Лебедев</string>
     <string name="text_developer_name_five">Екатерина Седова</string>
 
-    //Экраны
+    //Экран "Поиска"
     <string name="vacancies_search">Поиск вакансий</string>
     <string name="enter_request">Введите запрос</string>
     <string name="empty_list">Список пуст</string>
@@ -24,5 +24,35 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="no_vacancy">Таких вакансий нет</string>
+
+    //Экран "Детали вакансии"
+    <string name="vacancy">Вакансия</string>
+    <string name="android_developer">Android-разработчик</string>
+    <string name="rate_money">от 100 000 ₽</string>
+    <string name="company_name">Еда</string>
+    <string name="city">Москва</string>
+    <string name="required_experience_field">Требуемый опыт</string>
+    <string name="experience_field">От 1 года до 3 лет</string>
+    <string name="type_of_employment">Полная занятость, Удаленная работа</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_description_value">Обязанности, Требования, Условия</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="key_kills_description">•  Знание классических алгоритмов и структуры данных\n•  Программирование для Android больше одного года\n•  Знание WebRTC</string>
+    <string name="contact">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="contact_person_value">Ирина</string>
+    <string name="contact_email">E-mail</string>
+    <string name="email_value">i.lozgkina@yandex.ru</string>
+    <string name="contact_phone">Телефон</string>
+    <string name="phone_value">+7 (904) 329-27-71</string>
+    <string name="comment">Комментарий</string>
+    <string name="contact_comment_value">Заполнить анкету по форме можно на нашем сайте</string>
+    <string name="responsibilities">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="responsibilities_value">•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
+    <string name="requirements_value">•  100% Kotlin\n•  WebRTC\n•  CI по модели Trunk Based Development</string>
+    <string name="conditions_value">•  сильная команда, с которой можно расти\n•  возможность влиять на процесс и результат\n•  расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
+
 
 </resources>
