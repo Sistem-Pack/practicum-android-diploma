@@ -121,7 +121,7 @@ class MainFragment : Fragment() {
         adapter.notifyDataSetChanged()
         binding!!.chip.text =
             requireContext().getString(R.string.found) + " " + vacanciesFound.toString() + " " +
-                requireContext().resources.getQuantityString(
+            requireContext().resources.getQuantityString(
                 R.plurals.vacancy,
                 vacanciesFound
             )
