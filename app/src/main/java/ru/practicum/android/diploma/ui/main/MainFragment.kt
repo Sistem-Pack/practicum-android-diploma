@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
+import ru.practicum.android.diploma.domain.models.ResponseStatus
+import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
@@ -44,11 +46,17 @@ class MainFragment : Fragment() {
         binding!!.rvVacancyList.adapter = adapter
         binding!!.ivSearch.setOnClickListener {
             binding!!.etSearch.setText("")
+            breakSearch()
+        }
+
+        viewModel.foundVacancies.observe(viewLifecycleOwner) { it ->
+            processingSearchStatus(it)
         }
     }
 
     override fun onDestroyView() {
         binding = null
+        viewModel.onDestroy()
         super.onDestroyView()
     }
 
@@ -56,16 +64,18 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun startSearch(){
+    private fun startSearch() {
         changeViewsVisibility(true)
+        viewModel.changeRequestText(binding!!.etSearch.text.toString())
+        viewModel.searchDebounce()
     }
 
-    private fun changeViewsVisibility(action: Boolean){
+    private fun changeViewsVisibility(action: Boolean) {
         binding!!.ivSearchPlaceholder.isVisible = !action
         binding!!.rvVacancyList.isVisible = action
     }
 
-    private fun createTextWatcher(){
+    private fun createTextWatcher() {
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -75,6 +85,7 @@ class MainFragment : Fragment() {
                 if (editTextValue.isEmpty()) {
                     binding!!.ivSearch.setImageResource(R.drawable.ic_search)
                     changeViewsVisibility(false)
+                    breakSearch()
                 } else {
                     binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
                     startSearch()
@@ -84,5 +95,61 @@ class MainFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
             }
         }
+    }
+
+    private fun processingSearchStatus(vacancySearchResult: VacancySearchResult) {
+        vacancies.clear()
+        binding!!.rvVacancyList.isVisible = false
+        binding!!.ivSearchPlaceholder.isVisible = false
+        binding!!.pbSearch.isVisible = false
+        binding!!.chip.isVisible = false
+        when (vacancySearchResult.responseStatus) {
+            ResponseStatus.OK -> {
+                showOkStatus(vacancySearchResult.results, vacancySearchResult.found)
+            }
+
+            ResponseStatus.LOADING -> {
+                showLoadingStatus()
+            }
+
+            ResponseStatus.DEFAULT -> {
+                showDefaultStatus()
+            }
+
+            ResponseStatus.BAD -> {
+
+            }
+
+            ResponseStatus.NO_CONNECTION -> {
+
+            }
+        }
+    }
+
+    private fun showLoadingStatus() {
+        binding!!.pbSearch.isVisible = true
+    }
+
+    private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
+        vacancies.addAll(listVacancies)
+        adapter.notifyDataSetChanged()
+        binding!!.chip.text =
+            requireContext().getString(R.string.found) + " " + vacanciesFound.toString() + " " + requireContext().resources.getQuantityString(
+                R.plurals.vacancy,
+                vacanciesFound
+            )
+        binding!!.rvVacancyList.isVisible = true
+        binding!!.chip.isVisible = true
+    }
+
+    private fun showDefaultStatus() {
+        binding!!.ivSearchPlaceholder.isVisible = true
+    }
+
+    private fun breakSearch() {
+        viewModel.onDestroy()
+        binding!!.ivSearchPlaceholder.isVisible = true
+        binding!!.pbSearch.isVisible = false
+        binding!!.chip.isVisible = false
     }
 }

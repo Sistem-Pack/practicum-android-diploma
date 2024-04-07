@@ -4,5 +4,6 @@ enum class ResponseStatus {
     OK,
     BAD,
     NO_CONNECTION,
+    LOADING,
     DEFAULT
 }
