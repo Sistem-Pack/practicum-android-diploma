@@ -1,8 +1,6 @@
 package ru.practicum.android.diploma.ui.main
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +20,8 @@ class MainFragment : Fragment() {
 
     private var binding: FragmentMainBinding? = null
     private var editTextValue = ""
-    private lateinit var vacancies: ArrayList<Vacancy>
-    private lateinit var adapter: VacancyAdapter
+    private val vacancies: ArrayList<Vacancy> = ArrayList()
+    private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -34,8 +32,6 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vacancies = ArrayList<Vacancy>()
-        adapter = VacancyAdapter(vacancies)
         createTextWatcher()
 
         adapter.itemClickListener = { vacancy ->
@@ -76,7 +72,7 @@ class MainFragment : Fragment() {
     }
 
     private fun createTextWatcher() {
-        binding!!.etSearch.doOnTextChanged{ s: CharSequence?, start: Int, count: Int, after: Int ->
+        binding!!.etSearch.doOnTextChanged { s: CharSequence?, start: Int, count: Int, after: Int ->
             editTextValue = binding!!.etSearch.text.toString()
             if (editTextValue.isEmpty()) {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_search)
@@ -124,7 +120,8 @@ class MainFragment : Fragment() {
         vacancies.addAll(listVacancies)
         adapter.notifyDataSetChanged()
         binding!!.chip.text =
-            requireContext().getString(R.string.found) + " " + vacanciesFound.toString() + " " + requireContext().resources.getQuantityString(
+            requireContext().getString(R.string.found) + " " + vacanciesFound.toString() + " " +
+                requireContext().resources.getQuantityString(
                 R.plurals.vacancy,
                 vacanciesFound
             )
