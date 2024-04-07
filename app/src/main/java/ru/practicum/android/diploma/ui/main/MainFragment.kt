@@ -39,7 +39,9 @@ class MainFragment : Fragment() {
         createTextWatcher()
 
         adapter.itemClickListener = { vacancy ->
-            startJobVacancyFragment(vacancy.vacancyId)
+            if (viewModel.clickDebounce()) {
+                startJobVacancyFragment(vacancy.vacancyId)
+            }
         }
 
         binding!!.etSearch.addTextChangedListener(simpleTextWatcher)
@@ -72,7 +74,6 @@ class MainFragment : Fragment() {
 
     private fun changeViewsVisibility(action: Boolean) {
         binding!!.ivSearchPlaceholder.isVisible = !action
-        binding!!.rvVacancyList.isVisible = action
     }
 
     private fun createTextWatcher() {
@@ -151,5 +152,6 @@ class MainFragment : Fragment() {
         binding!!.ivSearchPlaceholder.isVisible = true
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
+        binding!!.rvVacancyList.isVisible = false
     }
 }

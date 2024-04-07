@@ -40,6 +40,9 @@ class MainViewModel(
         }
     }
 
+    fun clickDebounce(): Boolean {
+        return utilities.eventDebounce(viewModelScope, 1_000L)
+    }
 
     private fun search() {
         _foundVacancies.postValue(VacancySearchResult(emptyList<Vacancy>(), ResponseStatus.LOADING, 0, 0, 0))
