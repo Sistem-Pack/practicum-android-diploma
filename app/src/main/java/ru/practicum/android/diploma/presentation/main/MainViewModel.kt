@@ -35,13 +35,13 @@ class MainViewModel(
     fun searchDebounce() {
         job?.cancel()
         job = viewModelScope.launch {
-            delay(2_000L)
+            delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search()
         }
     }
 
     fun clickDebounce(): Boolean {
-        return utilities.eventDebounce(viewModelScope, 1_000L)
+        return utilities.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY_MILLIS)
     }
 
     private fun search() {
@@ -59,7 +59,8 @@ class MainViewModel(
         }
     }
 
+    companion object{
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+    }
 }
-
-
-

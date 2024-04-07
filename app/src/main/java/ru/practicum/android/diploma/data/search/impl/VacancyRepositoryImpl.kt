@@ -51,7 +51,6 @@ class VacancyRepositoryImpl(
                 DEFAULT
             )
             else -> {
-
             }
         } }
 

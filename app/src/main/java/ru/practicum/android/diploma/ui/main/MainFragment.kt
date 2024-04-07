@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -23,7 +24,6 @@ class MainFragment : Fragment() {
     private var editTextValue = ""
     private lateinit var vacancies: ArrayList<Vacancy>
     private lateinit var adapter: VacancyAdapter
-    private lateinit var simpleTextWatcher: TextWatcher
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -44,14 +44,13 @@ class MainFragment : Fragment() {
             }
         }
 
-        binding!!.etSearch.addTextChangedListener(simpleTextWatcher)
         binding!!.rvVacancyList.adapter = adapter
         binding!!.ivSearch.setOnClickListener {
             binding!!.etSearch.setText("")
             breakSearch()
         }
 
-        viewModel.foundVacancies.observe(viewLifecycleOwner) { it ->
+        viewModel.foundVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
     }
@@ -63,7 +62,7 @@ class MainFragment : Fragment() {
     }
 
     private fun startJobVacancyFragment(vacancyId: String) {
-
+        TODO()
     }
 
     private fun startSearch() {
@@ -77,23 +76,15 @@ class MainFragment : Fragment() {
     }
 
     private fun createTextWatcher() {
-        simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                editTextValue = binding!!.etSearch.text.toString()
-                if (editTextValue.isEmpty()) {
-                    binding!!.ivSearch.setImageResource(R.drawable.ic_search)
-                    changeViewsVisibility(false)
-                    breakSearch()
-                } else {
-                    binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
-                    startSearch()
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
+        binding!!.etSearch.doOnTextChanged{ s: CharSequence?, start: Int, count: Int, after: Int ->
+            editTextValue = binding!!.etSearch.text.toString()
+            if (editTextValue.isEmpty()) {
+                binding!!.ivSearch.setImageResource(R.drawable.ic_search)
+                changeViewsVisibility(false)
+                breakSearch()
+            } else {
+                binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
+                startSearch()
             }
         }
     }
@@ -118,11 +109,9 @@ class MainFragment : Fragment() {
             }
 
             ResponseStatus.BAD -> {
-
             }
 
             ResponseStatus.NO_CONNECTION -> {
-
             }
         }
     }
