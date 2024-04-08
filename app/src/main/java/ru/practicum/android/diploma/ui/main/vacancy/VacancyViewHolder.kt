@@ -21,7 +21,6 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         vacancyEmployer.text = model.employer
         vacancySalary.text = model.salary
 
-
         Glide.with(itemView)
             .load(model.artworkUrl)
             .placeholder(R.drawable.logo_plug)

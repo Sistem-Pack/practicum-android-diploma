@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white_black"
     tools:context=".ui.root.RootActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -11,6 +12,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="@dimen/zero_space"
         android:layout_height="@dimen/zero_space"
+        android:background="@color/white_black"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view_line_top"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,6 +35,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="@dimen/twelve_size_text"
+        android:background="@color/white_black"
         app:itemIconTint="@drawable/bottom_navigation_menu"
         app:itemRippleColor="@null"
         app:itemTextAppearanceActiveBoldEnabled="false"
