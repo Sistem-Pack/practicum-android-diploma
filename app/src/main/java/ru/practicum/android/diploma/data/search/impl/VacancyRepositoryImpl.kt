@@ -50,7 +50,11 @@ class VacancyRepositoryImpl(
             ResponseStatus.DEFAULT -> emit(
                 DEFAULT
             )
-        } }
+
+            else -> {
+            }
+        }
+    }
 
     private fun formatToVacancy(vacancyDto: VacancyDto): Vacancy {
         return Vacancy(
