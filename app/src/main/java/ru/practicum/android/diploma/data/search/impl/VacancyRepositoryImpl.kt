@@ -37,22 +37,27 @@ class VacancyRepositoryImpl(
                     )
                 )
             }
+
             ResponseStatus.NO_CONNECTION -> {
                 emit(
                     NO_CONNECTION
                 )
             }
+
             ResponseStatus.BAD -> {
                 emit(
                     BAD_RESPONSE
                 )
             }
+
             ResponseStatus.DEFAULT -> emit(
                 DEFAULT
             )
+
             else -> {
             }
-        } }
+        }
+    }
 
     private fun formatToVacancy(vacancyDto: VacancyDto): Vacancy {
         return Vacancy(
