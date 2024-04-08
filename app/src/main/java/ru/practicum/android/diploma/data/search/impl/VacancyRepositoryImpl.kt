@@ -65,7 +65,7 @@ class VacancyRepositoryImpl(
                 (vacancyDto.salary?.from ?: "").toString(),
                 (vacancyDto.salary?.to ?: "").toString()
             ),
-            artworkUrl = vacancyDto.employer?.logoUrls?.smallLogoUrl90 ?: ""
+            artworkUrl = vacancyDto.employer?.logoUrls?.mediumLogoUrl240 ?: ""
         )
     }
 
