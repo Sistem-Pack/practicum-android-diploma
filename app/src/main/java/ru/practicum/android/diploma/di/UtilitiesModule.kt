@@ -13,4 +13,5 @@ val utilitiesModule = module {
     factory {
         SalaryInfo(androidContext())
     }
+
 }

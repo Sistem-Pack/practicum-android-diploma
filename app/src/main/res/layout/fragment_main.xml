@@ -67,8 +67,8 @@
 
     <ImageView
         android:id="@+id/ivSearchPlaceholder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/zero_space"
+        android:layout_height="@dimen/zero_space"
         android:layout_marginTop="@dimen/two_space"
         android:src="@drawable/placeholder_search"
         android:visibility="visible"
@@ -138,8 +138,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVacancyList"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/zero_space"
+        android:layout_height="@dimen/zero_space"
         android:layout_marginTop="@dimen/two_space"
         android:layout_marginBottom="@dimen/four_space"
         android:animationCache="true"

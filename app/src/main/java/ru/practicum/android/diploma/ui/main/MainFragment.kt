@@ -141,8 +141,8 @@ class MainFragment : Fragment() {
             adapter.notifyDataSetChanged()
             binding!!.chip.text =
                 requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
-                    " " + vacanciesFound.toString() + " " +
-                    requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
+                " " + vacanciesFound.toString() + " " +
+                requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
             binding!!.rvVacancyList.isVisible = true
             binding!!.chip.isVisible = true
         } else {
