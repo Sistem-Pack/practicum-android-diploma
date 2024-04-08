@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.presentation.main.MainViewModel
 val viewModelModule = module {
 
     viewModel {
-        FavoritesViewModel(favoriteVacanciesInteractor = get())
+        FavoritesViewModel(favoriteVacanciesInteractor = get(), vacancyDetailsInteractor = get(), utils = get())
     }
 
     viewModel {

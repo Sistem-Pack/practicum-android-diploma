@@ -32,7 +32,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/nine_space"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,5 +68,17 @@
         app:layout_constraintTop_toBottomOf="@id/ivPlaceholderImage"
         tools:text="@string/empty_list" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@id/pbLoading"
+        android:layout_width="@dimen/twelve_space"
+        android:layout_height="@dimen/twelve_space"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/four_space"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder" />
 
+
+</androidx.constraintlayout.widget.ConstraintLayout>
