@@ -27,7 +27,7 @@ class MainFragment : Fragment() {
 
     private val viewModel by viewModel<MainViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding!!.root
     }
@@ -45,6 +45,7 @@ class MainFragment : Fragment() {
         binding!!.rvVacancyList.adapter = adapter
         binding!!.ivSearch.setOnClickListener {
             binding!!.etSearch.setText("")
+            hideAllView()
             breakSearch()
         }
 
@@ -95,10 +96,7 @@ class MainFragment : Fragment() {
 
     private fun processingSearchStatus(vacancySearchResult: VacancySearchResult) {
         vacancies.clear()
-        binding!!.rvVacancyList.isVisible = false
-        binding!!.ivSearchPlaceholder.isVisible = false
-        binding!!.pbSearch.isVisible = false
-        binding!!.chip.isVisible = false
+        hideAllView()
         hideKeyboard()
         when (vacancySearchResult.responseStatus) {
             ResponseStatus.OK -> {
@@ -114,11 +112,23 @@ class MainFragment : Fragment() {
             }
 
             ResponseStatus.BAD -> {
+                showBadStatus()
             }
 
             ResponseStatus.NO_CONNECTION -> {
+                showNoConnectionStatus()
             }
         }
+    }
+
+    private fun hideAllView() {
+        binding!!.rvVacancyList.isVisible = false
+        binding!!.ivSearchPlaceholder.isVisible = false
+        binding!!.tvServerErrorPlaceholder.isVisible = false
+        binding!!.tvNoInternetPlaceholder.isVisible = false
+        binding!!.tvFailedRequestPlaceholder.isVisible = false
+        binding!!.pbSearch.isVisible = false
+        binding!!.chip.isVisible = false
     }
 
     private fun showLoadingStatus() {
@@ -126,20 +136,32 @@ class MainFragment : Fragment() {
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
-        vacancies.addAll(listVacancies)
-        adapter.notifyDataSetChanged()
-        binding!!.chip.text =
-            requireContext().getString(R.string.found) + " " + vacanciesFound.toString() + " " +
-            requireContext().resources.getQuantityString(
-                R.plurals.vacancy,
-                vacanciesFound
-            )
-        binding!!.rvVacancyList.isVisible = true
-        binding!!.chip.isVisible = true
+        if (listVacancies.isNotEmpty()) {
+            vacancies.addAll(listVacancies)
+            adapter.notifyDataSetChanged()
+            binding!!.chip.text =
+                requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
+                " " + vacanciesFound.toString() + " " +
+                requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
+            binding!!.rvVacancyList.isVisible = true
+            binding!!.chip.isVisible = true
+        } else {
+            binding!!.chip.isVisible = true
+            binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
+            binding!!.tvFailedRequestPlaceholder.isVisible = true
+        }
     }
 
     private fun showDefaultStatus() {
         binding!!.ivSearchPlaceholder.isVisible = true
+    }
+
+    private fun showBadStatus() {
+        binding!!.tvServerErrorPlaceholder.isVisible = true
+    }
+
+    private fun showNoConnectionStatus() {
+        binding!!.tvNoInternetPlaceholder.isVisible = true
     }
 
     private fun breakSearch() {
