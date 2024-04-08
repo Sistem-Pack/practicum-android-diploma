@@ -28,4 +28,14 @@ class JobVacancyFragment : Fragment() {
         binding = null
         super.onDestroyView()
     }
+
+    companion object {
+        const val KEY_VACANCY = "vacancyId"
+        fun createArgs(vacancyId: String): Bundle? {
+            val bundle = Bundle()
+            bundle.putString(KEY_VACANCY, vacancyId)
+            return bundle
+        }
+    }
+
 }
