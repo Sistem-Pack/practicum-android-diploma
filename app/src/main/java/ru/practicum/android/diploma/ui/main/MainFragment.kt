@@ -1,9 +1,11 @@
 package ru.practicum.android.diploma.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -57,6 +59,12 @@ class MainFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(binding!!.etSearch.windowToken, 0)
+    }
+
     private fun startJobVacancyFragment(vacancyId: String) {
         TODO()
     }
@@ -91,6 +99,7 @@ class MainFragment : Fragment() {
         binding!!.ivSearchPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
+        hideKeyboard()
         when (vacancySearchResult.responseStatus) {
             ResponseStatus.OK -> {
                 showOkStatus(vacancySearchResult.results, vacancySearchResult.found)
