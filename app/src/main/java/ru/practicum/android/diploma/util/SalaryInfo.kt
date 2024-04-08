@@ -16,7 +16,9 @@ class SalaryInfo(private val context: Context) {
         "AZN" to " ₼", // Азербайджанский манат (AZN)
         "UZS" to " so’m", // Узбекский сум (UZS)
         "GEL" to " ₾", // Грузинский лари (GEL)
-        "KGT" to " с" // Киргизский сом (KGT)
+        "KGT" to " с", // Киргизский сом (KGT)
+        "" to "",
+        "null" to ""
     )
 
     fun getSalaryInfo(salaryCurrency: String, salaryFrom: String, salaryTo: String): String {

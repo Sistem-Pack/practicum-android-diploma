@@ -24,6 +24,17 @@
     <string name="error_no_internet">Нет интернета</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="no_vacancy">Таких вакансий нет</string>
+    <string name="found">Найдено</string>
+
+    <!-- Склонения слова "Вакансия" -->
+    <plurals name="vacancy" translatable="false">
+        <item quantity="zero">вакансий</item>
+        <item quantity="one">вакансия</item>
+        <item quantity="two">вакансии</item>
+        <item quantity="few">вакансии</item>
+        <item quantity="many">вакансий</item>
+        <item quantity="other">вакансий</item>
+    </plurals>
 
     //Экран "Детали вакансии"
     <string name="vacancy">Вакансия</string>
