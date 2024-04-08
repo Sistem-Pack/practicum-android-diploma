@@ -24,9 +24,9 @@ class SharingRepositoryImpl(
         Intent().apply {
             action = Intent.ACTION_SENDTO
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, email)
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            app.startActivity(Intent.createChooser(this, "Направить"))
+            app.startActivity(this)
         }
     }
 
