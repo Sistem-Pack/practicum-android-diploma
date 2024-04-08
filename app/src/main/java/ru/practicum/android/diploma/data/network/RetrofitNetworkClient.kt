@@ -39,7 +39,23 @@ class RetrofitNetworkClient(
     }
 
     override suspend fun doVacancyDetailsSearch(id: String): Response {
-        TODO("Not yet implemented")
+        if (util.isConnected()) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val responce = hhApi.searchVacancyDetails(id)
+                    responce.apply {
+                        resultResponse = ResponseStatus.OK
+                    }
+                } catch (e: UnknownHostException) {
+                    Log.d("Exception", "$e")
+                    Response().apply { resultResponse = ResponseStatus.BAD }
+                }
+            }
+        } else {
+            return Response().apply {
+                resultResponse = ResponseStatus.NO_CONNECTION
+            }
+        }
     }
 
 }
