@@ -48,7 +48,9 @@ class FavoritesViewModel(
                     is FavoriteVacanciesIdState.SuccessfulRequest -> {
                         vacanciesIdArrayList.clear()
                         vacanciesIdArrayList.addAll(it.vacanciesIdArrayList)
-                        favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesIdUploaded(it.vacanciesIdArrayList))
+                        favoritesScreenStateLiveData.postValue(
+                            FavoritesScreenState.VacanciesIdUploaded(it.vacanciesIdArrayList)
+                        )
                     }
 
                 }
@@ -65,14 +67,15 @@ class FavoritesViewModel(
                     vacanciesListsQuantity += 1
                     nextVacanciesList.clear()
                     var vacancyNumberInList = 1
-                    val vacanciesQuantityInNextVacanciesList = if ((vacanciesIdArrayList.size - workedVacancies) > 20) {
-                        20
-                    } else {
-                        vacanciesIdArrayList.size - workedVacancies
-                    }
+                    val vacanciesQuantityInNextVacanciesList =
+                        if ((vacanciesIdArrayList.size - workedVacancies) > MAX_LINES_ON_PAGE) {
+                            MAX_LINES_ON_PAGE
+                        } else {
+                            vacanciesIdArrayList.size - workedVacancies
+                        }
                     while (vacancyNumberInList <= vacanciesQuantityInNextVacanciesList) {
                         val vacancyId =
-                            vacanciesIdArrayList[(vacanciesListsQuantity - 1) * 20 + vacancyNumberInList - 1]
+                            vacanciesIdArrayList[(vacanciesListsQuantity - 1) * MAX_LINES_ON_PAGE + vacancyNumberInList - 1]
                         getFavoriteVacancy(vacancyId)
                         vacancyNumberInList += 1
                     }
@@ -90,30 +93,28 @@ class FavoritesViewModel(
     }
 
     fun clickDebounce(): Boolean {
-        return utils.eventDebounce(viewModelScope, 1000L)
+        return utils.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY)
     }
 
     private suspend fun getFavoriteVacancy(vacancyId: String) {
         vacancyDetailsInteractor.vacancyDetails(vacancyId).collect { vacancyDetailsResult ->
             when (vacancyDetailsResult.responseStatus) {
                 ResponseStatus.OK -> {
-                    if (vacancyDetailsResult.results != null) {
-                        refreshFavoriteVacancyInDataBase(vacancyId, vacancyDetailsResult)
-                        allVacanciesList.add(
-                            Vacancy(
-                                vacancyId = vacancyDetailsResult.results.vacancyId,
-                                vacancyName = vacancyDetailsResult.results.vacancyName,
-                                employer = vacancyDetailsResult.results.employer,
-                                areaRegion = vacancyDetailsResult.results.areaRegion,
-                                salary = vacancyDetailsResult.results.salary,
-                                artworkUrl = vacancyDetailsResult.results.artworkUrl
-                            )
+                    refreshFavoriteVacancyInDataBase(vacancyId, vacancyDetailsResult)
+                    allVacanciesList.add(
+                        Vacancy(
+                            vacancyId = vacancyDetailsResult.results!!.vacancyId,
+                            vacancyName = vacancyDetailsResult.results.vacancyName,
+                            employer = vacancyDetailsResult.results.employer,
+                            areaRegion = vacancyDetailsResult.results.areaRegion,
+                            salary = vacancyDetailsResult.results.salary,
+                            artworkUrl = vacancyDetailsResult.results.artworkUrl
                         )
-                    }
+                    )
                 }
 
                 ResponseStatus.BAD -> {
-                    if (vacancyDetailsResult.resultServerCode == 404) {
+                    if (vacancyDetailsResult.resultServerCode == ABSENCE_CODE) {
                         favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyId)
                         Log.e("AAA", "Удалена неактуальная вакансия")
                     } else {
@@ -162,37 +163,41 @@ class FavoritesViewModel(
         vacancyId: String,
         vacancyDetailsResult: VacancyDetailsResult
     ) {
-        if (vacancyDetailsResult.results != null) {
-            var vacancyIdInDatabase = 0L
-            favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect {
-                if (it is FavoriteVacancyState.SuccessfulRequest) {
-                    vacancyIdInDatabase = it.vacancy.vacancyIdInDatabase
-                }
+        var vacancyIdInDatabase = 0L
+        favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect {
+            if (it is FavoriteVacancyState.SuccessfulRequest) {
+                vacancyIdInDatabase = it.vacancy.vacancyIdInDatabase
             }
-            favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyId)
-            favoriteVacanciesInteractor.insertFavoriteVacancy(
-                VacancyDetails(
-                    vacancyIdInDatabase = vacancyIdInDatabase,
-                    vacancyId = vacancyDetailsResult.results.vacancyId,
-                    vacancyName = vacancyDetailsResult.results.vacancyName,
-                    employer = vacancyDetailsResult.results.employer,
-                    industry = vacancyDetailsResult.results.industry,
-                    country = vacancyDetailsResult.results.country,
-                    areaId = vacancyDetailsResult.results.areaId,
-                    areaRegion = vacancyDetailsResult.results.areaRegion,
-                    contactsEmail = vacancyDetailsResult.results.contactsEmail,
-                    contactsName = vacancyDetailsResult.results.contactsName,
-                    contactsPhones = vacancyDetailsResult.results.contactsPhones,
-                    description = vacancyDetailsResult.results.description,
-                    employmentType = vacancyDetailsResult.results.employmentType,
-                    experienceName = vacancyDetailsResult.results.experienceName,
-                    salary = vacancyDetailsResult.results.salary,
-                    keySkills = vacancyDetailsResult.results.keySkills,
-                    artworkUrl = vacancyDetailsResult.results.artworkUrl,
-                    isFavorite = true,
-                )
-            )
         }
+        favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyId)
+        favoriteVacanciesInteractor.insertFavoriteVacancy(
+            VacancyDetails(
+                vacancyIdInDatabase = vacancyIdInDatabase,
+                vacancyId = vacancyDetailsResult.results!!.vacancyId,
+                vacancyName = vacancyDetailsResult.results.vacancyName,
+                employer = vacancyDetailsResult.results.employer,
+                industry = vacancyDetailsResult.results.industry,
+                country = vacancyDetailsResult.results.country,
+                areaId = vacancyDetailsResult.results.areaId,
+                areaRegion = vacancyDetailsResult.results.areaRegion,
+                contactsEmail = vacancyDetailsResult.results.contactsEmail,
+                contactsName = vacancyDetailsResult.results.contactsName,
+                contactsPhones = vacancyDetailsResult.results.contactsPhones,
+                description = vacancyDetailsResult.results.description,
+                employmentType = vacancyDetailsResult.results.employmentType,
+                experienceName = vacancyDetailsResult.results.experienceName,
+                salary = vacancyDetailsResult.results.salary,
+                keySkills = vacancyDetailsResult.results.keySkills,
+                artworkUrl = vacancyDetailsResult.results.artworkUrl,
+                isFavorite = true,
+            )
+        )
+    }
+
+    companion object {
+        private const val MAX_LINES_ON_PAGE = 20
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val ABSENCE_CODE = 404
     }
 
 }
