@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.models.ResponseStatus
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
+import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
 
 class MainViewModel(
@@ -19,10 +18,12 @@ class MainViewModel(
 ) : ViewModel() {
     private var requestText = ""
     private var job: Job? = null
+    private var list = ArrayList<Vacancy>()
+    private var page: Int = 0
+    private var maxPages = 0
 
-    private val _foundVacancies: MutableLiveData<VacancySearchResult> =
-        MutableLiveData(VacancySearchResult(emptyList<Vacancy>(), ResponseStatus.DEFAULT, 0, 0, 0))
-    val foundVacancies: LiveData<VacancySearchResult> = _foundVacancies
+    private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
+    val listOfVacancies: LiveData<MainFragmentStatus> = _listOfVacancies
 
     fun onDestroy() {
         job?.cancel()
@@ -44,17 +45,35 @@ class MainViewModel(
         return utilities.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY_MILLIS)
     }
 
-    private fun search() {
-        _foundVacancies.postValue(VacancySearchResult(emptyList<Vacancy>(), ResponseStatus.LOADING, 0, 0, 0))
+    fun installPage(oldRequest: Boolean) {
+        if (oldRequest) {
+            page++
+        } else {
+            page = 0
+        }
+
+    }
+
+    fun search() {
+        _listOfVacancies.postValue(MainFragmentStatus.Loading)
         sendRequest()
     }
+
 
     private fun sendRequest() {
         viewModelScope.launch {
             vacancyInteractor
-                .searchVacancy(requestText)
+                .searchVacancy(requestText, page)
                 .collect { result ->
-                    _foundVacancies.postValue(result)
+                    if (page == 0) {
+                        list.clear()
+                        list.addAll(result.results)
+                        _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(result.results, result.found))
+                        maxPages = result.pages
+                    } else {
+                        list.addAll(result.results)
+                        _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list, result.found))
+                    }
                 }
         }
     }

@@ -22,7 +22,7 @@ class RetrofitNetworkClient(
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
-                    val response = hhApi.searchVacancies(request.expression)
+                    val response = hhApi.searchVacancies(request.expression, request.page, request.perPage)
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }

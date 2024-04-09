@@ -9,13 +9,14 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
-import ru.practicum.android.diploma.domain.models.ResponseStatus
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
+import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
@@ -49,9 +50,24 @@ class MainFragment : Fragment() {
             breakSearch()
         }
 
-        viewModel.foundVacancies.observe(viewLifecycleOwner) {
+        viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
+
+        binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount-1) {
+                        viewModel.installPage(true)
+                        viewModel.search()
+                    }
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
@@ -67,11 +83,12 @@ class MainFragment : Fragment() {
     }
 
     private fun startJobVacancyFragment(vacancyId: String) {
-        TODO()
+
     }
 
     private fun startSearch() {
         changeViewsVisibility(true)
+        viewModel.installPage(false)
         viewModel.changeRequestText(binding!!.etSearch.text.toString())
         viewModel.searchDebounce()
     }
@@ -94,28 +111,28 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun processingSearchStatus(vacancySearchResult: VacancySearchResult) {
+    private fun processingSearchStatus(mainFragmentStatus: MainFragmentStatus) {
         vacancies.clear()
         hideAllView()
         hideKeyboard()
-        when (vacancySearchResult.responseStatus) {
-            ResponseStatus.OK -> {
-                showOkStatus(vacancySearchResult.results, vacancySearchResult.found)
+        when (mainFragmentStatus) {
+            is MainFragmentStatus.ListOfVacancies -> {
+                showOkStatus(mainFragmentStatus.vacancies, mainFragmentStatus.found)
             }
 
-            ResponseStatus.LOADING -> {
+            is MainFragmentStatus.Loading -> {
                 showLoadingStatus()
             }
 
-            ResponseStatus.DEFAULT -> {
+            is MainFragmentStatus.Default -> {
                 showDefaultStatus()
             }
 
-            ResponseStatus.BAD -> {
+            is MainFragmentStatus.Bad -> {
                 showBadStatus()
             }
 
-            ResponseStatus.NO_CONNECTION -> {
+            is MainFragmentStatus.NoConnection -> {
                 showNoConnectionStatus()
             }
         }

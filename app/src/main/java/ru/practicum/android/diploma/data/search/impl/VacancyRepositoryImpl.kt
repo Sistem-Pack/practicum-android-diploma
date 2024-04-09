@@ -20,8 +20,8 @@ class VacancyRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun searchVacancy(expression: String): Flow<VacancySearchResult> = flow {
-        val response = networkClient.doVacancySearch(VacancySearchRequest(expression))
+    override fun searchVacancy(expression: String, page: Int): Flow<VacancySearchResult> = flow {
+        val response = networkClient.doVacancySearch(VacancySearchRequest(expression, page = page))
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
