@@ -196,62 +196,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tvResponsibilities"
-                    style="@style/VacancyDetailsCategory"
-                    android:layout_marginTop="@dimen/four_space"
-                    android:text="@string/responsibilities"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvVacancyDescription" />
-
-                <TextView
                     android:id="@+id/tvResponsibilitiesValue"
                     style="@style/VacancyDetails"
                     android:layout_marginStart="@dimen/three_space"
-                    android:layout_marginTop="@dimen/one_space"
+                    android:layout_marginTop="@dimen/four_space"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvResponsibilities"
+                    app:layout_constraintTop_toBottomOf="@id/tvVacancyDescription"
                     tools:text="@string/responsibilities_value" />
-
-                <TextView
-                    android:id="@+id/tvRequirements"
-                    style="@style/VacancyDetailsCategory"
-                    android:layout_marginTop="@dimen/four_space"
-                    android:text="@string/requirements"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvResponsibilitiesValue" />
-
-                <TextView
-                    android:id="@+id/tvRequirementsValue"
-                    style="@style/VacancyDetails"
-                    android:layout_marginStart="@dimen/three_space"
-                    android:layout_marginTop="@dimen/one_space"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvRequirements"
-                    tools:text="@string/requirements_value" />
-
-                <TextView
-                    android:id="@+id/tvConditions"
-                    style="@style/VacancyDetailsCategory"
-                    android:layout_marginTop="@dimen/four_space"
-                    android:text="@string/conditions"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvRequirementsValue" />
-
-                <TextView
-                    android:id="@+id/tvConditionsValue"
-                    style="@style/VacancyDetails"
-                    android:layout_marginStart="@dimen/three_space"
-                    android:layout_marginTop="@dimen/one_space"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvConditions"
-                    tools:text="@string/conditions_value" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

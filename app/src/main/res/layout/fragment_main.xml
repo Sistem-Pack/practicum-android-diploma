@@ -141,7 +141,6 @@
         android:layout_width="@dimen/zero_space"
         android:layout_height="@dimen/zero_space"
         android:layout_marginTop="@dimen/two_space"
-        android:layout_marginBottom="@dimen/four_space"
         android:animationCache="true"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
