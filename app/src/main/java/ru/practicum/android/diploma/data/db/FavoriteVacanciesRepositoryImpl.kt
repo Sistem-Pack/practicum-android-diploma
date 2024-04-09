@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.data.db
 
-import android.database.sqlite.SQLiteException
+import android.database.SQLException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
@@ -28,7 +28,7 @@ class FavoriteVacanciesRepositoryImpl(
             val convertedFavoriteVacancy =
                 favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
             emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
-        } catch (error: SQLiteException) {
+        } catch (error: SQLException) {
             emit(FavoriteVacancyState.FailedRequest(error = "$error"))
         }
     }
@@ -39,7 +39,7 @@ class FavoriteVacanciesRepositoryImpl(
             val favoriteVacanciesIdArrayList = ArrayList<String>()
             favoriteVacanciesIdArrayList.addAll(favoriteVacanciesIdList)
             emit(FavoriteVacanciesIdState.SuccessfulRequest(vacanciesIdArrayList = favoriteVacanciesIdArrayList))
-        } catch (error: SQLiteException) {
+        } catch (error: SQLException) {
             emit(FavoriteVacanciesIdState.FailedRequest(error = "$error"))
         }
     }
