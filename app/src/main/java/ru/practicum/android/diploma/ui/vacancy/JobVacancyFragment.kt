@@ -34,7 +34,7 @@ class JobVacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //viewModel.showDetailVacancy(KEY_VACANCY)
-        binding?.group?.visibility = View.GONE
+        //binding?.group?.visibility = View.GONE
         //observeViewModel()
         binding?.ivBack?.setOnClickListener {
             findNavController().popBackStack()
