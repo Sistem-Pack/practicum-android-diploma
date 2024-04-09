@@ -69,7 +69,7 @@ class MainFragment : Fragment() {
 
     private fun startJobVacancyFragment(vacancyId: String) {
         findNavController().navigate(
-            R.id.action_mainFragment_to_jobVacancyFragment, JobVacancyFragment.createArgs(vacancyId)
+            MainFragmentDirections.actionMainFragmentToJobVacancyFragment(vacancyId)
         )
     }
 
