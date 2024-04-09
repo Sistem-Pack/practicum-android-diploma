@@ -33,7 +33,7 @@
         android:label="fragment_job_vacancy"
         tools:layout="@layout/fragment_job_vacancy">
         <argument
-            android:name="vacanacyId"
+            android:name="vacancyId"
             android:defaultValue="@null"
             app:argType="string" />
     </fragment>
@@ -49,7 +49,7 @@
             android:id="@+id/action_mainFragment_to_jobVacancyFragment"
             app:destination="@id/jobVacancyFragment">
             <argument
-                android:name="vacanacyId"
+                android:name="vacancyId"
                 app:argType="string" />
         </action>
     </fragment>

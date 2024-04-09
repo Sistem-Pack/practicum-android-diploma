@@ -49,7 +49,7 @@ class JobVacancyFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        vacancyId = args.vacanacyId
+        vacancyId = args.vacancyId
         if (vacancyId == null) {
             findNavController().popBackStack();
         }
@@ -57,8 +57,12 @@ class JobVacancyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        //viewModel.showDetailVacancy(KEY_VACANCY)
-        //observeVacanasyDetails(it)
+        viewModel.vacancyDetails.observe(viewLifecycleOwner) {
+            observeVacancyDetails(it)
+        }
+        viewModel.checkIsFavorite.observe(viewLifecycleOwner) {
+            observerFavoriteVacancy(it)
+        }
     }
 
     override fun onDestroyView() {
@@ -75,13 +79,12 @@ class JobVacancyFragment : Fragment() {
     }
 
     private fun observerFavoriteVacancy(favoriteState: FavoriteVacancyState) {
-        when favorite
-        /*viewModel. .observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is FavoriteVacanciesIdState.SuccessfulRequest -> showDetails(it.vacancyId)
-                is FavoriteVacanciesIdState.FailedRequest -> showErrorMessage()
+        when(favoriteState) {
+            is FavoriteVacancyState.SuccessfulRequest -> {
+                showVacancyDetails(favoriteState.vacancy)
             }
-        }*/
+            is FavoriteVacancyState.FailedRequest -> showErrorMessage()
+        }
     }
 
     private fun showVacancyDetails(vacancyDetails: VacancyDetails?) {
@@ -101,13 +104,6 @@ class JobVacancyFragment : Fragment() {
             binding?.ivFavorites?.visibility = View.INVISIBLE
             binding?.ivFavorites?.visibility = View.INVISIBLE
             binding?.pbVacancy?.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showNoInternet() {
-        binding.apply {
-            binding?.group?.visibility = View.INVISIBLE
-            binding?.tvNoInternetPlaceholderVacancy?.visibility = View.VISIBLE
         }
     }
 
@@ -132,10 +128,10 @@ class JobVacancyFragment : Fragment() {
                 binding?.tvContactPhone?.visibility = View.GONE
             }
         //у нас в модели отсутствует поле комментария к вакансии!! Потерялось, надо добавить
-            if (vacancyId.contactsComment.isEmpty()) {
+            /*if (vacancyId.contactsComment.isEmpty()) {
                 binding?.tvCommentValue?.visibility = View.GONE
                 binding?.tvComment?.visibility = View.GONE
-            }
+            }*/
             if (vacancyId.contactsName.isEmpty() &&
                 vacancyId.contactsEmail.isEmpty() &&
                 vacancyId.contactsPhones.isEmpty()
@@ -157,15 +153,6 @@ class JobVacancyFragment : Fragment() {
         binding?.ivFavorites?.setOnClickListener {
             viewModel.clickToFavorite(vacancyId)
         }
-    }
-
-    companion object {
-        /*const val KEY_VACANCY = "vacancyId"
-        fun createArgs(vacancyId: String): Bundle? {
-            val bundle = Bundle()
-            bundle.putString(KEY_VACANCY, vacancyId)
-            return bundle
-        }*/
     }
 
 }

@@ -5,15 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
 import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
-import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 
 class JobVacancyViewModel(
@@ -31,6 +28,7 @@ class JobVacancyViewModel(
     val shareUrl: LiveData<String?> get() = _shareUrl
 
     fun showDetailVacancy(vacancyId: String) {
+        _vacancyDetails.postValue(VacancyDetailsResult(null, ResponseStatus.LOADING, 0))
         viewModelScope.launch(Dispatchers.IO) {
             vacancyDetailsInteractor.vacancyDetails(vacancyId).collect {
                 _vacancyDetails.postValue(it)
