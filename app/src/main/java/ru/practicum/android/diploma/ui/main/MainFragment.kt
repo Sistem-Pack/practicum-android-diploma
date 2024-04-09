@@ -59,11 +59,14 @@ class MainFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    val pos = (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos =
+                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount-1) {
-                        viewModel.installPage(true)
-                        viewModel.search()
+                    if (pos >= itemsCount - 1) {
+                        if (viewModel.scrollDebounce()) {
+                            viewModel.installPage(true)
+                            viewModel.search()
+                        }
                     }
                 }
             }
@@ -139,45 +142,60 @@ class MainFragment : Fragment() {
     }
 
     private fun hideAllView() {
-        binding!!.rvVacancyList.isVisible = false
+        //binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
+        binding!!.pbLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
-        binding!!.pbSearch.isVisible = true
+        if (viewModel.getPage() == 0) {
+            binding!!.rvVacancyList.isVisible = false
+            binding!!.pbSearch.isVisible = true
+        } else {
+            //binding!!.rvVacancyList.isVisible = true
+            binding!!.pbLoading.isVisible = true
+        }
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
-        if (listVacancies.isNotEmpty()) {
+        if (viewModel.getPage() == 0) {
+            if (listVacancies.isNotEmpty()) {
+                vacancies.addAll(listVacancies)
+                adapter.notifyDataSetChanged()
+                binding!!.chip.text =
+                    requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
+                        " " + vacanciesFound.toString() + " " +
+                        requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
+                binding!!.rvVacancyList.isVisible = true
+                binding!!.chip.isVisible = true
+            } else {
+                binding!!.chip.isVisible = true
+                binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
+                binding!!.tvFailedRequestPlaceholder.isVisible = true
+            }
+        } else {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
-            binding!!.chip.text =
-                requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
-                " " + vacanciesFound.toString() + " " +
-                requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
-            binding!!.rvVacancyList.isVisible = true
-            binding!!.chip.isVisible = true
-        } else {
-            binding!!.chip.isVisible = true
-            binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
-            binding!!.tvFailedRequestPlaceholder.isVisible = true
         }
     }
 
     private fun showDefaultStatus() {
+        binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = true
     }
 
     private fun showBadStatus() {
+        binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
     }
 
     private fun showNoConnectionStatus() {
+        binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
     }
 

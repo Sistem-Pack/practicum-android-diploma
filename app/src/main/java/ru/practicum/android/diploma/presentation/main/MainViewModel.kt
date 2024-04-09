@@ -29,6 +29,10 @@ class MainViewModel(
         job?.cancel()
     }
 
+    fun getPage(): Int {
+        return page
+    }
+
     fun changeRequestText(text: String) {
         requestText = text
     }
@@ -45,20 +49,22 @@ class MainViewModel(
         return utilities.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY_MILLIS)
     }
 
+    fun scrollDebounce(): Boolean {
+        return utilities.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY_MILLIS)
+    }
+
     fun installPage(oldRequest: Boolean) {
         if (oldRequest) {
             page++
         } else {
             page = 0
         }
-
     }
 
     fun search() {
         _listOfVacancies.postValue(MainFragmentStatus.Loading)
         sendRequest()
     }
-
 
     private fun sendRequest() {
         viewModelScope.launch {
