@@ -63,12 +63,10 @@ class MainFragment : Fragment() {
                     val pos =
                         (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount - 1) {
-                        if (viewModel.scrollDebounce()) {
-                            viewModel.installPage(true)
-                            viewModel.search()
-                            Log.d("BABAYLOV", "${vacancies.size}")
-                        }
+                    if ((pos >= itemsCount - 1) && viewModel.scrollDebounce()) {
+                        viewModel.installPage(true)
+                        viewModel.search()
+                        Log.d("BABAYLOV", "${vacancies.size}")
                     }
                 }
             }
