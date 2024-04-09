@@ -17,12 +17,14 @@ interface HHApi {
     )
     @GET("/vacancies/")
     suspend fun searchVacancies(
-        @QueryMap params: Map<String, String>
+        @QueryMap params: HashMap<String, String>
     ): VacancyResponse
 
     @GET("/vacancies?search_field=name")
     suspend fun searchVacancies(
-        @Query("text") query: String
+        @Query("text") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
     ): VacancyResponse
 
     @GET("/vacancies/{vacancy_id}")

@@ -52,7 +52,7 @@ class MainViewModel(
     private fun sendRequest() {
         viewModelScope.launch {
             vacancyInteractor
-                .searchVacancy(requestText)
+                .searchVacancy(requestText, 0)
                 .collect { result ->
                     _foundVacancies.postValue(result)
                 }
