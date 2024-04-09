@@ -148,12 +148,16 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        //binding!!.chip.isVisible = false
+        binding!!.pbLoading.isVisible = false
+        binding!!.vBackGroundForPBLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
         if (viewModel.getPage() == 0) {
             binding!!.pbSearch.isVisible = true
+        } else {
+            binding!!.pbLoading.isVisible = true
+            binding!!.vBackGroundForPBLoading.isVisible = true
         }
 
     }
