@@ -123,19 +123,6 @@
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/chip" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/chip"
-        style="@style/ChipMessage"
-        android:text="@string/no_vacancy"
-        android:visibility="gone"
-        app:chipBackgroundColor="@color/blue"
-        app:chipCornerRadius="@dimen/corner_radius_12"
-        app:chipStrokeColor="@color/blue"
-        app:rippleColor="@color/blue"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@id/etSearch" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVacancyList"
         android:layout_width="@dimen/zero_space"
@@ -163,6 +150,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip"
+        style="@style/ChipMessage"
+        android:text="@string/no_vacancy"
+        android:visibility="gone"
+        app:chipBackgroundColor="@color/blue"
+        app:chipCornerRadius="@dimen/corner_radius_12"
+        app:chipStrokeColor="@color/blue"
+        app:rippleColor="@color/blue"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
