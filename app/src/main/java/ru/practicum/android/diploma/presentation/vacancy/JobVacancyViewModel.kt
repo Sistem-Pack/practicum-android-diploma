@@ -55,12 +55,12 @@ class JobVacancyViewModel(
     }
     fun sendMail(email: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            sharingInteractor.shareLink(email)
+            sharingInteractor.sendEmail(email)
         }
     }
     fun makeCall(phoneNumber: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            sharingInteractor.shareLink(phoneNumber)
+            sharingInteractor.makeACall(phoneNumber)
         }
     }
 
