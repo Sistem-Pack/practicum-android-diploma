@@ -84,8 +84,9 @@ class FavoritesViewModel(
                 } else {
                     if (allVacanciesList.isEmpty()) {
                         favoritesScreenStateLiveData.value = FavoritesScreenState.FailedRequest("")
+                    } else {
+                        favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
                     }
-                    favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
                 }
                 favoriteVacanciesIsLoading = false
             }
