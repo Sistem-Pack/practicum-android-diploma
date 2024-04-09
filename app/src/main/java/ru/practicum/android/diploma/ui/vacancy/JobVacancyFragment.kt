@@ -121,8 +121,8 @@ class JobVacancyFragment : Fragment() {
                 Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
             )
             if (vacancyDetails?.keySkills?.isEmpty() == true) {
-                tvKeySkills.visibility = View.INVISIBLE
-                tvKeySkillsDescription.visibility = View.INVISIBLE
+                tvKeySkills.visibility = View.GONE
+                tvKeySkillsDescription.visibility = View.GONE
             } else {
                 tvKeySkills.visibility = View.VISIBLE
                 binding?.tvKeySkillsDescription?.text = getKeySkills(vacancyDetails?.keySkills)
@@ -135,9 +135,9 @@ class JobVacancyFragment : Fragment() {
                 binding?.ContactBox?.visibility = View.GONE
             }
             showLogo(vacancyDetails?.artworkUrl)
-            tvServerErrorVacancyPlaceholder.visibility = View.INVISIBLE
-            tvNoInternetPlaceholderVacancy.visibility = View.INVISIBLE
-            pbVacancy.visibility = View.INVISIBLE
+            tvServerErrorVacancyPlaceholder.visibility = View.GONE
+            tvNoInternetPlaceholderVacancy.visibility = View.GONE
+            pbVacancy.visibility = View.GONE
         }
     }
 
@@ -154,23 +154,23 @@ class JobVacancyFragment : Fragment() {
 
     private fun showProgress() {
         binding?.apply {
-            group.visibility = View.INVISIBLE
-            ivFavorites.visibility = View.INVISIBLE
-            ivShare.visibility = View.INVISIBLE
+            group.visibility = View.GONE
+            ivFavorites.visibility = View.GONE
+            ivShare.visibility = View.GONE
             pbVacancy.visibility = View.VISIBLE
         }
     }
 
     private fun showErrorMessage() {
         binding?.apply {
-            group.visibility = View.INVISIBLE
+            group.visibility = View.GONE
             tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
         }
     }
 
     private fun showNoInternetConnection() {
         binding?.apply {
-            group.visibility = View.INVISIBLE
+            group.visibility = View.GONE
             tvNoInternetPlaceholderVacancy.visibility = View.VISIBLE
         }
     }
