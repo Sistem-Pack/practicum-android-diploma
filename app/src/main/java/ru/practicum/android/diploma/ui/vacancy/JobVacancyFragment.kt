@@ -103,6 +103,7 @@ class JobVacancyFragment : Fragment() {
 
     private fun showVacancyDetails(vacancyDetails: VacancyDetails?) {
         binding?.apply {
+            clearAllPlaceholders()
             group.visibility = View.VISIBLE
             ivFavorites.visibility = View.VISIBLE
             ivShare.visibility = View.VISIBLE
@@ -135,6 +136,11 @@ class JobVacancyFragment : Fragment() {
                 binding?.ContactBox?.visibility = View.GONE
             }
             showLogo(vacancyDetails?.artworkUrl)
+        }
+    }
+
+    private fun clearAllPlaceholders() {
+        binding?.apply {
             tvServerErrorVacancyPlaceholder.visibility = View.GONE
             tvNoInternetPlaceholderVacancy.visibility = View.GONE
             pbVacancy.visibility = View.GONE
