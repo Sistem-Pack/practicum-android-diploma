@@ -213,20 +213,26 @@ class JobVacancyFragment : Fragment() {
                 tvCommentValue.visibility = View.GONE
                 tvComment.visibility = View.GONE
             } else {
-                val phones = vacancyDetails?.contactsPhones?.split(";")?.get(0)
-                val phone = phones?.split("^")?.get(0)
-                val comment = phones?.split("^")?.get(1)?.replace("comment=", "")
-                tvContactPhone.visibility = View.VISIBLE
-                tvContactPhoneValue.visibility = View.VISIBLE
-                tvContactPhoneValue.text = phone
-                if (comment!!.isNotEmpty()) {
-                    tvComment.visibility = View.VISIBLE
-                    tvCommentValue.visibility = View.VISIBLE
-                    tvCommentValue.text = comment
-                } else {
-                    tvComment.visibility = View.GONE
-                    tvCommentValue.visibility = View.GONE
-                }
+                showPhonesAndComments(vacancyDetails)
+            }
+        }
+    }
+
+    private fun showPhonesAndComments(vacancyDetails: VacancyDetails?) {
+        val phones = vacancyDetails?.contactsPhones?.split(";")?.get(0)
+        val phone = phones?.split("^")?.get(0)
+        val comment = phones?.split("^")?.get(1)?.replace("comment=", "")
+        binding?.apply {
+            tvContactPhone.visibility = View.VISIBLE
+            tvContactPhoneValue.visibility = View.VISIBLE
+            tvContactPhoneValue.text = phone
+            if (comment!!.isNotEmpty()) {
+                tvComment.visibility = View.VISIBLE
+                tvCommentValue.visibility = View.VISIBLE
+                tvCommentValue.text = comment
+            } else {
+                tvComment.visibility = View.GONE
+                tvCommentValue.visibility = View.GONE
             }
         }
     }
