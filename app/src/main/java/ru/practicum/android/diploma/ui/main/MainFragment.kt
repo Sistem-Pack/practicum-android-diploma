@@ -60,9 +60,10 @@ class MainFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    val pos = (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos =
+                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
                         if (viewModel.scrollDebounce()) {
                             viewModel.installPage(true)
                             viewModel.search()
@@ -87,7 +88,6 @@ class MainFragment : Fragment() {
     }
 
     private fun startJobVacancyFragment(vacancyId: String) {
-
     }
 
     private fun startSearch() {
@@ -169,8 +169,8 @@ class MainFragment : Fragment() {
                 adapter.notifyDataSetChanged()
                 binding!!.chip.text =
                     requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
-                        " " + vacanciesFound.toString() + " " +
-                        requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
+                    " " + vacanciesFound.toString() + " " +
+                    requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
                 binding!!.rvVacancyList.isVisible = true
                 binding!!.chip.isVisible = true
             } else {
