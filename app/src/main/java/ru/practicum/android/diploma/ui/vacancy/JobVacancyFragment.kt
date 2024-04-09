@@ -127,8 +127,7 @@ class JobVacancyFragment : Fragment() {
                 tvKeySkills.visibility = View.VISIBLE
                 binding?.tvKeySkillsDescription?.text = getKeySkills(vacancyDetails?.keySkills)
             }
-            if (vacancyDetails?.contactsEmail != "null" &&
-                vacancyDetails?.contactsName != "null" &&
+            if (vacancyDetails?.contactsEmail != "null" && vacancyDetails?.contactsName != "null" &&
                 vacancyDetails?.contactsPhones != ""
             ) {
                 showContacts(vacancyDetails)
