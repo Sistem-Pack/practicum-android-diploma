@@ -7,10 +7,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractor
+import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 
-class JobVacancyViewModel(private val favoriteVacancyInteractor: FavoriteVacanciesInteractor) : ViewModel() {
+class JobVacancyViewModel(
+    private val favoriteVacancyInteractor: FavoriteVacanciesInteractor,
+    private val vacancyDetailsInteractor: VacancyDetailsInteractor,
+) : ViewModel() {
 
     private val _liveData = MutableLiveData<String>()
     val liveData: LiveData<String> = _liveData
@@ -21,20 +25,19 @@ class JobVacancyViewModel(private val favoriteVacancyInteractor: FavoriteVacanci
     fun showDetailVacancy(vacancyid: String) {
         viewModelScope.launch {
 
-            }
         }
     }
 
     fun clickToFavorite(vacancy: VacancyDetails) {
         viewModelScope.launch(Dispatchers.IO) {
             //isFavourite =
-            }
-
         }
+
+    }
 
     fun checkFavorite(vacancyId: VacancyDetails) {
         viewModelScope.launch(Dispatchers.IO) {
             //isFavourite =
         }
     }
-
+}
