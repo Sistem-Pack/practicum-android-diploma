@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.ui.main
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,13 +60,13 @@ class MainFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    val pos =
-                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos = (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount - 1) {
+                    if (pos >= itemsCount-1) {
                         if (viewModel.scrollDebounce()) {
                             viewModel.installPage(true)
                             viewModel.search()
+                            Log.d("BABAYLOV", "${vacancies.size}")
                         }
                     }
                 }
@@ -142,24 +143,19 @@ class MainFragment : Fragment() {
     }
 
     private fun hideAllView() {
-        //binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
-        binding!!.pbLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
         if (viewModel.getPage() == 0) {
-            binding!!.rvVacancyList.isVisible = false
             binding!!.pbSearch.isVisible = true
-        } else {
-            //binding!!.rvVacancyList.isVisible = true
-            binding!!.pbLoading.isVisible = true
         }
+
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
