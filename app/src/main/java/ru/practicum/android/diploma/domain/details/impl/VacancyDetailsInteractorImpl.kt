@@ -9,7 +9,7 @@ class VacancyDetailsInteractorImpl(
     private val repository: VacancyDetailsRepository
 ) : VacancyDetailsInteractor {
 
-    override fun vacancyDetails(expression: String): Flow<VacancyDetailsResult> {
-        return repository.detailsVacancy(expression)
+    override fun vacancyDetails(id: String): Flow<VacancyDetailsResult> {
+        return repository.detailsVacancy(id)
     }
 }

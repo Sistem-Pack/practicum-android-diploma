@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
 
 class JobVacancyViewModel(
-    private val favoriteVacancyInteractor: FavoriteVacanciesInteractor,
+    private val favoriteVacanciesInteractor: FavoriteVacanciesInteractor,
     private val vacancyDetailsInteractor: VacancyDetailsInteractor,
 ) : ViewModel() {
 
@@ -22,9 +22,6 @@ class JobVacancyViewModel(
 
     private val _checkIsFavorite: MutableLiveData<FavoriteVacancyState> = MutableLiveData<FavoriteVacancyState>()
     val checkIsFavorite: LiveData<FavoriteVacancyState> = _checkIsFavorite
-
-    private val _shareUrl = MutableLiveData<String?>()
-    val shareUrl: LiveData<String?> get() = _shareUrl
 
     fun showDetailVacancy(vacancyId: String) {
         _vacancyDetails.postValue(VacancyDetailsResult(null, ResponseStatus.LOADING, 0))
@@ -37,13 +34,13 @@ class JobVacancyViewModel(
 
     fun clickToFavorite() {
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteVacancyInteractor.insertFavoriteVacancy(vacancyDetails.value?.results!!)
+            favoriteVacanciesInteractor.insertFavoriteVacancy(vacancyDetails.value?.results!!)
         }
     }
 
     fun checkFavorite(vacancyId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteVacancyInteractor.getFavoriteVacancy(vacancyId).collect {
+            favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect {
                 _checkIsFavorite.postValue(it)
             }
         }
@@ -51,7 +48,7 @@ class JobVacancyViewModel(
 
     fun shareURL(vacancyId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-
+            TODO("Not yet implemented")
         }
     }
 

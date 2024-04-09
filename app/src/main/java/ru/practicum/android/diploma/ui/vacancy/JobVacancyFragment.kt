@@ -2,13 +2,17 @@ package ru.practicum.android.diploma.ui.vacancy
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentJobVacancyBinding
 import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -50,7 +54,7 @@ class JobVacancyFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         vacancyId = args.vacancyId
-        if (vacancyId == null) {
+        if (vacancyId!!.isEmpty()) {
             findNavController().popBackStack()
         }
     }
@@ -74,12 +78,13 @@ class JobVacancyFragment : Fragment() {
         when (vacancyDetails.responseStatus) {
             ResponseStatus.OK -> showVacancyDetails(vacancyDetails.results)
             ResponseStatus.LOADING -> showProgress()
+            ResponseStatus.NO_CONNECTION -> showNoInternetConnection()
             else -> viewModel.checkFavorite(vacancyId!!)
         }
     }
 
     private fun observerFavoriteVacancy(favoriteState: FavoriteVacancyState) {
-        when(favoriteState) {
+        when (favoriteState) {
             is FavoriteVacancyState.SuccessfulRequest -> {
                 showVacancyDetails(favoriteState.vacancy)
             }
@@ -88,65 +93,117 @@ class JobVacancyFragment : Fragment() {
     }
 
     private fun showVacancyDetails(vacancyDetails: VacancyDetails?) {
-        binding.apply {
-            binding?.group?.visibility = View.VISIBLE
-            binding?.ivFavorites?.visibility = View.VISIBLE
-            binding?.ivFavorites?.visibility = View.VISIBLE
-            binding?.pbVacancy?.visibility = View.INVISIBLE
-            binding?.tvServerErrorVacancyPlaceholder?.visibility = View.INVISIBLE
-            binding?.tvNoInternetPlaceholderVacancy?.visibility = View.INVISIBLE
+        binding?.apply {
+            group.visibility = View.VISIBLE
+            ivFavorites.visibility = View.VISIBLE
+            ivShare.visibility = View.VISIBLE
+            tvVacancyName.text = vacancyDetails?.vacancyName
+            tvSalary.text = vacancyDetails?.salary
+            tvCompanyName.text = vacancyDetails?.employer
+            if (vacancyDetails?.areaId == "null") {
+                tvCity.text = vacancyDetails.areaRegion
+            } else {
+                tvCity.text = vacancyDetails?.areaId
+            }
+            tvExperienceField.text = vacancyDetails?.experienceName
+            tvTypeOfEmployment.text = vacancyDetails?.employmentType
+            tvResponsibilitiesValue.text = Html.fromHtml(
+                vacancyDetails?.description,
+                Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM
+            )
+            if (vacancyDetails?.keySkills?.isEmpty() == true) {
+                tvKeySkills.visibility = View.INVISIBLE
+                tvKeySkillsDescription.visibility = View.INVISIBLE
+            } else {
+                tvKeySkills.visibility = View.VISIBLE
+                binding?.tvKeySkillsDescription?.text = getKeySkills(vacancyDetails?.keySkills)
+            }
+            Glide.with(ivLogoPlug)
+                .load(vacancyDetails?.artworkUrl)
+                .placeholder(R.drawable.logo_plug)
+                .centerCrop()
+                .transform(RoundedCorners(ivLogoPlug.resources.getDimensionPixelSize(R.dimen.three_space)))
+                .into(ivLogoPlug)
+            if (vacancyDetails?.contactsEmail != "null" &&
+                vacancyDetails?.contactsName != "null" &&
+                vacancyDetails?.contactsPhones != ""
+            ) {
+                showContacts(vacancyDetails)
+            } else {
+                binding?.ContactBox?.visibility = View.GONE
+            }
+            tvServerErrorVacancyPlaceholder.visibility = View.INVISIBLE
+            tvNoInternetPlaceholderVacancy.visibility = View.INVISIBLE
+            pbVacancy.visibility = View.INVISIBLE
         }
     }
 
     private fun showProgress() {
-        binding.apply {
-            binding?.group?.visibility = View.INVISIBLE
-            binding?.ivFavorites?.visibility = View.INVISIBLE
-            binding?.ivFavorites?.visibility = View.INVISIBLE
-            binding?.pbVacancy?.visibility = View.VISIBLE
+        binding?.apply {
+            group.visibility = View.INVISIBLE
+            ivFavorites.visibility = View.INVISIBLE
+            ivShare.visibility = View.INVISIBLE
+            pbVacancy.visibility = View.VISIBLE
         }
     }
 
     private fun showErrorMessage() {
-        binding.apply {
-            binding?.group?.visibility = View.INVISIBLE
-            binding?.tvServerErrorVacancyPlaceholder?.visibility = View.VISIBLE
+        binding?.apply {
+            group.visibility = View.INVISIBLE
+            tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
         }
     }
 
-    private fun hideContactsIfEmpty(vacancyId: VacancyDetails) {
-            if (vacancyId.contactsName.isEmpty()) {
-                binding?.tvContactPersonValue?.visibility = View.GONE
-                binding?.tvContactPerson?.visibility = View.GONE
-            }
-            if (vacancyId.contactsEmail.isEmpty()) {
-                binding?.tvContactEmailValue?.visibility = View.GONE
-                binding?.tvContactEmail?.visibility = View.GONE
-            }
-            if (vacancyId.contactsPhones.isEmpty()) {
-                binding?.tvContactPhoneValue?.visibility = View.GONE
-                binding?.tvContactPhone?.visibility = View.GONE
-            }
-        //у нас в модели отсутствует поле комментария к вакансии!! Потерялось, надо добавить
-            /*if (vacancyId.contactsComment.isEmpty()) {
-                binding?.tvCommentValue?.visibility = View.GONE
-                binding?.tvComment?.visibility = View.GONE
-            }*/
-            if (vacancyId.contactsName.isEmpty() &&
-                vacancyId.contactsEmail.isEmpty() &&
-                vacancyId.contactsPhones.isEmpty()
-            ) {
-                binding?.ContactBox?.visibility = View.GONE
-            }
+    private fun showNoInternetConnection() {
+        binding?.apply {
+            group.visibility = View.INVISIBLE
+            tvNoInternetPlaceholderVacancy.visibility = View.VISIBLE
+        }
     }
 
-    private fun showKeySkills(vacancyId: VacancyDetails) {
-            if (vacancyId.keySkills.isEmpty()) {
-                binding?.tvKeySkills?.visibility = View.GONE
-                binding?.tvKeySkillsDescription?.visibility = View.GONE
+    private fun getKeySkills(keySkills: String?): String {
+        var keySkillsText = ""
+        if (keySkills != null) {
+            keySkillsText = "  \u2022   " + keySkills.substring(0, keySkills.length - 1).replace(";", "\n  \u2022   ")
+        }
+        return keySkillsText
+    }
+
+    private fun showContacts(vacancyDetails: VacancyDetails?) {
+        binding?.apply {
+            if (vacancyDetails?.contactsName == "null") {
+                tvContactPerson.visibility = View.GONE
+                tvContactPersonValue.visibility = View.GONE
             } else {
-                binding?.tvKeySkillsDescription?.text = vacancyId.keySkills
+                tvContactPerson.visibility = View.VISIBLE
+                tvContactPersonValue.visibility = View.VISIBLE
+                tvContactPersonValue.text = vacancyDetails?.contactsName
             }
+            if (vacancyDetails?.contactsEmail == "null") {
+                tvContactEmail.visibility = View.GONE
+                tvContactEmailValue.visibility = View.GONE
+            } else {
+                tvContactEmail.visibility = View.VISIBLE
+                tvContactEmailValue.visibility = View.VISIBLE
+                tvContactEmailValue.text = vacancyDetails?.contactsEmail
+            }
+            if (vacancyDetails?.contactsPhones == "") {
+                tvContactPhone.visibility = View.GONE
+                tvContactPhoneValue.visibility = View.GONE
+                tvCommentValue.visibility = View.GONE
+                tvComment.visibility = View.GONE
+            } else {
+                val phones = vacancyDetails?.contactsPhones?.split(";")?.get(0)
+                val phone = phones?.split("^")?.get(0)
+                val comment = phones?.split("^")?.get(1)?.replace("comment=", "")
+                tvContactPhone.visibility = View.VISIBLE
+                tvContactPhoneValue.visibility = View.VISIBLE
+                tvContactPhoneValue.text = phone
+                tvComment.visibility = View.VISIBLE
+                tvCommentValue.visibility = View.VISIBLE
+                tvCommentValue.text = comment
+            }
+        }
     }
 
 }

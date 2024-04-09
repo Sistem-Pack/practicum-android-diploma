@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.data.details.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.data.dto.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.dto.vacancy.KeySkillsDto
 import ru.practicum.android.diploma.data.dto.vacancy.PhonesDto
@@ -47,28 +46,28 @@ class VacancyDetailsRepositoryImpl(
         }
     }
 
-    private fun formatToVacancyDetails(vacancyDetailsDto: VacancyDetailsResponse): VacancyDetails {
+    private fun formatToVacancyDetails(vacancyDetailsResponse: VacancyDetailsResponse): VacancyDetails {
         return VacancyDetails(
-            vacancyId = vacancyDetailsDto.id,
-            vacancyName = vacancyDetailsDto.name.toString(),
-            employer = vacancyDetailsDto.employer?.name.toString(),
-            industry = vacancyDetailsDto.industry?.name.toString(),
-            country = vacancyDetailsDto.country?.name.toString(),
-            areaId = vacancyDetailsDto.area?.id.toString(),
-            areaRegion = vacancyDetailsDto.area?.name.toString(),
-            contactsEmail = vacancyDetailsDto.contacts?.email.toString(),
-            contactsName = vacancyDetailsDto.contacts?.name.toString(),
-            contactsPhones = phonesMap(vacancyDetailsDto.contacts?.phones),
-            description = vacancyDetailsDto.description.toString(),
-            employmentType = vacancyDetailsDto.employment?.name.toString(),
-            experienceName = vacancyDetailsDto.experience?.name.toString(),
+            vacancyId = vacancyDetailsResponse.id,
+            vacancyName = vacancyDetailsResponse.name.toString(),
+            employer = vacancyDetailsResponse.employer?.name.toString(),
+            industry = vacancyDetailsResponse.industry?.name.toString(),
+            country = vacancyDetailsResponse.country?.name.toString(),
+            areaId = vacancyDetailsResponse.address?.full.toString(),
+            areaRegion = vacancyDetailsResponse.area?.name.toString(),
+            contactsEmail = vacancyDetailsResponse.contacts?.email.toString(),
+            contactsName = vacancyDetailsResponse.contacts?.name.toString(),
+            contactsPhones = phonesMap(vacancyDetailsResponse.contacts?.phones),
+            description = vacancyDetailsResponse.description.toString(),
+            employmentType = vacancyDetailsResponse.employment?.name.toString(),
+            experienceName = vacancyDetailsResponse.experience?.name.toString(),
             salary = utils.getSalaryInfo(
-                vacancyDetailsDto.salary?.currency ?: "",
-                (vacancyDetailsDto.salary?.from ?: "").toString(),
-                (vacancyDetailsDto.salary?.to ?: "").toString()
+                vacancyDetailsResponse.salary?.currency ?: "",
+                (vacancyDetailsResponse.salary?.from ?: "").toString(),
+                (vacancyDetailsResponse.salary?.to ?: "").toString()
             ),
-            keySkills = keySkillMap(vacancyDetailsDto.keySkills),
-            artworkUrl = vacancyDetailsDto.employer?.logoUrls?.smallLogoUrl90 ?: ""
+            keySkills = keySkillMap(vacancyDetailsResponse.keySkills),
+            artworkUrl = vacancyDetailsResponse.employer?.logoUrls?.smallLogoUrl90 ?: ""
         )
     }
 
@@ -76,7 +75,7 @@ class VacancyDetailsRepositoryImpl(
         var phonesList = ""
         if (phones != null) {
             for (i in phones) {
-                phonesList += "+${i.country}${i.city}${i.number}\n"
+                phonesList += "+${i.country}${i.city}${i.number}^comment=${i.comment};"
             }
         }
         return phonesList
@@ -86,7 +85,7 @@ class VacancyDetailsRepositoryImpl(
         var keySkillsToString = ""
         if (keySkills != null) {
             for (i in keySkills) {
-                keySkillsToString += "+${i}\n"
+                keySkillsToString += "${i.name};"
             }
         }
         return keySkillsToString

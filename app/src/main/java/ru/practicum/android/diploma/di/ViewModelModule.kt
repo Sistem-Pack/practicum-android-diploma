@@ -17,7 +17,8 @@ val viewModelModule = module {
     }
 
     viewModel {
-        JobVacancyViewModel(vacancyDetailsInteractor = get(), favoriteVacanciesInteractor = get())
+        JobVacancyViewModel(favoriteVacanciesInteractor = get(),
+            vacancyDetailsInteractor = get())
     }
 
 }
