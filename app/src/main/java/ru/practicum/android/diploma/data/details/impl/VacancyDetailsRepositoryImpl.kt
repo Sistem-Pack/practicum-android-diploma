@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsDto
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsResponse
+import ru.practicum.android.diploma.data.dto.vacancy.KeySkillsDto
 import ru.practicum.android.diploma.data.dto.vacancy.PhonesDto
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.details.VacancyDetailsRepository
@@ -21,8 +22,10 @@ class VacancyDetailsRepositoryImpl(
         val response = networkClient.doVacancyDetailsSearch(id)
         when (response.resultResponse) {
             ResponseStatus.OK -> {
-                val responseVacancy: VacancyDetails =
-                    formatToVacancyDetails((response as VacancyDetailsResponse).vacancy)
+                val responseVacancy: VacancyDetails
+                   (response as VacancyDetailsResponse).let {
+                       responseVacancy = formatToVacancyDetails(it)
+                   }
                 emit(
                     VacancyDetailsResult(responseVacancy, ResponseStatus.OK, response.resultCode)
                 )
@@ -44,7 +47,7 @@ class VacancyDetailsRepositoryImpl(
         }
     }
 
-    private fun formatToVacancyDetails(vacancyDetailsDto: VacancyDetailsDto): VacancyDetails {
+    private fun formatToVacancyDetails(vacancyDetailsDto: VacancyDetailsResponse): VacancyDetails {
         return VacancyDetails(
             vacancyId = vacancyDetailsDto.id,
             vacancyName = vacancyDetailsDto.name.toString(),
@@ -64,7 +67,7 @@ class VacancyDetailsRepositoryImpl(
                 (vacancyDetailsDto.salary?.from ?: "").toString(),
                 (vacancyDetailsDto.salary?.to ?: "").toString()
             ),
-            keySkills = vacancyDetailsDto.keySkills?.name.toString(),
+            keySkills = keySkillMap(vacancyDetailsDto.keySkills),
             artworkUrl = vacancyDetailsDto.employer?.logoUrls?.smallLogoUrl90 ?: ""
         )
     }
@@ -77,6 +80,16 @@ class VacancyDetailsRepositoryImpl(
             }
         }
         return phonesList
+    }
+
+    private fun keySkillMap(keySkills: List<KeySkillsDto>?): String {
+        var keySkillsToString = ""
+        if (keySkills != null) {
+            for (i in keySkills) {
+                keySkillsToString += "+${i}\n"
+            }
+        }
+        return keySkillsToString
     }
 
 }
