@@ -75,7 +75,7 @@ class VacancyDetailsRepositoryImpl(
         var phonesList = ""
         if (phones != null) {
             for (i in phones) {
-                phonesList += "+${i.country}${i.city}${i.number}^comment=${i.comment};"
+                phonesList += "+${i.country}${i.city}${i.number}^comment=${i.comment.toString().replace("null", "")};"
             }
         }
         return phonesList

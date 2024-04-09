@@ -43,11 +43,11 @@ class JobVacancyFragment : Fragment() {
         binding?.ivShare?.setOnClickListener {
             viewModel.shareURL(vacancyId!!)
         }
-        binding?.tvContactEmail?.setOnClickListener {
-            viewModel.sendMail(binding?.tvContactEmail?.text.toString())
+        binding?.tvContactEmailValue?.setOnClickListener {
+            viewModel.sendMail(binding?.tvContactEmailValue?.text.toString())
         }
-        binding?.tvContactPhone?.setOnClickListener {
-            viewModel.makeCall(binding?.tvContactPhone?.text.toString())
+        binding?.tvContactPhoneValue?.setOnClickListener {
+            viewModel.makeCall(binding?.tvContactPhoneValue?.text.toString())
         }
         viewModel.vacancyDetails.observe(viewLifecycleOwner) {
             observeVacancyDetails(it)
@@ -213,9 +213,14 @@ class JobVacancyFragment : Fragment() {
                 tvContactPhone.visibility = View.VISIBLE
                 tvContactPhoneValue.visibility = View.VISIBLE
                 tvContactPhoneValue.text = phone
-                tvComment.visibility = View.VISIBLE
-                tvCommentValue.visibility = View.VISIBLE
-                tvCommentValue.text = comment
+                if (comment!!.isNotEmpty()) {
+                    tvComment.visibility = View.VISIBLE
+                    tvCommentValue.visibility = View.VISIBLE
+                    tvCommentValue.text = comment
+                } else {
+                    tvComment.visibility = View.GONE
+                    tvCommentValue.visibility = View.GONE
+                }
             }
         }
     }
