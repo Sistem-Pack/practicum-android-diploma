@@ -127,12 +127,6 @@ class JobVacancyFragment : Fragment() {
                 tvKeySkills.visibility = View.VISIBLE
                 binding?.tvKeySkillsDescription?.text = getKeySkills(vacancyDetails?.keySkills)
             }
-            Glide.with(ivLogoPlug)
-                .load(vacancyDetails?.artworkUrl)
-                .placeholder(R.drawable.logo_plug)
-                .centerCrop()
-                .transform(RoundedCorners(ivLogoPlug.resources.getDimensionPixelSize(R.dimen.three_space)))
-                .into(ivLogoPlug)
             if (vacancyDetails?.contactsEmail != "null" &&
                 vacancyDetails?.contactsName != "null" &&
                 vacancyDetails?.contactsPhones != ""
@@ -141,9 +135,21 @@ class JobVacancyFragment : Fragment() {
             } else {
                 binding?.ContactBox?.visibility = View.GONE
             }
+            showLogo(vacancyDetails?.artworkUrl)
             tvServerErrorVacancyPlaceholder.visibility = View.INVISIBLE
             tvNoInternetPlaceholderVacancy.visibility = View.INVISIBLE
             pbVacancy.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showLogo(artWorkUrl: String?) {
+        binding?.apply {
+            Glide.with(ivLogoPlug)
+                .load(artWorkUrl)
+                .placeholder(R.drawable.logo_plug)
+                .centerCrop()
+                .transform(RoundedCorners(ivLogoPlug.resources.getDimensionPixelSize(R.dimen.three_space)))
+                .into(ivLogoPlug)
         }
     }
 
