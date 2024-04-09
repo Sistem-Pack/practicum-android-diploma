@@ -18,7 +18,6 @@ import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
-import ru.practicum.android.diploma.ui.vacancy.JobVacancyFragment
 
 class MainFragment : Fragment() {
 

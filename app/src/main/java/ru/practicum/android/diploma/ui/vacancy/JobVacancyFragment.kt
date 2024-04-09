@@ -1,44 +1,64 @@
 package ru.practicum.android.diploma.ui.vacancy
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentJobVacancyBinding
-import ru.practicum.android.diploma.domain.db.FavoriteVacanciesIdState
+import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
+import ru.practicum.android.diploma.domain.models.ResponseStatus
+import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
 import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 import ru.practicum.android.diploma.presentation.vacancy.JobVacancyViewModel
 
 class JobVacancyFragment : Fragment() {
 
     private var binding: FragmentJobVacancyBinding? = null
-
     private val viewModel by viewModel<JobVacancyViewModel>()
+    private var vacancyId: String? = null
+    private val args: JobVacancyFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentJobVacancyBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.showDetailVacancy(KEY_VACANCY)
-        observeViewModel()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //viewModel.showDetailVacancy(KEY_VACANCY)
-        //binding?.group?.visibility = View.GONE
-        //observeViewModel()
         binding?.ivBack?.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding?.ivFavorites?.setOnClickListener {
+            //viewModel.clickToFavorite(vacancyId)
+        }
+
+        viewModel.vacancyDetails.observe(viewLifecycleOwner) {
+            observeVacancyDetails(it)
+        }
+
+        viewModel.checkIsFavorite.observe(viewLifecycleOwner) {
+            observerFavoriteVacancy(it)
+        }
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        vacancyId = args.vacanacyId
+        if (vacancyId == null) {
+            findNavController().popBackStack();
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //viewModel.showDetailVacancy(KEY_VACANCY)
+        //observeVacanasyDetails(it)
     }
 
     override fun onDestroyView() {
@@ -46,13 +66,48 @@ class JobVacancyFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun observeVacancyDetails(vacancyDetails: VacancyDetailsResult) {
+        when (vacancyDetails.responseStatus) {
+            ResponseStatus.OK -> showVacancyDetails(vacancyDetails.results)
+            ResponseStatus.LOADING -> showProgress()
+            else -> viewModel.checkFavorite(vacancyId!!)
+        }
+    }
 
-    private fun observeViewModel() {
-        viewModel. .observe(viewLifecycleOwner) { state ->
+    private fun observerFavoriteVacancy(favoriteState: FavoriteVacancyState) {
+        when favorite
+        /*viewModel. .observe(viewLifecycleOwner) { state ->
             when (state) {
                 is FavoriteVacanciesIdState.SuccessfulRequest -> showDetails(it.vacancyId)
                 is FavoriteVacanciesIdState.FailedRequest -> showErrorMessage()
             }
+        }*/
+    }
+
+    private fun showVacancyDetails(vacancyDetails: VacancyDetails?) {
+        binding.apply {
+            binding?.group?.visibility = View.VISIBLE
+            binding?.ivFavorites?.visibility = View.VISIBLE
+            binding?.ivFavorites?.visibility = View.VISIBLE
+            binding?.pbVacancy?.visibility = View.INVISIBLE
+            binding?.tvServerErrorVacancyPlaceholder?.visibility = View.INVISIBLE
+            binding?.tvNoInternetPlaceholderVacancy?.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showProgress() {
+        binding.apply {
+            binding?.group?.visibility = View.INVISIBLE
+            binding?.ivFavorites?.visibility = View.INVISIBLE
+            binding?.ivFavorites?.visibility = View.INVISIBLE
+            binding?.pbVacancy?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showNoInternet() {
+        binding.apply {
+            binding?.group?.visibility = View.INVISIBLE
+            binding?.tvNoInternetPlaceholderVacancy?.visibility = View.VISIBLE
         }
     }
 
@@ -62,7 +117,6 @@ class JobVacancyFragment : Fragment() {
             binding?.tvServerErrorVacancyPlaceholder?.visibility = View.VISIBLE
         }
     }
-
 
     private fun hideContactsIfEmpty(vacancyId: VacancyDetails) {
             if (vacancyId.contactsName.isEmpty()) {
@@ -106,12 +160,12 @@ class JobVacancyFragment : Fragment() {
     }
 
     companion object {
-        const val KEY_VACANCY = "vacancyId"
+        /*const val KEY_VACANCY = "vacancyId"
         fun createArgs(vacancyId: String): Bundle? {
             val bundle = Bundle()
             bundle.putString(KEY_VACANCY, vacancyId)
             return bundle
-        }
+        }*/
     }
 
 }
