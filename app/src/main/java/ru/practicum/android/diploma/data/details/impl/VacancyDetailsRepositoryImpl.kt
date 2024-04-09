@@ -22,9 +22,9 @@ class VacancyDetailsRepositoryImpl(
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val responseVacancy: VacancyDetails
-                   (response as VacancyDetailsResponse).let {
-                       responseVacancy = formatToVacancyDetails(it)
-                   }
+                (response as VacancyDetailsResponse).let {
+                    responseVacancy = formatToVacancyDetails(it)
+                }
                 emit(
                     VacancyDetailsResult(responseVacancy, ResponseStatus.OK, response.resultCode)
                 )
