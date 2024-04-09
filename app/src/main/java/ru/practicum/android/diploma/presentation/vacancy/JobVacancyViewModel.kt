@@ -11,10 +11,12 @@ import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
 import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
+import ru.practicum.android.diploma.domain.sharing.SharingInteractor
 
 class JobVacancyViewModel(
     private val favoriteVacanciesInteractor: FavoriteVacanciesInteractor,
     private val vacancyDetailsInteractor: VacancyDetailsInteractor,
+    private val sharingInteractor: SharingInteractor,
 ) : ViewModel() {
 
     private val _vacancyDetails: MutableLiveData<VacancyDetailsResult> = MutableLiveData<VacancyDetailsResult>()
@@ -48,7 +50,17 @@ class JobVacancyViewModel(
 
     fun shareURL(vacancyId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            TODO("Not yet implemented")
+            sharingInteractor.shareLink(vacancyId)
+        }
+    }
+    fun sendMail(email: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            sharingInteractor.shareLink(email)
+        }
+    }
+    fun makeCall(phoneNumber: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            sharingInteractor.shareLink(phoneNumber)
         }
     }
 

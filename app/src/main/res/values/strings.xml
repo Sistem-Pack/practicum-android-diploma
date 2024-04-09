@@ -64,6 +64,6 @@
     <string name="responsibilities_value">•  Разрабатывать новую функциональность приложения\n•  Помогать с интеграцией нашего SDK в другие приложения\n•  Проектировать большие новые модули\n•  Писать UI- и unit-тесты\n•  Следить за работоспособностью сервиса и устранять технический долг</string>
     <string name="requirements_value">•  100% Kotlin\n•  WebRTC\n•  CI по модели Trunk Based Development</string>
     <string name="conditions_value">•  сильная команда, с которой можно расти\n•  возможность влиять на процесс и результат\n•  расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
-
+    <string name="url">https://hh.kz/vacancy/</string>
 
 </resources>

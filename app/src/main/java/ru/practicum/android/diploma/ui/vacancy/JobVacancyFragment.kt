@@ -40,7 +40,15 @@ class JobVacancyFragment : Fragment() {
         binding?.ivFavorites?.setOnClickListener {
             viewModel.clickToFavorite()
         }
-
+        binding?.ivShare?.setOnClickListener {
+            viewModel.shareURL(vacancyId!!)
+        }
+        binding?.tvContactEmail?.setOnClickListener {
+            viewModel.sendMail(binding?.tvContactEmail?.text.toString())
+        }
+        binding?.tvContactPhone?.setOnClickListener {
+            viewModel.makeCall(binding?.tvContactPhone?.text.toString())
+        }
         viewModel.vacancyDetails.observe(viewLifecycleOwner) {
             observeVacancyDetails(it)
         }
@@ -88,6 +96,7 @@ class JobVacancyFragment : Fragment() {
             is FavoriteVacancyState.SuccessfulRequest -> {
                 showVacancyDetails(favoriteState.vacancy)
             }
+
             is FavoriteVacancyState.FailedRequest -> showErrorMessage()
         }
     }
