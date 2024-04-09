@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
 import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
-import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 
 class JobVacancyViewModel(
     private val favoriteVacancyInteractor: FavoriteVacanciesInteractor,
@@ -36,9 +35,9 @@ class JobVacancyViewModel(
         }
     }
 
-    fun clickToFavorite(vacancy: VacancyDetails) {
+    fun clickToFavorite() {
         viewModelScope.launch(Dispatchers.IO) {
-            favoriteVacancyInteractor.insertFavoriteVacancy(vacancy)
+            favoriteVacancyInteractor.insertFavoriteVacancy(vacancyDetails.value?.results!!)
         }
     }
 

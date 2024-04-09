@@ -23,7 +23,7 @@ class JobVacancyFragment : Fragment() {
     private var vacancyId: String? = null
     private val args: JobVacancyFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentJobVacancyBinding.inflate(inflater, container, false)
         return binding!!.root
     }
@@ -34,7 +34,7 @@ class JobVacancyFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding?.ivFavorites?.setOnClickListener {
-            //viewModel.clickToFavorite(vacancyId)
+            viewModel.clickToFavorite()
         }
 
         viewModel.vacancyDetails.observe(viewLifecycleOwner) {
@@ -44,14 +44,14 @@ class JobVacancyFragment : Fragment() {
         viewModel.checkIsFavorite.observe(viewLifecycleOwner) {
             observerFavoriteVacancy(it)
         }
-
+        viewModel.showDetailVacancy(vacancyId!!)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         vacancyId = args.vacancyId
         if (vacancyId == null) {
-            findNavController().popBackStack();
+            findNavController().popBackStack()
         }
     }
 
@@ -147,12 +147,6 @@ class JobVacancyFragment : Fragment() {
             } else {
                 binding?.tvKeySkillsDescription?.text = vacancyId.keySkills
             }
-    }
-
-    private fun favoriteClickInit(vacancyId: VacancyDetails) {
-        binding?.ivFavorites?.setOnClickListener {
-            viewModel.clickToFavorite(vacancyId)
-        }
     }
 
 }
