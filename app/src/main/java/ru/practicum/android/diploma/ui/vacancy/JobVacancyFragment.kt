@@ -59,7 +59,7 @@ class JobVacancyFragment : Fragment() {
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
-                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
+                    Log.e(ERROR_TAG, "ошибка: ${it.error}")
                 }
             }
         }
@@ -84,7 +84,7 @@ class JobVacancyFragment : Fragment() {
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
-                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
+                    Log.e(ERROR_TAG, "ошибка: ${it.error}")
                 }
             }
         }
@@ -227,6 +227,10 @@ class JobVacancyFragment : Fragment() {
                 tvCommentValue.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        private const val ERROR_TAG = "VacancyDetailsFragmentError"
     }
 
 }

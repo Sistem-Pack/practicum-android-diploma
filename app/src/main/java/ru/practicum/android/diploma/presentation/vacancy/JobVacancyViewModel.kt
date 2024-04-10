@@ -80,7 +80,7 @@ class JobVacancyViewModel(
         favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
             when (it) {
                 is FavoriteVacanciesIdState.FailedRequest ->
-                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
+                    Log.e(ERROR_TAG, "ошибка: ${it.error}")
                 is FavoriteVacanciesIdState.SuccessfulRequest -> isFavorite =
                     it.vacanciesIdArrayList.contains(vacancyId)
             }
@@ -103,13 +103,13 @@ class JobVacancyViewModel(
                         checkNeedfulDeletingFromFavorites(vacancyId)
                         jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
                     } else {
-                        Log.e("VacancyDetailsError", "Ошибка сервера. Пробуем загрузить вакансию из БД.")
+                        Log.e(ERROR_TAG, "Ошибка сервера. Пробуем загрузить вакансию из БД.")
                         getFavoriteVacancyFromDataBase(vacancyId)
                     }
                 }
 
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e("VacancyDetailsError", "Нет связи. Пробуем загрузить вакансию из БД.")
+                    Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
                     getFavoriteVacancyFromDataBase(vacancyId)
                 }
 
@@ -123,7 +123,7 @@ class JobVacancyViewModel(
     private suspend fun checkNeedfulDeletingFromFavorites(vacancyId: String) {
         if (isFavorite) {
             favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyId)
-            Log.e("VacancyDetailsError", "Удалена неактуальная вакансия")
+            Log.e(ERROR_TAG, "Удалена неактуальная вакансия")
         }
     }
 
@@ -175,6 +175,7 @@ class JobVacancyViewModel(
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val ABSENCE_CODE = 404
+        private const val ERROR_TAG = "VacancyDetailsError"
     }
 
 }
