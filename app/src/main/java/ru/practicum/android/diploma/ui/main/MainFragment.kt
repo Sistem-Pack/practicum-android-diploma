@@ -9,14 +9,15 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
-import ru.practicum.android.diploma.domain.models.ResponseStatus
-import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
+import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
@@ -50,15 +51,36 @@ class MainFragment : Fragment() {
             breakSearch()
         }
 
-        viewModel.foundVacancies.observe(viewLifecycleOwner) {
+        viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
+
+        binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos =
+                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
+                        viewModel.installPage(true)
+                        viewModel.search()
+                    }
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {
         binding = null
         viewModel.onDestroy()
         super.onDestroyView()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onDestroyView()
+        super.onViewStateRestored(savedInstanceState)
     }
 
     private fun hideKeyboard() {
@@ -74,13 +96,9 @@ class MainFragment : Fragment() {
     }
 
     private fun startSearch() {
-        changeViewsVisibility(true)
+        viewModel.installPage(false)
         viewModel.changeRequestText(binding!!.etSearch.text.toString())
         viewModel.searchDebounce()
-    }
-
-    private fun changeViewsVisibility(action: Boolean) {
-        binding!!.ivSearchPlaceholder.isVisible = !action
     }
 
     private fun createTextWatcher() {
@@ -88,82 +106,101 @@ class MainFragment : Fragment() {
             editTextValue = binding!!.etSearch.text.toString()
             if (editTextValue.isEmpty()) {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_search)
-                changeViewsVisibility(false)
+                hideAllView()
                 breakSearch()
             } else {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
-                startSearch()
+                binding!!.ivSearchPlaceholder.isVisible = false
+                if (editTextValue != viewModel.getRequestText()) {
+                    startSearch()
+                } else {
+                    binding!!.rvVacancyList.isVisible = true
+                    binding!!.chip.text = madeTextForChip()
+                    binding!!.chip.isVisible = true
+                }
             }
         }
     }
 
-    private fun processingSearchStatus(vacancySearchResult: VacancySearchResult) {
+    private fun processingSearchStatus(mainFragmentStatus: MainFragmentStatus) {
         vacancies.clear()
         hideAllView()
         hideKeyboard()
-        when (vacancySearchResult.responseStatus) {
-            ResponseStatus.OK -> {
-                showOkStatus(vacancySearchResult.results, vacancySearchResult.found)
+        when (mainFragmentStatus) {
+            is MainFragmentStatus.ListOfVacancies -> {
+                showOkStatus(mainFragmentStatus.vacancies)
             }
 
-            ResponseStatus.LOADING -> {
+            is MainFragmentStatus.Loading -> {
                 showLoadingStatus()
             }
 
-            ResponseStatus.DEFAULT -> {
+            is MainFragmentStatus.Default -> {
                 showDefaultStatus()
             }
 
-            ResponseStatus.BAD -> {
+            is MainFragmentStatus.Bad -> {
                 showBadStatus()
             }
 
-            ResponseStatus.NO_CONNECTION -> {
+            is MainFragmentStatus.NoConnection -> {
                 showNoConnectionStatus()
             }
         }
     }
 
     private fun hideAllView() {
-        binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        binding!!.chip.isVisible = false
+        binding!!.pbLoading.isVisible = false
+        binding!!.vBackGroundForPBLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
-        binding!!.pbSearch.isVisible = true
+        if (viewModel.getPage() == 0) {
+            binding!!.pbSearch.isVisible = true
+        } else {
+            binding!!.pbLoading.isVisible = true
+            binding!!.vBackGroundForPBLoading.isVisible = true
+        }
     }
 
-    private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
-        if (listVacancies.isNotEmpty()) {
+    private fun showOkStatus(listVacancies: List<Vacancy>) {
+        if (viewModel.getPage() == 0) {
+            if (listVacancies.isNotEmpty()) {
+                vacancies.addAll(listVacancies)
+                adapter.notifyDataSetChanged()
+                binding!!.chip.text = madeTextForChip()
+                binding!!.rvVacancyList.isVisible = true
+                binding!!.chip.isVisible = true
+            } else {
+                binding!!.chip.isVisible = true
+                binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
+                binding!!.rvVacancyList.isVisible = false
+                binding!!.tvFailedRequestPlaceholder.isVisible = true
+            }
+        } else {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
-            binding!!.chip.text =
-                requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
-                " " + vacanciesFound.toString() + " " +
-                requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
-            binding!!.rvVacancyList.isVisible = true
-            binding!!.chip.isVisible = true
-        } else {
-            binding!!.chip.isVisible = true
-            binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
-            binding!!.tvFailedRequestPlaceholder.isVisible = true
         }
     }
 
     private fun showDefaultStatus() {
+        binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = true
     }
 
     private fun showBadStatus() {
+        binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
     }
 
     private fun showNoConnectionStatus() {
+        binding!!.chip.isVisible = false
+        binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
     }
 
@@ -173,5 +210,11 @@ class MainFragment : Fragment() {
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
+    }
+
+    private fun madeTextForChip(): String {
+        return requireContext().resources.getQuantityString(R.plurals.found, viewModel.getFoundVacancies()) +
+            " " + viewModel.getFoundVacancies().toString() + " " +
+            requireContext().resources.getQuantityString(R.plurals.vacancy, viewModel.getFoundVacancies())
     }
 }
