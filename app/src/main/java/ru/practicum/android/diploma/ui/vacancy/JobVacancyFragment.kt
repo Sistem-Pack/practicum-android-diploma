@@ -171,6 +171,8 @@ class JobVacancyFragment : Fragment() {
     private fun showErrorMessage() {
         binding?.apply {
             group.visibility = View.GONE
+            pbVacancy.visibility = View.GONE
+            tvNoInternetPlaceholderVacancy.visibility = View.GONE
             tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
         }
     }

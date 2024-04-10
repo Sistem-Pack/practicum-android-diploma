@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
@@ -39,11 +40,11 @@ class RetrofitNetworkClient(
         }
     }
 
-    override suspend fun doVacancyDetailsSearch(id: String): Response {
+    override suspend fun doVacancyDetailsSearch(request: VacancyDetailsRequest): Response {
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
-                    val response = hhApi.searchVacancyDetails(id)
+                    val response = hhApi.searchVacancyDetails(request.id)
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }

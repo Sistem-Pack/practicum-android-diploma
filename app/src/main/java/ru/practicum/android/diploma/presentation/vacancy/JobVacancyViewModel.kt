@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 import ru.practicum.android.diploma.domain.sharing.SharingInteractor
 import ru.practicum.android.diploma.ui.vacancy.JobVacancyScreenState
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 import java.util.Calendar
 
 class JobVacancyViewModel(
@@ -50,7 +51,12 @@ class JobVacancyViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
             checkIsFavorite(vacancyId)
-            loadVacancy(vacancyId)
+            try {
+                loadVacancy(vacancyId)
+            } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
+                jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
+            }
         }
     }
 
@@ -109,7 +115,7 @@ class JobVacancyViewModel(
                 }
 
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e("AAA", "Нет связи. Пробуем загрузить вакансию из БД.")
+                    Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
                     if (isFavorite) {
                         getFavoriteVacancyFromDataBase(vacancyId)
                     } else {

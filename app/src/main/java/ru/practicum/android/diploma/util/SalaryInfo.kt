@@ -17,6 +17,7 @@ class SalaryInfo(private val context: Context) {
         "UZS" to " so’m", // Узбекский сум (UZS)
         "GEL" to " ₾", // Грузинский лари (GEL)
         "KGT" to " с", // Киргизский сом (KGT)
+        "KGS" to " с", // Киргизский сом (KGS)
         "" to "",
         "null" to ""
     )
