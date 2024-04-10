@@ -133,7 +133,8 @@ class JobVacancyViewModel(
                     jobVacancyScreenStateLiveData.postValue(
                         JobVacancyScreenState.VacancyUploaded(
                             updateVacancy(
-                                favoriteVacancyState.vacancy, favoriteVacancyState.vacancy.vacancyIdInDatabase
+                                favoriteVacancyState.vacancy,
+                                favoriteVacancyState.vacancy.vacancyIdInDatabase
                             )
                         )
                     )
