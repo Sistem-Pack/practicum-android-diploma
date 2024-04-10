@@ -18,5 +18,7 @@ data class AddressDto(
     val description: String?,
     @SerializedName("metro_stations")
     val metro: List<MetroStationsDto>?,
-    val street: String?
+    val street: String?,
+    @SerializedName("raw")
+    val full: String?
 )

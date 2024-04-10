@@ -27,6 +27,10 @@ interface HHApi {
         @Query("per_page") perPage: Int
     ): VacancyResponse
 
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: DiplomPracticumWithHH"
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun searchVacancyDetails(@Path("vacancy_id") id: String): VacancyDetailsResponse
 

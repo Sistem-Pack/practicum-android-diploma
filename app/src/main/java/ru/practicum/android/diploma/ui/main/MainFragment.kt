@@ -12,6 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
@@ -85,6 +86,9 @@ class MainFragment : Fragment() {
     }
 
     private fun startJobVacancyFragment(vacancyId: String) {
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToJobVacancyFragment(vacancyId)
+        )
     }
 
     private fun startSearch() {
