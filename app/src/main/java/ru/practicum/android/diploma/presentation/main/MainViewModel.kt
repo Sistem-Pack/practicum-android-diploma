@@ -37,11 +37,10 @@ class MainViewModel(
         return page
     }
 
-
     fun getMaxPages(): Int {
         return maxPages
     }
-    
+
     fun getFoundVacancies(): Int {
         return foundVacancies
     }

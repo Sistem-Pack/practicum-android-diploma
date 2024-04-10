@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.main.vacancy
 
 import android.view.View
-import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView

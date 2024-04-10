@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
     private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
-    private lateinit var concatAdapter: ConcatAdapter
+    private val concatAdapter: ConcatAdapter = ConcatAdapter(EmptyItemAdapter(), adapter)
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -48,9 +48,6 @@ class MainFragment : Fragment() {
                 startJobVacancyFragment(vacancy.vacancyId)
             }
         }
-        val emptyItemAdapter = EmptyItemAdapter()
-
-        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter)
 
         binding!!.rvVacancyList.adapter = concatAdapter
         binding!!.ivSearch.setOnClickListener {
