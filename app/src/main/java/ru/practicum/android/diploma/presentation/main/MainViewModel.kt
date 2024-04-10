@@ -34,6 +34,7 @@ class MainViewModel(
     fun getPage(): Int {
         return page
     }
+
     fun getFoundVacancies(): Int {
         return foundVacancies
     }
@@ -77,44 +78,48 @@ class MainViewModel(
 
     private fun sendRequest() {
         viewModelScope.launch {
-            vacancyInteractor
-                .searchVacancy(requestText, page)
-                .collect { result ->
-                    when (result.responseStatus) {
-                        ResponseStatus.OK -> {
-                            if (page == 0) {
-                                list.clear()
-                                list.addAll(result.results)
-                                foundVacancies = result.found
-                                _listOfVacancies.postValue(
-                                    MainFragmentStatus.ListOfVacancies(
-                                        result.results
+            try {
+                vacancyInteractor
+                    .searchVacancy(requestText, page)
+                    .collect { result ->
+                        when (result.responseStatus) {
+                            ResponseStatus.OK -> {
+                                if (page == 0) {
+                                    list.clear()
+                                    list.addAll(result.results)
+                                    foundVacancies = result.found
+                                    _listOfVacancies.postValue(
+                                        MainFragmentStatus.ListOfVacancies(
+                                            result.results
+                                        )
                                     )
-                                )
-                                maxPages = result.pages
-                            } else {
-                                list.addAll(result.results)
-                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+                                    maxPages = result.pages
+                                } else {
+                                    list.addAll(result.results)
+                                    _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+                                }
+                            }
+
+                            ResponseStatus.BAD -> {
+                                list.clear()
+                                _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                            }
+
+                            ResponseStatus.DEFAULT -> {
+                                _listOfVacancies.postValue(MainFragmentStatus.Default)
+                            }
+
+                            ResponseStatus.NO_CONNECTION -> {
+                                _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                            }
+
+                            else -> {
                             }
                         }
-
-                        ResponseStatus.BAD -> {
-                            list.clear()
-                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
-                        }
-
-                        ResponseStatus.DEFAULT -> {
-                            _listOfVacancies.postValue(MainFragmentStatus.Default)
-                        }
-
-                        ResponseStatus.NO_CONNECTION -> {
-                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
-                        }
-
-                        else -> {
-                        }
                     }
-                }
+            } catch (e: Exception) {
+                _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+            }
         }
     }
 

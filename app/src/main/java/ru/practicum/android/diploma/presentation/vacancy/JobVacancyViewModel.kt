@@ -50,7 +50,11 @@ class JobVacancyViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
             checkIsFavorite(vacancyId)
-            loadVacancy(vacancyId)
+            try {
+                loadVacancy(vacancyId)
+            } catch (e: Exception) {
+                jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
+            }
         }
     }
 
@@ -109,7 +113,7 @@ class JobVacancyViewModel(
                 }
 
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e("AAA", "Нет связи. Пробуем загрузить вакансию из БД.")
+                    Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
                     if (isFavorite) {
                         getFavoriteVacancyFromDataBase(vacancyId)
                     } else {
