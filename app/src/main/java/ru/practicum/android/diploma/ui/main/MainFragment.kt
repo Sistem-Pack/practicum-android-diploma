@@ -11,6 +11,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -18,14 +19,19 @@ import ru.practicum.android.diploma.databinding.FragmentMainBinding
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
+import ru.practicum.android.diploma.ui.main.vacancy.EmptyItemAdapter
+import ru.practicum.android.diploma.ui.main.vacancy.LoadingItemAdapter
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
 
     private var binding: FragmentMainBinding? = null
     private var editTextValue = ""
+    private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
+    private val loadingItemAdapter = LoadingItemAdapter(pbLoadingVisible)
+    private lateinit var concatAdapter: ConcatAdapter
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -43,8 +49,11 @@ class MainFragment : Fragment() {
                 startJobVacancyFragment(vacancy.vacancyId)
             }
         }
+        val emptyItemAdapter = EmptyItemAdapter()
 
-        binding!!.rvVacancyList.adapter = adapter
+        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
+
+        binding!!.rvVacancyList.adapter = concatAdapter
         binding!!.ivSearch.setOnClickListener {
             binding!!.etSearch.setText("")
             hideAllView()
@@ -123,7 +132,7 @@ class MainFragment : Fragment() {
     }
 
     private fun processingSearchStatus(mainFragmentStatus: MainFragmentStatus) {
-        vacancies.clear()
+        //vacancies.clear()
         hideAllView()
         hideKeyboard()
         when (mainFragmentStatus) {
@@ -160,19 +169,23 @@ class MainFragment : Fragment() {
     }
 
     private fun showLoadingStatus() {
-        if (viewModel.getPage() == 0) {
+        if (viewModel.getCurrentPage() == 0) {
             binding!!.pbSearch.isVisible = true
         } else {
-            binding!!.pbLoading.isVisible = true
-            binding!!.vBackGroundForPBLoading.isVisible = true
+            //binding!!.pbLoading.isVisible = true
+            //binding!!.vBackGroundForPBLoading.isVisible = true
         }
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>) {
-        if (viewModel.getPage() == 0) {
+        vacancies.clear()
+        pbLoadingVisible = viewModel.getCurrentPage() != viewModel.getMaxPages()
+        loadingItemAdapter.notifyDataSetChanged()
+        if (viewModel.getCurrentPage() == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
+                //concatAdapter.notifyDataSetChanged()
                 binding!!.chip.text = madeTextForChip()
                 binding!!.rvVacancyList.isVisible = true
                 binding!!.chip.isVisible = true
@@ -185,20 +198,24 @@ class MainFragment : Fragment() {
         } else {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
+            //concatAdapter.notifyDataSetChanged()
         }
     }
 
     private fun showDefaultStatus() {
+        vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.ivSearchPlaceholder.isVisible = true
     }
 
     private fun showBadStatus() {
+        vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
     }
 
     private fun showNoConnectionStatus() {
+        vacancies.clear()
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
@@ -206,6 +223,7 @@ class MainFragment : Fragment() {
 
     private fun breakSearch() {
         viewModel.onDestroy()
+        vacancies.clear()
         binding!!.ivSearchPlaceholder.isVisible = true
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false

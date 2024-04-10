@@ -22,7 +22,7 @@ class MainViewModel(
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
     private var page: Int = 0
-    private var maxPages = 0
+    private var maxPages: Int = 0
 
     private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
     val listOfVacancies: LiveData<MainFragmentStatus> = _listOfVacancies
@@ -31,9 +31,14 @@ class MainViewModel(
         job?.cancel()
     }
 
-    fun getPage(): Int {
+    fun getCurrentPage(): Int {
         return page
     }
+
+    fun getMaxPages(): Int {
+        return maxPages
+    }
+    
     fun getFoundVacancies(): Int {
         return foundVacancies
     }

@@ -155,7 +155,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/four_space"
         android:indeterminateTint="@color/blue"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder" />

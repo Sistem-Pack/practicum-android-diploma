@@ -28,6 +28,7 @@ staticAnalysis-detektTwitterComposeRules = { module = "com.twitter.compose.rules
 # AndroidX
 androidX-core = "androidx.core:core-ktx:1.12.0"
 androidX-appCompat = "androidx.appcompat:appcompat:1.6.1"
+androidX-recyclerview = "androidx.recyclerview:recyclerview:1.4.0-alpha01"
 
 # UI layer libraries
 ui-material = "com.google.android.material:material:1.11.0"
