@@ -54,6 +54,7 @@ class JobVacancyViewModel(
             try {
                 loadVacancy(vacancyId)
             } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
                 jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
             }
         }

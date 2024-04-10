@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -119,6 +120,7 @@ class MainViewModel(
                         }
                     }
             } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
                 _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
             }
         }
@@ -127,5 +129,6 @@ class MainViewModel(
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+        private const val ERROR_TAG = "ErrorLoadingProcess"
     }
 }
