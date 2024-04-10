@@ -72,12 +72,17 @@ class MainViewModel(
             vacancyInteractor
                 .searchVacancy(requestText, page)
                 .collect { result ->
-                    when(result.responseStatus) {
+                    when (result.responseStatus) {
                         ResponseStatus.OK -> {
                             if (page == 0) {
                                 list.clear()
                                 list.addAll(result.results)
-                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(result.results, result.found))
+                                _listOfVacancies.postValue(
+                                    MainFragmentStatus.ListOfVacancies(
+                                        result.results,
+                                        result.found
+                                    )
+                                )
                                 maxPages = result.pages
                             } else {
                                 list.addAll(result.results)
