@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.ui.main.vacancy.EmptyItemAdapter
-import ru.practicum.android.diploma.ui.main.vacancy.LoadingItemAdapter
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
@@ -30,7 +29,6 @@ class MainFragment : Fragment() {
     private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
-    private val loadingItemAdapter = LoadingItemAdapter(pbLoadingVisible)
     private lateinit var concatAdapter: ConcatAdapter
 
     private val viewModel by viewModel<MainViewModel>()
@@ -51,7 +49,7 @@ class MainFragment : Fragment() {
         }
         val emptyItemAdapter = EmptyItemAdapter()
 
-        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
+        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter)
 
         binding!!.rvVacancyList.adapter = concatAdapter
         binding!!.ivSearch.setOnClickListener {
@@ -132,7 +130,6 @@ class MainFragment : Fragment() {
     }
 
     private fun processingSearchStatus(mainFragmentStatus: MainFragmentStatus) {
-        //vacancies.clear()
         hideAllView()
         hideKeyboard()
         when (mainFragmentStatus) {
@@ -172,20 +169,18 @@ class MainFragment : Fragment() {
         if (viewModel.getCurrentPage() == 0) {
             binding!!.pbSearch.isVisible = true
         } else {
-            //binding!!.pbLoading.isVisible = true
-            //binding!!.vBackGroundForPBLoading.isVisible = true
+            binding!!.pbLoading.isVisible = true
+            binding!!.vBackGroundForPBLoading.isVisible = true
         }
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>) {
         vacancies.clear()
         pbLoadingVisible = viewModel.getCurrentPage() != viewModel.getMaxPages()
-        loadingItemAdapter.notifyDataSetChanged()
         if (viewModel.getCurrentPage() == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
-                //concatAdapter.notifyDataSetChanged()
                 binding!!.chip.text = madeTextForChip()
                 binding!!.rvVacancyList.isVisible = true
                 binding!!.chip.isVisible = true
@@ -198,7 +193,6 @@ class MainFragment : Fragment() {
         } else {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
-            //concatAdapter.notifyDataSetChanged()
         }
     }
 
