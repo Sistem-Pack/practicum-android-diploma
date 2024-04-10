@@ -110,8 +110,7 @@ class JobVacancyViewModel(
                     Log.e("VacancyDetailsError", "Нет связи. Пробуем загрузить вакансию из БД.")
                     getFavoriteVacancyFromDataBase(vacancyId)
                 }
-                ResponseStatus.LOADING ->
-                    jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
+                ResponseStatus.LOADING -> jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
                 ResponseStatus.DEFAULT -> Unit
             }
         }
