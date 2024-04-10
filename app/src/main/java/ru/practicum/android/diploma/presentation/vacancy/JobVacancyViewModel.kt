@@ -109,8 +109,12 @@ class JobVacancyViewModel(
                 }
 
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
-                    getFavoriteVacancyFromDataBase(vacancyId)
+                    Log.e("AAA", "Нет связи. Пробуем загрузить вакансию из БД.")
+                    if (isFavorite) {
+                        getFavoriteVacancyFromDataBase(vacancyId)
+                    } else {
+                        jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.NoConnection)
+                    }
                 }
 
                 ResponseStatus.LOADING ->
