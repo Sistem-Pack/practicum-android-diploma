@@ -45,6 +45,7 @@ android {
 dependencies {
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
+    implementation(libs.androidX.recyclerview)
 
     // UI layer libraries
     implementation(libs.ui.material)
