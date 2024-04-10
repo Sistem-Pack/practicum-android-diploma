@@ -37,7 +37,6 @@ class FavoritesViewModel(
 
     fun observeFavoritesScreenState(): LiveData<FavoritesScreenState> = favoritesScreenStateLiveData
 
-
     fun getFavoriteVacanciesId() {
         viewModelScope.launch {
             favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
@@ -60,43 +59,49 @@ class FavoritesViewModel(
     }
 
     fun getFavoriteVacancies() {
-        if (!favoriteVacanciesIsLoading) {
-            if (workedVacancies < vacanciesIdArrayList.size) favoritesScreenStateLiveData.value =
+        if (workedVacancies < vacanciesIdArrayList.size) {
+            favoritesScreenStateLiveData.value =
                 FavoritesScreenState.UploadingProcess
-            viewModelScope.launch(Dispatchers.IO) {
-                favoriteVacanciesIsLoading = true
-                if (workedVacancies < vacanciesIdArrayList.size) {
-                    vacanciesListsQuantity += 1
-                    nextVacanciesList.clear()
-                    var vacancyNumberInList = 1
-                    val vacanciesQuantityInNextVacanciesList =
-                        if ((vacanciesIdArrayList.size - workedVacancies) > MAX_LINES_ON_PAGE) {
-                            MAX_LINES_ON_PAGE
-                        } else {
-                            vacanciesIdArrayList.size - workedVacancies
-                        }
-                    while (vacancyNumberInList <= vacanciesQuantityInNextVacanciesList) {
-                        val vacancyId =
-                            vacanciesIdArrayList[(vacanciesListsQuantity - 1) * MAX_LINES_ON_PAGE + vacancyNumberInList - 1]
-                        getFavoriteVacancy(vacancyId)
-                        vacancyNumberInList += 1
-                    }
-                    workedVacancies += vacanciesQuantityInNextVacanciesList
-                    favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
-                } else {
-                    if (allVacanciesList.isEmpty()) {
-                        favoritesScreenStateLiveData.postValue(FavoritesScreenState.FailedRequest(""))
-                    } else {
-                        favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
-                    }
-                }
-                favoriteVacanciesIsLoading = false
-            }
+        }
+        if (!favoriteVacanciesIsLoading) {
+            loadFavoriteVacancies()
         }
     }
 
     fun clickDebounce(): Boolean {
         return utils.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY)
+    }
+
+    private fun loadFavoriteVacancies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            favoriteVacanciesIsLoading = true
+            if (workedVacancies < vacanciesIdArrayList.size) {
+                vacanciesListsQuantity += 1
+                nextVacanciesList.clear()
+                var vacancyNumberInList = 1
+                val vacanciesQuantityInNextVacanciesList = setVacanciesQuantityInNextVacanciesList()
+                while (vacancyNumberInList <= vacanciesQuantityInNextVacanciesList) {
+                    val vacancyIdPositionInList =
+                        (vacanciesListsQuantity - 1) * MAX_LINES_ON_PAGE + vacancyNumberInList - 1
+                    val vacancyId = vacanciesIdArrayList[vacancyIdPositionInList]
+                    getFavoriteVacancy(vacancyId)
+                    vacancyNumberInList += 1
+                }
+                workedVacancies += vacanciesQuantityInNextVacanciesList
+                favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
+            } else {
+                doWhenAllVacanciesUploaded()
+            }
+            favoriteVacanciesIsLoading = false
+        }
+    }
+
+    private fun setVacanciesQuantityInNextVacanciesList(): Int {
+        return if (vacanciesIdArrayList.size - workedVacancies > MAX_LINES_ON_PAGE) {
+            MAX_LINES_ON_PAGE
+        } else {
+            vacanciesIdArrayList.size - workedVacancies
+        }
     }
 
     private suspend fun getFavoriteVacancy(vacancyId: String) {
@@ -197,6 +202,15 @@ class FavoritesViewModel(
             )
         )
     }
+
+    private fun doWhenAllVacanciesUploaded() {
+        if (allVacanciesList.isEmpty()) {
+            favoritesScreenStateLiveData.postValue(FavoritesScreenState.FailedRequest(""))
+        } else {
+            favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
+        }
+    }
+
 
     companion object {
         private const val MAX_LINES_ON_PAGE = 20

@@ -56,7 +56,11 @@ class RetrofitNetworkClient(
                     Log.d("Exception", "$error")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
-                        resultCode = if (error.message.equals("HTTP 404 ")) 404 else 0
+                        resultCode = if (error.message.equals("HTTP 404 ")) {
+                            ABSENCE_CODE
+                        } else {
+                            0
+                        }
                     }
                 }
             }
@@ -65,6 +69,10 @@ class RetrofitNetworkClient(
                 resultResponse = ResponseStatus.NO_CONNECTION
             }
         }
+    }
+
+    companion object {
+        private const val ABSENCE_CODE = 404
     }
 
 }
