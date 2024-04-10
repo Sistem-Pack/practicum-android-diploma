@@ -107,6 +107,7 @@ class MainFragment : Fragment() {
             editTextValue = binding!!.etSearch.text.toString()
             if (editTextValue.isEmpty()) {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_search)
+                hideAllView()
                 breakSearch()
             } else {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
