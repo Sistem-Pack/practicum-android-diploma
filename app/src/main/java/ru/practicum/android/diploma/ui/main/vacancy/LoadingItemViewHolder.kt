@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.R
 class LoadingItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val progressBar: ProgressBar = itemView.findViewById(R.id.pbLoading)
-    fun bind(visible: Boolean){
+    fun bind(visible: Boolean) {
         progressBar.isVisible = visible
     }
 }

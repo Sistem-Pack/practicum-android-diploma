@@ -15,5 +15,7 @@ class EmptyItemAdapter : RecyclerView.Adapter<EmptyItemViewHolder>() {
         return 1
     }
 
-    override fun onBindViewHolder(holder: EmptyItemViewHolder, position: Int) {}
+    override fun onBindViewHolder(holder: EmptyItemViewHolder, position: Int) {
+        return
+    }
 }
