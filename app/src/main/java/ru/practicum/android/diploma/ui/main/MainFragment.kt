@@ -96,7 +96,6 @@ class MainFragment : Fragment() {
     }
 
     private fun startSearch() {
-        //binding!!.ivSearchPlaceholder.isVisible = true
         viewModel.installPage(false)
         viewModel.changeRequestText(binding!!.etSearch.text.toString())
         viewModel.searchDebounce()
