@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesIdState
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractor
@@ -16,7 +17,6 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 import ru.practicum.android.diploma.ui.favorites.FavoritesScreenState
 import ru.practicum.android.diploma.util.Utilities
-import java.util.Calendar
 
 class FavoritesViewModel(
     private val favoriteVacanciesInteractor: FavoriteVacanciesInteractor,
@@ -61,10 +61,11 @@ class FavoritesViewModel(
 
     fun getFavoriteVacancies() {
         if (!favoriteVacanciesIsLoading) {
-            viewModelScope.launch {
+            if (workedVacancies < vacanciesIdArrayList.size) favoritesScreenStateLiveData.value =
+                FavoritesScreenState.UploadingProcess
+            viewModelScope.launch(Dispatchers.IO) {
                 favoriteVacanciesIsLoading = true
                 if (workedVacancies < vacanciesIdArrayList.size) {
-                    favoritesScreenStateLiveData.value = FavoritesScreenState.UploadingProcess
                     vacanciesListsQuantity += 1
                     nextVacanciesList.clear()
                     var vacancyNumberInList = 1
@@ -84,7 +85,7 @@ class FavoritesViewModel(
                     favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
                 } else {
                     if (allVacanciesList.isEmpty()) {
-                        favoritesScreenStateLiveData.value = FavoritesScreenState.FailedRequest("")
+                        favoritesScreenStateLiveData.postValue(FavoritesScreenState.FailedRequest(""))
                     } else {
                         favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
                     }
@@ -201,56 +202,6 @@ class FavoritesViewModel(
         private const val MAX_LINES_ON_PAGE = 20
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val ABSENCE_CODE = 404
-    }
-
-    fun setFavoriteVacancies() {
-        viewModelScope.launch {
-            /*favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
-                if (it is FavoriteVacanciesIdState.SuccessfulRequest) {
-                    Log.e("AAA", "vacanciesIdArrayList = ${it.vacanciesIdArrayList}")
-                }
-            }*/
-            val vacanciesQuantity = 41
-            var vacancyNumber = 1
-            while (vacancyNumber <= vacanciesQuantity) {
-                val vacancy = VacancyDetails(
-                    vacancyIdInDatabase = Calendar.getInstance().time.time,
-                    vacancyId = vacancyNumber.toString(),
-                    vacancyName = vacancyNumber.toString(),
-                    employer = vacancyNumber.toString(),
-                    industry = "",
-                    country = "",
-                    areaId = "",
-                    areaRegion = vacancyNumber.toString(),
-                    contactsEmail = "",
-                    contactsName = "",
-                    contactsPhones = "",
-                    description = "",
-                    employmentType = "",
-                    experienceName = "",
-                    salary = vacancyNumber.toString(),
-                    keySkills = "",
-                    artworkUrl = "",
-                    isFavorite = true,
-                )
-                favoriteVacanciesInteractor.insertFavoriteVacancy(
-                    vacancy
-                )
-                //favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyNumber.toString())
-                vacancyNumber += 1
-            }
-
-            favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
-                if (it is FavoriteVacanciesIdState.SuccessfulRequest) {
-                    Log.e("AAA", "vacanciesIdArrayList = ${it.vacanciesIdArrayList}")
-                }
-            }
-            /*favoriteVacanciesInteractor.getFavoriteVacancy("9").collect {
-                if (it is FavoriteVacancyState.SuccessfulRequest) {
-                    Log.e("AAA", "vacancy9 = ${it.vacancy}")
-                }
-            }*/
-        }
     }
 
 }
