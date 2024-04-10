@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
@@ -41,13 +40,7 @@ class FavoritesFragment : Fragment() {
 
         viewModel.observeFavoritesScreenState().observe(viewLifecycleOwner) {
             when (it) {
-                is FavoritesScreenState.VacanciesUploaded -> {
-                    if (it.vacancies.size == 0) {
-                        viewModel.getFavoriteVacancies()
-                    } else {
-                        showVacanciesList(it.vacancies)
-                    }
-                }
+                is FavoritesScreenState.VacanciesUploaded -> showVacanciesList(it.vacancies)
 
                 is FavoritesScreenState.VacanciesIdUploaded -> {
                     if (it.vacanciesId.size == 0) {
@@ -69,21 +62,6 @@ class FavoritesFragment : Fragment() {
         binding.rvRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvRecyclerView.adapter = adapter
-
-        binding.rvRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0) {
-                    val pos =
-                        (binding.rvRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount - 1) {
-                        viewModel.getFavoriteVacancies()
-                    }
-                }
-            }
-        })
 
     }
 

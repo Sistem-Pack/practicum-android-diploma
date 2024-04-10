@@ -26,11 +26,7 @@ class FavoritesViewModel(
     ViewModel() {
 
     private val vacanciesIdArrayList = ArrayList<String>()
-    private val nextVacanciesList = ArrayList<Vacancy>()
     private val allVacanciesList = ArrayList<Vacancy>()
-    private var workedVacancies = 0
-    private var vacanciesListsQuantity = 0
-    private var favoriteVacanciesIsLoading = false
 
     private val favoritesScreenStateLiveData =
         MutableLiveData<FavoritesScreenState>()
@@ -38,7 +34,7 @@ class FavoritesViewModel(
     fun observeFavoritesScreenState(): LiveData<FavoritesScreenState> = favoritesScreenStateLiveData
 
     fun getFavoriteVacanciesId() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
                 when (it) {
                     is FavoriteVacanciesIdState.FailedRequest -> favoritesScreenStateLiveData.postValue(
@@ -59,12 +55,16 @@ class FavoritesViewModel(
     }
 
     fun getFavoriteVacancies() {
-        if (workedVacancies < vacanciesIdArrayList.size) {
-            favoritesScreenStateLiveData.value =
-                FavoritesScreenState.UploadingProcess
-        }
-        if (!favoriteVacanciesIsLoading) {
-            loadFavoriteVacancies()
+        allVacanciesList.clear()
+        viewModelScope.launch(Dispatchers.IO) {
+            favoritesScreenStateLiveData.postValue(FavoritesScreenState.UploadingProcess)
+            var vacancyNumberInList = 1
+            while (vacancyNumberInList <= vacanciesIdArrayList.size) {
+                val vacancyId = vacanciesIdArrayList[vacancyNumberInList - 1]
+                getFavoriteVacancy(vacancyId)
+                vacancyNumberInList += 1
+            }
+            doWhenAllVacanciesUploaded()
         }
     }
 
@@ -72,41 +72,8 @@ class FavoritesViewModel(
         return utils.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY)
     }
 
-    private fun loadFavoriteVacancies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            favoriteVacanciesIsLoading = true
-            if (workedVacancies < vacanciesIdArrayList.size) {
-                vacanciesListsQuantity += 1
-                nextVacanciesList.clear()
-                var vacancyNumberInList = 1
-                val vacanciesQuantityInNextVacanciesList = setVacanciesQuantityInNextVacanciesList()
-                while (vacancyNumberInList <= vacanciesQuantityInNextVacanciesList) {
-                    val vacancyIdPositionInList =
-                        (vacanciesListsQuantity - 1) * MAX_LINES_ON_PAGE + vacancyNumberInList - 1
-                    val vacancyId = vacanciesIdArrayList[vacancyIdPositionInList]
-                    getFavoriteVacancy(vacancyId)
-                    vacancyNumberInList += 1
-                }
-                workedVacancies += vacanciesQuantityInNextVacanciesList
-                favoritesScreenStateLiveData.postValue(FavoritesScreenState.VacanciesUploaded(allVacanciesList))
-            } else {
-                doWhenAllVacanciesUploaded()
-            }
-            favoriteVacanciesIsLoading = false
-        }
-    }
-
-    private fun setVacanciesQuantityInNextVacanciesList(): Int {
-        return if (vacanciesIdArrayList.size - workedVacancies > MAX_LINES_ON_PAGE) {
-            MAX_LINES_ON_PAGE
-        } else {
-            vacanciesIdArrayList.size - workedVacancies
-        }
-    }
-
     private suspend fun getFavoriteVacancy(vacancyId: String) {
         vacancyDetailsInteractor.vacancyDetails(vacancyId).collect { vacancyDetailsResult ->
-            Log.e("AAA", "resultServerCode = ${vacancyDetailsResult.resultServerCode}")
             when (vacancyDetailsResult.responseStatus) {
                 ResponseStatus.OK -> {
                     refreshFavoriteVacancyInDataBase(vacancyId, vacancyDetailsResult)
@@ -212,7 +179,6 @@ class FavoritesViewModel(
     }
 
     companion object {
-        private const val MAX_LINES_ON_PAGE = 20
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val ABSENCE_CODE = 404
     }

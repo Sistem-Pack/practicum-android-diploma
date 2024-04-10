@@ -24,7 +24,8 @@ val viewModelModule = module {
         JobVacancyViewModel(
             favoriteVacanciesInteractor = get(),
             vacancyDetailsInteractor = get(),
-            sharingInteractor = get()
+            sharingInteractor = get(),
+            utils = get()
         )
     }
 

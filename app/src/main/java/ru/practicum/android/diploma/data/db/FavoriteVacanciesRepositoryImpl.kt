@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.data.db
 
 import android.database.SQLException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesIdState
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesRepository
@@ -31,7 +33,7 @@ class FavoriteVacanciesRepositoryImpl(
         } catch (error: SQLException) {
             emit(FavoriteVacancyState.FailedRequest(error = "$error"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun getFavoriteVacanciesId(): Flow<FavoriteVacanciesIdState> = flow {
         try {
@@ -42,5 +44,5 @@ class FavoriteVacanciesRepositoryImpl(
         } catch (error: SQLException) {
             emit(FavoriteVacanciesIdState.FailedRequest(error = "$error"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }
