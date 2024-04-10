@@ -78,6 +78,11 @@ class MainFragment : Fragment() {
         super.onDestroyView()
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onDestroyView()
+        super.onViewStateRestored(savedInstanceState)
+    }
+
     private fun hideKeyboard() {
         val inputMethodManager =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -91,14 +96,10 @@ class MainFragment : Fragment() {
     }
 
     private fun startSearch() {
-        changeViewsVisibility(true)
+        binding!!.ivSearchPlaceholder.isVisible = true
         viewModel.installPage(false)
         viewModel.changeRequestText(binding!!.etSearch.text.toString())
         viewModel.searchDebounce()
-    }
-
-    private fun changeViewsVisibility(action: Boolean) {
-        binding!!.ivSearchPlaceholder.isVisible = !action
     }
 
     private fun createTextWatcher() {
@@ -106,11 +107,17 @@ class MainFragment : Fragment() {
             editTextValue = binding!!.etSearch.text.toString()
             if (editTextValue.isEmpty()) {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_search)
-                changeViewsVisibility(false)
+                binding!!.ivSearchPlaceholder.isVisible = false
                 breakSearch()
             } else {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
-                startSearch()
+                if (editTextValue != viewModel.getRequestText()) {
+                    startSearch()
+                } else {
+                    binding!!.rvVacancyList.isVisible = true
+                    binding!!.chip.text = madeTextForChip()
+                    binding!!.chip.isVisible = true
+                }
             }
         }
     }
@@ -121,7 +128,7 @@ class MainFragment : Fragment() {
         hideKeyboard()
         when (mainFragmentStatus) {
             is MainFragmentStatus.ListOfVacancies -> {
-                showOkStatus(mainFragmentStatus.vacancies, mainFragmentStatus.found)
+                showOkStatus(mainFragmentStatus.vacancies)
             }
 
             is MainFragmentStatus.Loading -> {
@@ -159,18 +166,14 @@ class MainFragment : Fragment() {
             binding!!.pbLoading.isVisible = true
             binding!!.vBackGroundForPBLoading.isVisible = true
         }
-
     }
 
-    private fun showOkStatus(listVacancies: List<Vacancy>, vacanciesFound: Int) {
+    private fun showOkStatus(listVacancies: List<Vacancy>) {
         if (viewModel.getPage() == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
-                binding!!.chip.text =
-                    requireContext().resources.getQuantityString(R.plurals.found, vacanciesFound) +
-                    " " + vacanciesFound.toString() + " " +
-                    requireContext().resources.getQuantityString(R.plurals.vacancy, vacanciesFound)
+                binding!!.chip.text = madeTextForChip()
                 binding!!.rvVacancyList.isVisible = true
                 binding!!.chip.isVisible = true
             } else {
@@ -207,5 +210,11 @@ class MainFragment : Fragment() {
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
+    }
+
+    private fun madeTextForChip(): String {
+        return requireContext().resources.getQuantityString(R.plurals.found, viewModel.getFoundVacancies()) +
+            " " + viewModel.getFoundVacancies().toString() + " " +
+            requireContext().resources.getQuantityString(R.plurals.vacancy, viewModel.getFoundVacancies())
     }
 }

@@ -14,12 +14,13 @@ import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
 
 class MainViewModel(
-    val vacancyInteractor: VacancyInteractor,
-    val utilities: Utilities
+    private val vacancyInteractor: VacancyInteractor,
+    private val utilities: Utilities
 ) : ViewModel() {
     private var requestText = ""
     private var job: Job? = null
     private var list = ArrayList<Vacancy>()
+    private var foundVacancies: Int = 0
     private var page: Int = 0
     private var maxPages = 0
 
@@ -33,9 +34,16 @@ class MainViewModel(
     fun getPage(): Int {
         return page
     }
+    fun getFoundVacancies(): Int {
+        return foundVacancies
+    }
 
     fun changeRequestText(text: String) {
         requestText = text
+    }
+
+    fun getRequestText(): String {
+        return requestText
     }
 
     fun searchDebounce() {
@@ -77,28 +85,32 @@ class MainViewModel(
                             if (page == 0) {
                                 list.clear()
                                 list.addAll(result.results)
+                                foundVacancies = result.found
                                 _listOfVacancies.postValue(
                                     MainFragmentStatus.ListOfVacancies(
-                                        result.results,
-                                        result.found
+                                        result.results
                                     )
                                 )
                                 maxPages = result.pages
                             } else {
                                 list.addAll(result.results)
-                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list, result.found))
+                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
                             }
                         }
+
                         ResponseStatus.BAD -> {
                             list.clear()
                             _listOfVacancies.postValue(MainFragmentStatus.Bad)
                         }
+
                         ResponseStatus.DEFAULT -> {
                             _listOfVacancies.postValue(MainFragmentStatus.Default)
                         }
+
                         ResponseStatus.NO_CONNECTION -> {
                             _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
                         }
+
                         else -> {
                         }
                     }
