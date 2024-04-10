@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
     }
 
     private fun startSearch() {
-        binding!!.ivSearchPlaceholder.isVisible = true
+        //binding!!.ivSearchPlaceholder.isVisible = true
         viewModel.installPage(false)
         viewModel.changeRequestText(binding!!.etSearch.text.toString())
         viewModel.searchDebounce()
@@ -107,10 +107,10 @@ class MainFragment : Fragment() {
             editTextValue = binding!!.etSearch.text.toString()
             if (editTextValue.isEmpty()) {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_search)
-                binding!!.ivSearchPlaceholder.isVisible = false
                 breakSearch()
             } else {
                 binding!!.ivSearch.setImageResource(R.drawable.ic_clear)
+                binding!!.ivSearchPlaceholder.isVisible = false
                 if (editTextValue != viewModel.getRequestText()) {
                     startSearch()
                 } else {
