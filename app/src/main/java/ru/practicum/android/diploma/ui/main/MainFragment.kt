@@ -66,7 +66,6 @@ class MainFragment : Fragment() {
                     if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
                         viewModel.installPage(true)
                         viewModel.search()
-                        Log.d("BABAYLOV", "${vacancies.size}")
                     }
                 }
             }
@@ -174,6 +173,7 @@ class MainFragment : Fragment() {
             } else {
                 binding!!.chip.isVisible = true
                 binding!!.chip.text = requireContext().getString(R.string.no_vacancy)
+                binding!!.rvVacancyList.isVisible = false
                 binding!!.tvFailedRequestPlaceholder.isVisible = true
             }
         } else {

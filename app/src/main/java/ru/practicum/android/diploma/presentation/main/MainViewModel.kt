@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
@@ -71,14 +72,30 @@ class MainViewModel(
             vacancyInteractor
                 .searchVacancy(requestText, page)
                 .collect { result ->
-                    if (page == 0) {
-                        list.clear()
-                        list.addAll(result.results)
-                        _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(result.results, result.found))
-                        maxPages = result.pages
-                    } else {
-                        list.addAll(result.results)
-                        _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list, result.found))
+                    when(result.responseStatus) {
+                        ResponseStatus.OK -> {
+                            if (page == 0) {
+                                list.clear()
+                                list.addAll(result.results)
+                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(result.results, result.found))
+                                maxPages = result.pages
+                            } else {
+                                list.addAll(result.results)
+                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list, result.found))
+                            }
+                        }
+                        ResponseStatus.BAD -> {
+                            list.clear()
+                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                        }
+                        ResponseStatus.DEFAULT -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.Default)
+                        }
+                        ResponseStatus.NO_CONNECTION -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                        }
+                        else -> {
+                        }
                     }
                 }
         }
