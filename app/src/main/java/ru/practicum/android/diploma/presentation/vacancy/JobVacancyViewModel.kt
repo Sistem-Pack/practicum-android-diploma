@@ -97,6 +97,7 @@ class JobVacancyViewModel(
                         )
                     )
                 }
+
                 ResponseStatus.BAD -> {
                     if (vacancyDetailsResult.resultServerCode == ABSENCE_CODE) {
                         checkNeedfulDeletingFromFavorites(vacancyId)
@@ -106,11 +107,14 @@ class JobVacancyViewModel(
                         getFavoriteVacancyFromDataBase(vacancyId)
                     }
                 }
+
                 ResponseStatus.NO_CONNECTION -> {
                     Log.e("VacancyDetailsError", "Нет связи. Пробуем загрузить вакансию из БД.")
                     getFavoriteVacancyFromDataBase(vacancyId)
                 }
-                ResponseStatus.LOADING -> jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
+
+                ResponseStatus.LOADING ->
+                    jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
                 ResponseStatus.DEFAULT -> Unit
             }
         }
