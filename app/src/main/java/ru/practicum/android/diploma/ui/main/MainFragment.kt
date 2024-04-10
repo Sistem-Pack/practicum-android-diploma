@@ -196,6 +196,7 @@ class MainFragment : Fragment() {
     }
 
     private fun showNoConnectionStatus() {
+        binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
     }
