@@ -92,17 +92,14 @@ class JobVacancyFragment : Fragment() {
                         vacancyIdInDatabase = it.vacancy.vacancyIdInDatabase,
                     )
                 }
-
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
-                    Log.e("AAA", "ошибка: ${it.error}")
+                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
                 }
             }
         }
-
         viewModel.showDetailVacancy(vacancyId!!)
-
     }
 
     override fun onAttach(context: Context) {
@@ -120,11 +117,10 @@ class JobVacancyFragment : Fragment() {
                 is JobVacancyScreenState.VacancyUploaded -> {
                     showVacancyDetails(it.vacancy)
                 }
-
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
-                    Log.e("AAA", "ошибка: ${it.error}")
+                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
                 }
             }
         }

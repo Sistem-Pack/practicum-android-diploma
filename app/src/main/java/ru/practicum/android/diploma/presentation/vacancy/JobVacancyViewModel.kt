@@ -27,9 +27,7 @@ class JobVacancyViewModel(
 
     private var isFavorite = false
 
-    private val jobVacancyScreenStateLiveData =
-        MutableLiveData<JobVacancyScreenState>()
-
+    private val jobVacancyScreenStateLiveData = MutableLiveData<JobVacancyScreenState>()
     fun observeJobVacancyScreenState(): LiveData<JobVacancyScreenState> = jobVacancyScreenStateLiveData
 
     fun clickToFavorite(vacancy: VacancyDetails) {
@@ -50,6 +48,7 @@ class JobVacancyViewModel(
 
     fun showDetailVacancy(vacancyId: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
             checkIsFavorite(vacancyId)
             loadVacancy(vacancyId)
         }
@@ -80,7 +79,7 @@ class JobVacancyViewModel(
     private suspend fun checkIsFavorite(vacancyId: String) {
         favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
             when (it) {
-                is FavoriteVacanciesIdState.FailedRequest -> Log.e("AAA", "ошибка: ${it.error}")
+                is FavoriteVacanciesIdState.FailedRequest -> Log.e("VacancyDetailsError", "ошибка: ${it.error}")
                 is FavoriteVacanciesIdState.SuccessfulRequest -> isFavorite =
                     it.vacanciesIdArrayList.contains(vacancyId)
             }
@@ -97,23 +96,20 @@ class JobVacancyViewModel(
                         )
                     )
                 }
-
                 ResponseStatus.BAD -> {
                     if (vacancyDetailsResult.resultServerCode == ABSENCE_CODE) {
                         checkNeedfulDeletingFromFavorites(vacancyId)
                         jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
                     } else {
-                        Log.e("AAA", "Ошибка сервера. Пробуем загрузить вакансию из БД.")
+                        Log.e("VacancyDetailsError", "Ошибка сервера. Пробуем загрузить вакансию из БД.")
                         getFavoriteVacancyFromDataBase(vacancyId)
                     }
                 }
-
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e("AAA", "Нет связи. Пробуем загрузить вакансию из БД.")
+                    Log.e("VacancyDetailsError", "Нет связи. Пробуем загрузить вакансию из БД.")
                     getFavoriteVacancyFromDataBase(vacancyId)
                 }
-
-                ResponseStatus.LOADING -> Unit
+                ResponseStatus.LOADING -> jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
                 ResponseStatus.DEFAULT -> Unit
             }
         }
@@ -122,7 +118,7 @@ class JobVacancyViewModel(
     private suspend fun checkNeedfulDeletingFromFavorites(vacancyId: String) {
         if (isFavorite) {
             favoriteVacanciesInteractor.deleteFavoriteVacancy(vacancyId)
-            Log.e("AAA", "Удалена неактуальная вакансия")
+            Log.e("VacancyDetailsError", "Удалена неактуальная вакансия")
         }
     }
 
