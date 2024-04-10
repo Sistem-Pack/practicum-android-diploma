@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
@@ -117,7 +118,7 @@ class MainViewModel(
                             }
                         }
                     }
-            } catch (e: Exception) {
+            } catch (e: SocketTimeoutException) {
                 _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
             }
         }

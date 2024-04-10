@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 import ru.practicum.android.diploma.domain.sharing.SharingInteractor
 import ru.practicum.android.diploma.ui.vacancy.JobVacancyScreenState
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 import java.util.Calendar
 
 class JobVacancyViewModel(
@@ -52,7 +53,7 @@ class JobVacancyViewModel(
             checkIsFavorite(vacancyId)
             try {
                 loadVacancy(vacancyId)
-            } catch (e: Exception) {
+            } catch (e: SocketTimeoutException) {
                 jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
             }
         }
