@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 class FavoriteVacancyDbConverter {
     fun map(vacancy: VacancyDetails): VacancyEntity {
         return VacancyEntity(
+            vacancyIdInDatabase = vacancy.vacancyIdInDatabase,
             vacancyId = vacancy.vacancyId,
             vacancyName = vacancy.vacancyName,
             employer = vacancy.employer,
@@ -28,6 +29,7 @@ class FavoriteVacancyDbConverter {
 
     fun map(vacancy: VacancyEntity): VacancyDetails {
         return VacancyDetails(
+            vacancyIdInDatabase = vacancy.vacancyIdInDatabase,
             vacancyId = vacancy.vacancyId,
             vacancyName = vacancy.vacancyName,
             employer = vacancy.employer,

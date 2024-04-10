@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.vacancy
 import android.content.Context
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentJobVacancyBinding
-import ru.practicum.android.diploma.domain.db.FavoriteVacancyState
-import ru.practicum.android.diploma.domain.models.ResponseStatus
-import ru.practicum.android.diploma.domain.models.VacancyDetailsResult
 import ru.practicum.android.diploma.domain.models.vacancy.VacancyDetails
 import ru.practicum.android.diploma.presentation.vacancy.JobVacancyViewModel
 
@@ -26,6 +24,7 @@ class JobVacancyFragment : Fragment() {
     private val viewModel by viewModel<JobVacancyViewModel>()
     private var vacancyId: String? = null
     private val args: JobVacancyFragmentArgs by navArgs()
+    private var vacancy: VacancyDetails? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentJobVacancyBinding.inflate(inflater, container, false)
@@ -38,7 +37,9 @@ class JobVacancyFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding?.ivFavorites?.setOnClickListener {
-            viewModel.clickToFavorite()
+            if (viewModel.clickDebounce()) {
+                viewModel.clickToFavorite(vacancy!!)
+            }
         }
         binding?.ivShare?.setOnClickListener {
             viewModel.shareURL(vacancyId!!)
@@ -49,12 +50,18 @@ class JobVacancyFragment : Fragment() {
         binding?.tvContactPhoneValue?.setOnClickListener {
             viewModel.makeCall(binding?.tvContactPhoneValue?.text.toString())
         }
-        viewModel.vacancyDetails.observe(viewLifecycleOwner) {
-            observeVacancyDetails(it)
-        }
-
-        viewModel.checkIsFavorite.observe(viewLifecycleOwner) {
-            observerFavoriteVacancy(it)
+        viewModel.observeJobVacancyScreenState().observe(viewLifecycleOwner) {
+            when (it) {
+                is JobVacancyScreenState.VacancyUploaded -> {
+                    showVacancyDetails(it.vacancy)
+                    vacancy = it.vacancy
+                }
+                is JobVacancyScreenState.UploadingProcess -> showProgress()
+                is JobVacancyScreenState.FailedRequest -> {
+                    showErrorMessage()
+                    Log.e(ERROR_TAG, "ошибка: ${it.error}")
+                }
+            }
         }
         viewModel.showDetailVacancy(vacancyId!!)
     }
@@ -69,36 +76,23 @@ class JobVacancyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.vacancyDetails.observe(viewLifecycleOwner) {
-            observeVacancyDetails(it)
-        }
-        viewModel.checkIsFavorite.observe(viewLifecycleOwner) {
-            observerFavoriteVacancy(it)
+        viewModel.observeJobVacancyScreenState().observe(viewLifecycleOwner) {
+            when (it) {
+                is JobVacancyScreenState.VacancyUploaded -> {
+                    showVacancyDetails(it.vacancy)
+                }
+                is JobVacancyScreenState.UploadingProcess -> showProgress()
+                is JobVacancyScreenState.FailedRequest -> {
+                    showErrorMessage()
+                    Log.e(ERROR_TAG, "ошибка: ${it.error}")
+                }
+            }
         }
     }
 
     override fun onDestroyView() {
         binding = null
         super.onDestroyView()
-    }
-
-    private fun observeVacancyDetails(vacancyDetails: VacancyDetailsResult) {
-        when (vacancyDetails.responseStatus) {
-            ResponseStatus.OK -> showVacancyDetails(vacancyDetails.results)
-            ResponseStatus.LOADING -> showProgress()
-            ResponseStatus.NO_CONNECTION -> showNoInternetConnection()
-            else -> viewModel.checkFavorite(vacancyId!!)
-        }
-    }
-
-    private fun observerFavoriteVacancy(favoriteState: FavoriteVacancyState) {
-        when (favoriteState) {
-            is FavoriteVacancyState.SuccessfulRequest -> {
-                showVacancyDetails(favoriteState.vacancy)
-            }
-
-            is FavoriteVacancyState.FailedRequest -> showErrorMessage()
-        }
     }
 
     private fun showVacancyDetails(vacancyDetails: VacancyDetails?) {
@@ -136,6 +130,11 @@ class JobVacancyFragment : Fragment() {
                 binding?.ContactBox?.visibility = View.GONE
             }
             showLogo(vacancyDetails?.artworkUrl)
+            if (vacancyDetails?.isFavorite == true) {
+                binding?.ivFavorites?.setImageResource(R.drawable.ic_favorites_on)
+            } else {
+                binding?.ivFavorites?.setImageResource(R.drawable.ic_favorites_off)
+            }
         }
     }
 
@@ -171,13 +170,6 @@ class JobVacancyFragment : Fragment() {
         binding?.apply {
             group.visibility = View.GONE
             tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showNoInternetConnection() {
-        binding?.apply {
-            group.visibility = View.GONE
-            tvNoInternetPlaceholderVacancy.visibility = View.VISIBLE
         }
     }
 
@@ -235,6 +227,10 @@ class JobVacancyFragment : Fragment() {
                 tvCommentValue.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        private const val ERROR_TAG = "VacancyDetailsFragmentError"
     }
 
 }

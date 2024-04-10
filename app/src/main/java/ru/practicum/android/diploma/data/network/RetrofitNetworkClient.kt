@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.network
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -42,13 +43,25 @@ class RetrofitNetworkClient(
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
-                    val responce = hhApi.searchVacancyDetails(id)
-                    responce.apply {
+                    val response = hhApi.searchVacancyDetails(id)
+                    response.apply {
                         resultResponse = ResponseStatus.OK
                     }
-                } catch (e: UnknownHostException) {
-                    Log.d("Exception", "$e")
-                    Response().apply { resultResponse = ResponseStatus.BAD }
+                } catch (error: UnknownHostException) {
+                    Log.d("Exception", "$error")
+                    Response().apply {
+                        resultResponse = ResponseStatus.BAD
+                    }
+                } catch (error: HttpException) {
+                    Log.d("Exception", "$error")
+                    Response().apply {
+                        resultResponse = ResponseStatus.BAD
+                        resultCode = if (error.message.equals("HTTP 404 ")) {
+                            ABSENCE_CODE
+                        } else {
+                            0
+                        }
+                    }
                 }
             }
         } else {
@@ -56,6 +69,10 @@ class RetrofitNetworkClient(
                 resultResponse = ResponseStatus.NO_CONNECTION
             }
         }
+    }
+
+    companion object {
+        private const val ABSENCE_CODE = 404
     }
 
 }

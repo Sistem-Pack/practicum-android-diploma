@@ -3,12 +3,13 @@ package ru.practicum.android.diploma.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Calendar
 
 @Entity(tableName = "vacancy_table")
 data class VacancyEntity(
-    @PrimaryKey @ColumnInfo(name = "vacancy_id")
-    val vacancyId: String, // ID вакансии
+    @PrimaryKey @ColumnInfo(name = "vacancy_id_in_database")
+    val vacancyIdInDatabase: Long, // ID вакансии в базе данных создается по времени добавления
+    @ColumnInfo(name = "vacancy_id")
+    val vacancyId: String, // ID вакансии на сервере
     @ColumnInfo(name = "vacancy_name")
     val vacancyName: String, // Название профессии
     @ColumnInfo(name = "employer")
@@ -41,7 +42,4 @@ data class VacancyEntity(
     val artworkUrl: String, // Изображение
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean, // В избранном
-    @ColumnInfo(name = "add_in_db")
-    val addInDataBase: Long = Calendar.getInstance().time.time // Запись внесена в БД
-
 )

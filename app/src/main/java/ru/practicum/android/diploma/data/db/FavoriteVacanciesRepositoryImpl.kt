@@ -1,8 +1,10 @@
 package ru.practicum.android.diploma.data.db
 
-import android.database.sqlite.SQLiteException
+import android.database.SQLException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesIdState
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesRepository
@@ -28,10 +30,10 @@ class FavoriteVacanciesRepositoryImpl(
             val convertedFavoriteVacancy =
                 favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
             emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
-        } catch (error: SQLiteException) {
+        } catch (error: SQLException) {
             emit(FavoriteVacancyState.FailedRequest(error = "$error"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
     override fun getFavoriteVacanciesId(): Flow<FavoriteVacanciesIdState> = flow {
         try {
@@ -39,8 +41,8 @@ class FavoriteVacanciesRepositoryImpl(
             val favoriteVacanciesIdArrayList = ArrayList<String>()
             favoriteVacanciesIdArrayList.addAll(favoriteVacanciesIdList)
             emit(FavoriteVacanciesIdState.SuccessfulRequest(vacanciesIdArrayList = favoriteVacanciesIdArrayList))
-        } catch (error: SQLiteException) {
+        } catch (error: SQLException) {
             emit(FavoriteVacanciesIdState.FailedRequest(error = "$error"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }
