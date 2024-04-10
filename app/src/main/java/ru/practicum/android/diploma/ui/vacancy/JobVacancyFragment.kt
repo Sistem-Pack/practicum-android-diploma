@@ -24,24 +24,7 @@ class JobVacancyFragment : Fragment() {
     private val viewModel by viewModel<JobVacancyViewModel>()
     private var vacancyId: String? = null
     private val args: JobVacancyFragmentArgs by navArgs()
-    private var vacancy = VacancyDetails(
-        vacancyId = "",
-        vacancyName = "",
-        employer = "",
-        industry = "",
-        country = "",
-        areaId = "",
-        areaRegion = "",
-        contactsEmail = "",
-        contactsName = "",
-        contactsPhones = "",
-        description = "",
-        employmentType = "",
-        experienceName = "",
-        salary = "",
-        keySkills = "",
-        artworkUrl = "",
-    )
+    private var vacancy: VacancyDetails? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentJobVacancyBinding.inflate(inflater, container, false)
@@ -55,7 +38,7 @@ class JobVacancyFragment : Fragment() {
         }
         binding?.ivFavorites?.setOnClickListener {
             if (viewModel.clickDebounce()) {
-                viewModel.clickToFavorite(vacancy)
+                viewModel.clickToFavorite(vacancy!!)
             }
         }
         binding?.ivShare?.setOnClickListener {
@@ -71,26 +54,7 @@ class JobVacancyFragment : Fragment() {
             when (it) {
                 is JobVacancyScreenState.VacancyUploaded -> {
                     showVacancyDetails(it.vacancy)
-                    vacancy = VacancyDetails(
-                        vacancyId = it.vacancy.vacancyId,
-                        vacancyName = it.vacancy.vacancyName,
-                        employer = it.vacancy.employer,
-                        industry = it.vacancy.industry,
-                        country = it.vacancy.country,
-                        areaId = it.vacancy.areaId,
-                        areaRegion = it.vacancy.areaRegion,
-                        contactsEmail = it.vacancy.contactsEmail,
-                        contactsName = it.vacancy.contactsName,
-                        contactsPhones = it.vacancy.contactsPhones,
-                        description = it.vacancy.description,
-                        employmentType = it.vacancy.employmentType,
-                        experienceName = it.vacancy.experienceName,
-                        salary = it.vacancy.salary,
-                        keySkills = it.vacancy.keySkills,
-                        artworkUrl = it.vacancy.artworkUrl,
-                        isFavorite = it.vacancy.isFavorite,
-                        vacancyIdInDatabase = it.vacancy.vacancyIdInDatabase,
-                    )
+                    vacancy = it.vacancy
                 }
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
                 is JobVacancyScreenState.FailedRequest -> {
