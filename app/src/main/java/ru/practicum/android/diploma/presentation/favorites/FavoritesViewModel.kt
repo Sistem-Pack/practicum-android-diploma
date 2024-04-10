@@ -211,7 +211,6 @@ class FavoritesViewModel(
         }
     }
 
-
     companion object {
         private const val MAX_LINES_ON_PAGE = 20
         private const val CLICK_DEBOUNCE_DELAY = 1000L
