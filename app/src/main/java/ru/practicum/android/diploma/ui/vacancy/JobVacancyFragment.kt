@@ -57,6 +57,7 @@ class JobVacancyFragment : Fragment() {
                     vacancy = it.vacancy
                 }
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
+                is JobVacancyScreenState.NoConnection -> showNoConnectionMessage()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
                     Log.e(ERROR_TAG, "ошибка: ${it.error}")
@@ -82,6 +83,7 @@ class JobVacancyFragment : Fragment() {
                     showVacancyDetails(it.vacancy)
                 }
                 is JobVacancyScreenState.UploadingProcess -> showProgress()
+                is JobVacancyScreenState.NoConnection -> showNoConnectionMessage()
                 is JobVacancyScreenState.FailedRequest -> {
                     showErrorMessage()
                     Log.e(ERROR_TAG, "ошибка: ${it.error}")
@@ -169,7 +171,16 @@ class JobVacancyFragment : Fragment() {
     private fun showErrorMessage() {
         binding?.apply {
             group.visibility = View.GONE
+            pbVacancy.visibility = View.GONE
+            tvNoInternetPlaceholderVacancy.visibility = View.GONE
             tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showNoConnectionMessage() {
+        binding?.apply {
+            group.visibility = View.GONE
+            tvNoInternetPlaceholderVacancy.visibility = View.VISIBLE
         }
     }
 

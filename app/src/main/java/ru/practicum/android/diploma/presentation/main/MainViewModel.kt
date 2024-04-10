@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
@@ -34,6 +36,7 @@ class MainViewModel(
     fun getCurrentPage(): Int {
         return page
     }
+
 
     fun getMaxPages(): Int {
         return maxPages
@@ -82,49 +85,55 @@ class MainViewModel(
 
     private fun sendRequest() {
         viewModelScope.launch {
-            vacancyInteractor
-                .searchVacancy(requestText, page)
-                .collect { result ->
-                    when (result.responseStatus) {
-                        ResponseStatus.OK -> {
-                            if (page == 0) {
-                                list.clear()
-                                list.addAll(result.results)
-                                foundVacancies = result.found
-                                _listOfVacancies.postValue(
-                                    MainFragmentStatus.ListOfVacancies(
-                                        result.results
+            try {
+                vacancyInteractor
+                    .searchVacancy(requestText, page)
+                    .collect { result ->
+                        when (result.responseStatus) {
+                            ResponseStatus.OK -> {
+                                if (page == 0) {
+                                    list.clear()
+                                    list.addAll(result.results)
+                                    foundVacancies = result.found
+                                    _listOfVacancies.postValue(
+                                        MainFragmentStatus.ListOfVacancies(
+                                            result.results
+                                        )
                                     )
-                                )
-                                maxPages = result.pages
-                            } else {
-                                list.addAll(result.results)
-                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+                                    maxPages = result.pages
+                                } else {
+                                    list.addAll(result.results)
+                                    _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+                                }
+                            }
+
+                            ResponseStatus.BAD -> {
+                                list.clear()
+                                _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                            }
+
+                            ResponseStatus.DEFAULT -> {
+                                _listOfVacancies.postValue(MainFragmentStatus.Default)
+                            }
+
+                            ResponseStatus.NO_CONNECTION -> {
+                                _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                            }
+
+                            else -> {
                             }
                         }
-
-                        ResponseStatus.BAD -> {
-                            list.clear()
-                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
-                        }
-
-                        ResponseStatus.DEFAULT -> {
-                            _listOfVacancies.postValue(MainFragmentStatus.Default)
-                        }
-
-                        ResponseStatus.NO_CONNECTION -> {
-                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
-                        }
-
-                        else -> {
-                        }
                     }
-                }
+            } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
+                _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+            }
         }
     }
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+        private const val ERROR_TAG = "ErrorLoadingProcess"
     }
 }

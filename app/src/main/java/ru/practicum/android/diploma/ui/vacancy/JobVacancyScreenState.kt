@@ -10,4 +10,6 @@ sealed interface JobVacancyScreenState {
 
     object UploadingProcess : JobVacancyScreenState
 
+    object NoConnection : JobVacancyScreenState
+
 }

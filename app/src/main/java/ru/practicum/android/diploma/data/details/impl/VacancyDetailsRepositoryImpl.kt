@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.details.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.dto.vacancy.KeySkillsDto
 import ru.practicum.android.diploma.data.dto.vacancy.PhonesDto
@@ -18,7 +19,7 @@ class VacancyDetailsRepositoryImpl(
 ) : VacancyDetailsRepository {
 
     override fun detailsVacancy(id: String): Flow<VacancyDetailsResult> = flow {
-        val response = networkClient.doVacancyDetailsSearch(id)
+        val response = networkClient.doVacancyDetailsSearch(VacancyDetailsRequest(id))
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val responseVacancy: VacancyDetails
