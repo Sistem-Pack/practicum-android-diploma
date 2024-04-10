@@ -79,7 +79,8 @@ class JobVacancyViewModel(
     private suspend fun checkIsFavorite(vacancyId: String) {
         favoriteVacanciesInteractor.getFavoriteVacanciesId().collect {
             when (it) {
-                is FavoriteVacanciesIdState.FailedRequest -> Log.e("VacancyDetailsError", "ошибка: ${it.error}")
+                is FavoriteVacanciesIdState.FailedRequest ->
+                    Log.e("VacancyDetailsError", "ошибка: ${it.error}")
                 is FavoriteVacanciesIdState.SuccessfulRequest -> isFavorite =
                     it.vacanciesIdArrayList.contains(vacancyId)
             }
@@ -109,7 +110,8 @@ class JobVacancyViewModel(
                     Log.e("VacancyDetailsError", "Нет связи. Пробуем загрузить вакансию из БД.")
                     getFavoriteVacancyFromDataBase(vacancyId)
                 }
-                ResponseStatus.LOADING -> jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
+                ResponseStatus.LOADING ->
+                    jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
                 ResponseStatus.DEFAULT -> Unit
             }
         }
