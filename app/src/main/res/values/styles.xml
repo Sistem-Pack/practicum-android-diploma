@@ -137,4 +137,20 @@
         <item name="android:ellipsize">end</item>
         <item name="fontWeight">400</item>
     </style>
+
+    <!-- Стили для экранов фильтрации -->
+    <style name="FilteringSettingsTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+        <item name="android:layout_width">@dimen/zero_space</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontWeight">400</item>
+    </style>
+
+    <style name="SalaryTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="cursorColor">@color/blue</item>
+        <item name="hintTextColor">@color/gray</item>
+        <item name="android:textColorHint">@color/gray</item>
+    </style>
+
+
 </resources>

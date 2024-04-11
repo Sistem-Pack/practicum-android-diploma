@@ -1,20 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.filter.FilteringSettingsFragment">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sixteen_space"
+        app:contentInsetStart="@dimen/zero_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/one_space"
+            android:layout_marginTop="@dimen/two_space"
+            android:layout_marginBottom="@dimen/two_space"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tvVacancyHeadline"
+            style="@style/VacancyHeadline"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/one_space"
+            android:text="@string/filtering_settings"
+            app:layout_constraintStart_toEndOf="@id/ivBack" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilJobPlace"
+        style="@style/FilteringSettingsTextInputLayoutStyle"
+        android:layout_marginTop="@dimen/three_space"
+        android:hint="@string/places_of_work"
+        app:hintTextColor="@color/gray"
+        android:textAlignment="viewStart"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:background="@color/white_black"
+        app:boxBackgroundColor="@color/white_black"
+        app:boxStrokeWidth="@dimen/zero_space"
+        app:boxStrokeWidthFocused="@dimen/zero_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tietJobPlace"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/twelve_space"
+            android:inputType="textCapSentences"
+            android:lines="1"
+            android:maxLength="225"
+            android:fontFamily="@font/ys_display_medium"
+            android:singleLine="true"
+            android:clickable="true"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/sixteen_size_text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/ivArrowRightJobPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Настройка фильтрации"
-        android:textSize="40sp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_arrow_right"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/tilJobPlace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/tilJobPlace" />
+
+    <ImageView
+        android:id="@+id/ivJobPlaceClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tilJobPlace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tilJobPlace" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilIndustry"
+        style="@style/FilteringSettingsTextInputLayoutStyle"
+        android:hint="@string/industry"
+        app:hintTextColor="@color/gray"
+        android:textAlignment="viewStart"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:background="@color/white_black"
+        app:boxBackgroundColor="@color/white_black"
+        app:boxStrokeWidth="@dimen/zero_space"
+        app:boxStrokeWidthFocused="@dimen/zero_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilJobPlace">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tietIndustry"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/twelve_space"
+            android:inputType="textCapSentences"
+            android:lines="1"
+            android:maxLength="225"
+            android:fontFamily="@font/ys_display_medium"
+            android:singleLine="true"
+            android:clickable="true"
+            android:textAlignment="viewStart"
+            android:textSize="@dimen/sixteen_size_text"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/ivArrowRightIndustry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/tilIndustry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tilIndustry" />
+
+    <ImageView
+        android:id="@+id/ivIndustryClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tilIndustry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tilIndustry" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/salaryLayout"
+        style="@style/SalaryTextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/four_space"
+        android:layout_marginTop="@dimen/six_space"
+        android:hint="Введите сумму"
+        android:textColorHint="@color/gray_white"
+        app:boxCollapsedPaddingTop="@dimen/two_space"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:expandedHintEnabled="false"
+        app:hintEnabled="true"
+        app:hintTextColor="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilIndustry"
+        app:placeholderTextColor="@color/gray">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/salaryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_search_edit_text"
+            android:fontFamily="@font/ys_display_regular"
+            android:hint="40000"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/sixteen_size_text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
