@@ -12,8 +12,9 @@ import ru.practicum.android.diploma.di.viewModelModule
 const val PRACTICUM_DIPLOMA_PREFERENCES = "practicum_diploma_preferences"
 const val COUNTRY_ID_KEY = "key_for_country_id"
 const val REGION_ID_KEY = "key_for_region_id"
+const val INDUSTRY_ID_KEY = "key_for_industry_id"
 const val SALARY_AMOUNT_KEY = "key_for_salary_amount"
-const val DO_NOT_SHOW_WITHOUT_SALARY_SETTING_KEY = "key_for_show_salary_setting"
+const val DO_NOT_SHOW_WITHOUT_SALARY_SETTING_KEY = "key_for_do_not_show_without_salary_setting"
 
 class App : Application() {
 

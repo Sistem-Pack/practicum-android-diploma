@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.data.sharedprefs
 import android.content.SharedPreferences
 import ru.practicum.android.diploma.app.COUNTRY_ID_KEY
 import ru.practicum.android.diploma.app.DO_NOT_SHOW_WITHOUT_SALARY_SETTING_KEY
+import ru.practicum.android.diploma.app.INDUSTRY_ID_KEY
 import ru.practicum.android.diploma.app.REGION_ID_KEY
 import ru.practicum.android.diploma.app.SALARY_AMOUNT_KEY
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
@@ -15,6 +16,10 @@ class FiltersRepositoryImpl(private val sharedPrefs: SharedPreferences) : Filter
 
     override suspend fun getRegionId(): String {
         return sharedPrefs.getString(REGION_ID_KEY, null) ?: ""
+    }
+
+    override suspend fun getIndustryId(): String {
+        return sharedPrefs.getString(INDUSTRY_ID_KEY, null) ?: ""
     }
 
     override suspend fun getSalaryAmount(): Int {
@@ -34,6 +39,12 @@ class FiltersRepositoryImpl(private val sharedPrefs: SharedPreferences) : Filter
     override fun putRegionId(regionId: String) {
         sharedPrefs.edit()
             .putString(REGION_ID_KEY, regionId)
+            .apply()
+    }
+
+    override fun putIndustryId(industryId: String) {
+        sharedPrefs.edit()
+            .putString(INDUSTRY_ID_KEY, industryId)
             .apply()
     }
 

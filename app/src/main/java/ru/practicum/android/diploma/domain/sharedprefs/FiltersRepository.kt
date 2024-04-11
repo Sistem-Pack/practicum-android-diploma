@@ -5,6 +5,8 @@ interface FiltersRepository {
 
     suspend fun getRegionId(): String
 
+    suspend fun getIndustryId(): String
+
     suspend fun getSalaryAmount(): Int
 
     suspend fun getDoNotShowWithoutSalarySetting(): Boolean
@@ -12,6 +14,8 @@ interface FiltersRepository {
     fun putCountryId(countryId: String)
 
     fun putRegionId(regionId: String)
+
+    fun putIndustryId(industryId: String)
 
     fun putSalaryAmount(salary: Int)
 

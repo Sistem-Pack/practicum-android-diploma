@@ -9,6 +9,10 @@ class FiltersInteractorImpl(private val filtersRepository: FiltersRepository) : 
         return filtersRepository.getRegionId()
     }
 
+    override suspend fun getIndustryId(): String {
+        return filtersRepository.getIndustryId()
+    }
+
     override suspend fun getSalaryAmount(): Int {
         return filtersRepository.getSalaryAmount()
     }
@@ -23,6 +27,10 @@ class FiltersInteractorImpl(private val filtersRepository: FiltersRepository) : 
 
     override fun putRegionId(regionId: String) {
         return filtersRepository.putRegionId(regionId)
+    }
+
+    override fun putIndustryId(industryId: String) {
+        return filtersRepository.putIndustryId(industryId)
     }
 
     override fun putSalaryAmount(salary: Int) {
