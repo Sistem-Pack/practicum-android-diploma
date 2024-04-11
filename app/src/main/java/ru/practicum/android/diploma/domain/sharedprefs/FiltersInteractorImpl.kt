@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.domain.sharedprefs
 
-class FiltersInteractorImpl(private val filtersRepository: FiltersRepository): FiltersInteractor {
+class FiltersInteractorImpl(private val filtersRepository: FiltersRepository) : FiltersInteractor {
     override suspend fun getCountryId(): String {
         return filtersRepository.getCountryId()
     }

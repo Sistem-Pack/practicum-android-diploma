@@ -7,8 +7,7 @@ import ru.practicum.android.diploma.app.REGION_ID_KEY
 import ru.practicum.android.diploma.app.SALARY_AMOUNT_KEY
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
 
-class FiltersRepositoryImpl(private val sharedPrefs: SharedPreferences): FiltersRepository {
-
+class FiltersRepositoryImpl(private val sharedPrefs: SharedPreferences) : FiltersRepository {
 
     override suspend fun getCountryId(): String {
         return sharedPrefs.getString(COUNTRY_ID_KEY, null) ?: ""
