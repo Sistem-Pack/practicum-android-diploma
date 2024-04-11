@@ -39,14 +39,14 @@
         android:id="@+id/tilJobPlace"
         style="@style/FilteringSettingsTextInputLayoutStyle"
         android:layout_marginTop="@dimen/three_space"
-        android:hint="@string/places_of_work"
-        app:hintTextColor="@color/gray"
-        android:textAlignment="viewStart"
-        android:imeOptions="actionDone|flagNoExtractUi"
         android:background="@color/white_black"
+        android:hint="@string/places_of_work"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:textAlignment="viewStart"
         app:boxBackgroundColor="@color/white_black"
         app:boxStrokeWidth="@dimen/zero_space"
         app:boxStrokeWidthFocused="@dimen/zero_space"
+        app:hintTextColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -55,14 +55,14 @@
             android:id="@+id/tietJobPlace"
             android:layout_width="match_parent"
             android:layout_height="@dimen/twelve_space"
+            android:clickable="true"
+            android:fontFamily="@font/ys_display_medium"
             android:inputType="textCapSentences"
             android:lines="1"
             android:maxLength="225"
-            android:fontFamily="@font/ys_display_medium"
             android:singleLine="true"
-            android:clickable="true"
             android:textAlignment="viewStart"
-            android:textSize="@dimen/sixteen_size_text"/>
+            android:textSize="@dimen/sixteen_size_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,14 +89,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilIndustry"
         style="@style/FilteringSettingsTextInputLayoutStyle"
-        android:hint="@string/industry"
-        app:hintTextColor="@color/gray"
-        android:textAlignment="viewStart"
-        android:imeOptions="actionDone|flagNoExtractUi"
         android:background="@color/white_black"
+        android:hint="@string/industry"
+        android:imeOptions="actionDone|flagNoExtractUi"
+        android:textAlignment="viewStart"
         app:boxBackgroundColor="@color/white_black"
         app:boxStrokeWidth="@dimen/zero_space"
         app:boxStrokeWidthFocused="@dimen/zero_space"
+        app:hintTextColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilJobPlace">
@@ -105,14 +105,14 @@
             android:id="@+id/tietIndustry"
             android:layout_width="match_parent"
             android:layout_height="@dimen/twelve_space"
+            android:clickable="true"
+            android:fontFamily="@font/ys_display_medium"
             android:inputType="textCapSentences"
             android:lines="1"
             android:maxLength="225"
-            android:fontFamily="@font/ys_display_medium"
             android:singleLine="true"
-            android:clickable="true"
             android:textAlignment="viewStart"
-            android:textSize="@dimen/sixteen_size_text"/>
+            android:textSize="@dimen/sixteen_size_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -143,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/four_space"
         android:layout_marginTop="@dimen/six_space"
-        android:hint="Введите сумму"
+        android:hint="@string/expected_salary"
         android:textColorHint="@color/gray_white"
         app:boxCollapsedPaddingTop="@dimen/two_space"
         app:boxStrokeWidth="0dp"
@@ -160,14 +160,81 @@
             android:id="@+id/salaryEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rounded_search_edit_text"
+            android:background="@drawable/rounded_background_12_gray"
             android:fontFamily="@font/ys_display_regular"
-            android:hint="40000"
+            android:hint="@string/expected_salary_hint"
             android:inputType="number"
             android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/sixteen_size_text" />
+            android:textColorHint="@color/gray_white"
+            android:textSize="@dimen/sixteen_size_text"
+            tools:text="40000"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/ivSalaryClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/salaryLayout"
+        app:layout_constraintEnd_toEndOf="@+id/salaryLayout"
+        app:layout_constraintTop_toTopOf="@+id/salaryLayout" />
+
+    <TextView
+        android:id="@+id/textNoSalary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/four_space"
+        android:layout_marginTop="@dimen/six_space"
+        android:fontFamily="@font/ys_display_regular"
+        android:text="@string/no_salary_text"
+        android:textColor="@color/black_white"
+        android:textSize="@dimen/sixteen_size_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/salaryLayout" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/checkboxNoSalary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/four_space"
+        app:buttonTint="@color/blue"
+        app:colorAccent="@color/blue"
+        app:layout_constraintBottom_toBottomOf="@+id/textNoSalary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textNoSalary"
+        app:layout_constraintVertical_bias="0.5"
+        tools:checked="true" />
+
+    <Button
+        android:id="@+id/bReset"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/fifteen_space"
+        android:layout_marginHorizontal="@dimen/four_space"
+        android:layout_marginBottom="@dimen/five_space"
+        android:background="null"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/reset"
+        android:textAllCaps="false"
+        android:textColor="@color/red"
+        android:textSize="@dimen/sixteen_size_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bApply"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/fifteen_space"
+        android:layout_marginHorizontal="@dimen/four_space"
+        android:layout_marginBottom="@dimen/two_space"
+        android:background="@drawable/rounded_background_12_blue"
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/apply"
+        android:textAllCaps="false"
+        android:textSize="@dimen/sixteen_size_text"
+        app:layout_constraintBottom_toTopOf="@+id/bReset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
