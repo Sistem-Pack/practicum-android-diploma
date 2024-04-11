@@ -1,16 +1,6 @@
 package ru.practicum.android.diploma.domain.sharedprefs
 
-interface FiltersInteractor {
-    suspend fun getCountryId(): String
-
-    suspend fun getRegionId(): String
-
-    suspend fun getIndustryId(): String
-
-    suspend fun getSalaryAmount(): Int
-
-    suspend fun getDoNotShowWithoutSalarySetting(): Boolean
-
+interface PutFiltersRepository {
     fun putCountryId(countryId: String)
 
     fun putRegionId(regionId: String)
