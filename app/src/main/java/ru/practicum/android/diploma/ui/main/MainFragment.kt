@@ -27,10 +27,9 @@ class MainFragment : Fragment() {
 
     private var binding: FragmentMainBinding? = null
     private var editTextValue = ""
-    private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
-    private val loadingItemAdapter = LoadingItemAdapter(pbLoadingVisible)
+    private var loadingItemAdapter = LoadingItemAdapter()
     private lateinit var concatAdapter: ConcatAdapter
 
     private val viewModel by viewModel<MainViewModel>()
@@ -63,6 +62,9 @@ class MainFragment : Fragment() {
         viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
+        viewModel.page.observe(viewLifecycleOwner) {
+            loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
+        }
 
         binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -73,8 +75,10 @@ class MainFragment : Fragment() {
                         (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
-                        viewModel.installPage(true)
-                        viewModel.search()
+                        if (viewModel.page.value!! < viewModel.getMaxPages() - 1) {
+                            viewModel.installPage(true)
+                            viewModel.search()
+                        }
                     }
                 }
             }
@@ -132,7 +136,6 @@ class MainFragment : Fragment() {
     }
 
     private fun processingSearchStatus(mainFragmentStatus: MainFragmentStatus) {
-        //vacancies.clear()
         hideAllView()
         hideKeyboard()
         when (mainFragmentStatus) {
@@ -164,28 +167,20 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        binding!!.pbLoading.isVisible = false
-        binding!!.vBackGroundForPBLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             binding!!.pbSearch.isVisible = true
-        } else {
-            //binding!!.pbLoading.isVisible = true
-            //binding!!.vBackGroundForPBLoading.isVisible = true
         }
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>) {
         vacancies.clear()
-        pbLoadingVisible = viewModel.getCurrentPage() != viewModel.getMaxPages()
-        loadingItemAdapter.notifyDataSetChanged()
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
-                //concatAdapter.notifyDataSetChanged()
                 binding!!.chip.text = madeTextForChip()
                 binding!!.rvVacancyList.isVisible = true
                 binding!!.chip.isVisible = true
@@ -198,7 +193,6 @@ class MainFragment : Fragment() {
         } else {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
-            //concatAdapter.notifyDataSetChanged()
         }
     }
 
