@@ -59,6 +59,12 @@ class MainFragment : Fragment() {
             breakSearch()
         }
 
+        binding!!.ivFilter.setOnClickListener {
+            if (viewModel.clickDebounce()) {
+                startFilteringSettingsFragment()
+            }
+        }
+
         viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
@@ -105,6 +111,12 @@ class MainFragment : Fragment() {
     private fun startJobVacancyFragment(vacancyId: String) {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToJobVacancyFragment(vacancyId)
+        )
+    }
+
+    private fun startFilteringSettingsFragment(){
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToFilteringSettingsFragment()
         )
     }
 
