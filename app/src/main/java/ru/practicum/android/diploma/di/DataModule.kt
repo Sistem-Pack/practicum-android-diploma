@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -7,6 +9,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.app.App
+import ru.practicum.android.diploma.app.PRACTICUM_DIPLOMA_PREFERENCES
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
 import ru.practicum.android.diploma.data.network.HHApi
@@ -43,5 +46,10 @@ val dataModule = module {
 
     factory {
         FavoriteVacancyDbConverter()
+    }
+
+    single<SharedPreferences> {
+        androidContext()
+            .getSharedPreferences(PRACTICUM_DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
     }
 }
