@@ -85,44 +85,39 @@ class MainViewModel(
     private fun sendRequest() {
         viewModelScope.launch {
             try {
-                vacancyInteractor
-                    .searchVacancy(requestText, page)
-                    .collect { result ->
-                        when (result.responseStatus) {
-                            ResponseStatus.OK -> {
-                                if (page == 0) {
-                                    list.clear()
-                                    list.addAll(result.results)
-                                    foundVacancies = result.found
-                                    _listOfVacancies.postValue(
-                                        MainFragmentStatus.ListOfVacancies(
-                                            result.results
-                                        )
-                                    )
-                                    maxPages = result.pages
-                                } else {
-                                    list.addAll(result.results)
-                                    _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
-                                }
-                            }
-
-                            ResponseStatus.BAD -> {
+                vacancyInteractor.searchVacancy(requestText, page).collect { result ->
+                    when (result.responseStatus) {
+                        ResponseStatus.OK -> {
+                            if (page == 0) {
                                 list.clear()
-                                _listOfVacancies.postValue(MainFragmentStatus.Bad)
-                            }
-
-                            ResponseStatus.DEFAULT -> {
-                                _listOfVacancies.postValue(MainFragmentStatus.Default)
-                            }
-
-                            ResponseStatus.NO_CONNECTION -> {
-                                _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
-                            }
-
-                            else -> {
+                                list.addAll(result.results)
+                                foundVacancies = result.found
+                                _listOfVacancies.postValue(
+                                    MainFragmentStatus.ListOfVacancies(result.results)
+                                )
+                                maxPages = result.pages
+                            } else {
+                                list.addAll(result.results)
+                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
                             }
                         }
+
+                        ResponseStatus.BAD -> {
+                            list.clear()
+                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                        }
+
+                        ResponseStatus.DEFAULT -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.Default)
+                        }
+
+                        ResponseStatus.NO_CONNECTION -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                        }
+
+                        ResponseStatus.LOADING -> Unit
                     }
+                }
             } catch (e: SocketTimeoutException) {
                 Log.d(ERROR_TAG, "ошибка: ${e.message}")
                 _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
