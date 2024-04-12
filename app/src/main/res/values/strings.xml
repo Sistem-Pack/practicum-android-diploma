@@ -76,4 +76,14 @@
     <string name="conditions_value">•  сильная команда, с которой можно расти\n•  возможность влиять на процесс и результат\n•  расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
     <string name="url">https://hh.kz/vacancy/</string>
 
+    //Экран "Настройки фильтрации"
+    <string name="filtering_settings">Настройки фильтрации</string>
+    <string name="places_of_work">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="expected_salary">Одидаемая зарплата</string>
+    <string name="expected_salary_hint">Введите сумму</string>
+    <string name="no_salary_text">Не показывать без зарплаты</string>
+    <string name="reset">Сбросить</string>
+    <string name="apply">Применить</string>
+
 </resources>
