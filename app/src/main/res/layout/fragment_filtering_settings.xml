@@ -139,7 +139,7 @@
         app:layout_constraintTop_toTopOf="@+id/tilIndustry" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/salaryLayout"
+        android:id="@+id/tilSalaryLayout"
         style="@style/SalaryTextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
         app:placeholderTextColor="@color/gray">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/salaryEditText"
+            android:id="@+id/tietSalary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded_background_12_gray"
@@ -178,9 +178,9 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_cross"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/salaryLayout"
-        app:layout_constraintEnd_toEndOf="@+id/salaryLayout"
-        app:layout_constraintTop_toTopOf="@+id/salaryLayout" />
+        app:layout_constraintBottom_toBottomOf="@+id/tilSalaryLayout"
+        app:layout_constraintEnd_toEndOf="@+id/tilSalaryLayout"
+        app:layout_constraintTop_toTopOf="@+id/tilSalaryLayout" />
 
     <TextView
         android:id="@+id/textNoSalary"
@@ -193,7 +193,7 @@
         android:textColor="@color/black_white"
         android:textSize="@dimen/sixteen_size_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/salaryLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/tilSalaryLayout" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkboxNoSalary"
