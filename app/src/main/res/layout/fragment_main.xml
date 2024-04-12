@@ -138,28 +138,6 @@
         app:layout_constraintTop_toBottomOf="@id/etSearch"
         tools:listitem="@layout/item_vacancy" />
 
-    <View
-        android:id="@+id/vBackGroundForPBLoading"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/twenty_space"
-        android:visibility="visible"
-        android:background="@color/white_black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintStart_toEndOf="@id/leftBorder" />
-
-    <ProgressBar
-        android:id="@+id/pbLoading"
-        android:layout_width="@dimen/twelve_space"
-        android:layout_height="@dimen/twelve_space"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/four_space"
-        android:indeterminateTint="@color/blue"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintStart_toEndOf="@id/leftBorder" />
-
     <com.google.android.material.chip.Chip
         android:id="@+id/chip"
         style="@style/ChipMessage"

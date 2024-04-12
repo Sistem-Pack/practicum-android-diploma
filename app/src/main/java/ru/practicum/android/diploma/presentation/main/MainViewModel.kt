@@ -23,19 +23,21 @@ class MainViewModel(
     private var job: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
-    private var page: Int = 0
     private var maxPages: Int = 0
 
     private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
     val listOfVacancies: LiveData<MainFragmentStatus> = _listOfVacancies
 
+    private var _page: MutableLiveData<Int> = MutableLiveData(0)
+    val page: LiveData<Int> = _page
+
     fun onDestroy() {
         job?.cancel()
     }
 
-    fun getCurrentPage(): Int {
-        return page
-    }
+//    fun getCurrentPage(): Int {
+//        return page
+//    }
 
     fun getMaxPages(): Int {
         return maxPages
@@ -71,9 +73,9 @@ class MainViewModel(
 
     fun installPage(oldRequest: Boolean) {
         if (oldRequest) {
-            page++
+            _page.value = _page.value!! + 1
         } else {
-            page = 0
+            _page.value = 0
         }
     }
 
@@ -85,10 +87,10 @@ class MainViewModel(
     private fun sendRequest() {
         viewModelScope.launch {
             try {
-                vacancyInteractor.searchVacancy(requestText, page).collect { result ->
+                vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
                     when (result.responseStatus) {
                         ResponseStatus.OK -> {
-                            if (page == 0) {
+                            if (_page.value!! == 0) {
                                 list.clear()
                                 list.addAll(result.results)
                                 foundVacancies = result.found

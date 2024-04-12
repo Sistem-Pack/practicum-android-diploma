@@ -20,17 +20,17 @@ import ru.practicum.android.diploma.databinding.FragmentMainBinding
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
-import ru.practicum.android.diploma.ui.main.vacancy.EmptyItemAdapter
+import ru.practicum.android.diploma.ui.main.vacancy.LoadingItemAdapter
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
 
     private var binding: FragmentMainBinding? = null
     private var editTextValue = ""
-    private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
-    private val concatAdapter: ConcatAdapter = ConcatAdapter(EmptyItemAdapter(), adapter)
+    private var loadingItemAdapter = LoadingItemAdapter()
+    private var concatAdapter: ConcatAdapter = ConcatAdapter()
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -59,6 +59,9 @@ class MainFragment : Fragment() {
         viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
         }
+        viewModel.page.observe(viewLifecycleOwner) {
+            loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
+        }
 
         binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -69,8 +72,10 @@ class MainFragment : Fragment() {
                         (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
-                        viewModel.installPage(true)
-                        viewModel.search()
+                        if (viewModel.page.value!! < viewModel.getMaxPages() - 1) {
+                            viewModel.installPage(true)
+                            viewModel.search()
+                        }
                     }
                 }
             }
@@ -167,23 +172,17 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        binding!!.pbLoading.isVisible = false
-        binding!!.vBackGroundForPBLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             binding!!.pbSearch.isVisible = true
-        } else {
-            binding!!.pbLoading.isVisible = true
-            binding!!.vBackGroundForPBLoading.isVisible = true
         }
     }
 
     private fun showOkStatus(listVacancies: List<Vacancy>) {
         vacancies.clear()
-        pbLoadingVisible = viewModel.getCurrentPage() != viewModel.getMaxPages()
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
