@@ -32,9 +32,9 @@ class FiltersRepositoryImpl(
     }
 
     override fun putFiltersInSharedPrefs(filters: Filters) {
-            sharedPrefs.edit()
-                .putString(FILTERS_KEY, gson.toJson(filters))
-                .apply()
+        sharedPrefs.edit()
+            .putString(FILTERS_KEY, gson.toJson(filters))
+            .apply()
     }
 
     override fun clearAllFiltersInSharedPrefs() {
