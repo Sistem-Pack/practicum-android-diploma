@@ -9,6 +9,6 @@ class IndustryInteractorImpl(
     val repository: IndustryRepository
 ) : IndustryInteractor {
     override fun getIndustry(): Flow<IndustrySearchResult> {
-        TODO("Not yet implemented")
+        return repository.getIndustry()
     }
 }

@@ -29,7 +29,6 @@ class VacancyDetailsRepositoryImpl(
                     Log.d("Network", "response $it")
                 }
                 emit(
-
                     VacancyDetailsResult(responseVacancy, ResponseStatus.OK, response.resultCode)
                 )
             }
