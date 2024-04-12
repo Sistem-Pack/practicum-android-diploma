@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 
-class LoadingItemAdapter(): RecyclerView.Adapter<LoadingItemViewHolder>() {
+class LoadingItemAdapter : RecyclerView.Adapter<LoadingItemViewHolder>() {
 
     var visible: Boolean = true
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoadingItemViewHolder {

@@ -30,7 +30,7 @@ class MainFragment : Fragment() {
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
     private var loadingItemAdapter = LoadingItemAdapter()
-    private lateinit var concatAdapter: ConcatAdapter
+    private var concatAdapter: ConcatAdapter = ConcatAdapter()
 
     private val viewModel by viewModel<MainViewModel>()
 
