@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.industry.IndustrySelectionFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -52,9 +52,9 @@
     <EditText
         android:id="@+id/etIndustry"
         style="@style/Search"
+        android:layout_marginTop="@dimen/two_space"
         android:background="@drawable/rounded_search_edit_text"
         android:focusableInTouchMode="true"
-        android:layout_marginTop="@dimen/two_space"
         android:hint="@string/enter_industry"
         android:lines="1"
         android:paddingStart="@dimen/three_and_a_half_space"
@@ -93,9 +93,9 @@
     <Button
         android:id="@+id/bChoose"
         style="@style/Button"
-        android:visibility="gone"
         android:background="@drawable/rounded_background_12_blue"
         android:text="@string/choose"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder" />
