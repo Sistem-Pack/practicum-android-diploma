@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,7 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
@@ -40,7 +42,7 @@ class MainViewModel(
     fun getMaxPages(): Int {
         return maxPages
     }
-    
+
     fun getFoundVacancies(): Int {
         return foundVacancies
     }
@@ -84,9 +86,8 @@ class MainViewModel(
 
     private fun sendRequest() {
         viewModelScope.launch {
-            vacancyInteractor
-                .searchVacancy(requestText, _page.value!!)
-                .collect { result ->
+            try {
+                vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
                     when (result.responseStatus) {
                         ResponseStatus.OK -> {
                             if (_page.value!! == 0) {
@@ -94,9 +95,7 @@ class MainViewModel(
                                 list.addAll(result.results)
                                 foundVacancies = result.found
                                 _listOfVacancies.postValue(
-                                    MainFragmentStatus.ListOfVacancies(
-                                        result.results
-                                    )
+                                    MainFragmentStatus.ListOfVacancies(result.results)
                                 )
                                 maxPages = result.pages
                             } else {
@@ -118,15 +117,19 @@ class MainViewModel(
                             _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
                         }
 
-                        else -> {
-                        }
+                        ResponseStatus.LOADING -> Unit
                     }
                 }
+            } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
+                _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+            }
         }
     }
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+        private const val ERROR_TAG = "ErrorLoadingProcess"
     }
 }
