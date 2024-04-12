@@ -4,6 +4,7 @@
     <dimen name="one_point_space">1dp</dimen>
     <dimen name="half_space">2dp</dimen>
     <dimen name="one_space">4dp</dimen>
+    <dimen name="one_and_a_half_space">6dp</dimen>
     <dimen name="two_space">8dp</dimen>
     <dimen name="three_space">12dp</dimen>
     <dimen name="three_and_a_half_space">14dp</dimen>
