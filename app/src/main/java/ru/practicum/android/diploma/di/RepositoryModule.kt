@@ -31,7 +31,7 @@ val repositoryModule = module {
     }
 
     factory<IndustryRepository> {
-        IndustryRepositoryImpl(get())
+        IndustryRepositoryImpl(get(), get())
     }
 
 }
