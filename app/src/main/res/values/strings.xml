@@ -80,7 +80,7 @@
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="places_of_work">Место работы</string>
     <string name="industry">Отрасль</string>
-    <string name="expected_salary">Одидаемая зарплата</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="expected_salary_hint">Введите сумму</string>
     <string name="no_salary_text">Не показывать без зарплаты</string>
     <string name="reset">Сбросить</string>

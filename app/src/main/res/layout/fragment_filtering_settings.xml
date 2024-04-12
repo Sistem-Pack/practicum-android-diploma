@@ -38,7 +38,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilJobPlace"
         style="@style/FilteringSettingsTextInputLayoutStyle"
-        android:layout_marginTop="@dimen/three_space"
+        android:layout_marginTop="@dimen/four_space"
         android:background="@color/white_black"
         android:hint="@string/places_of_work"
         android:imeOptions="actionDone|flagNoExtractUi"
@@ -215,7 +215,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/fifteen_space"
         android:layout_marginHorizontal="@dimen/four_space"
-        android:layout_marginBottom="@dimen/five_space"
+        android:layout_marginBottom="@dimen/six_space"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/ys_display_medium"
         android:text="@string/reset"
