@@ -72,6 +72,10 @@ class RetrofitNetworkClient(
         }
     }
 
+    override suspend fun getIndustries(): Response {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         private const val ABSENCE_CODE = 404
         private const val ERROR_TAG = "RetrofitError"

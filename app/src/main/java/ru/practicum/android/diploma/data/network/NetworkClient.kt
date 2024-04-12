@@ -12,4 +12,6 @@ interface NetworkClient {
 
     suspend fun doVacancyDetailsSearch(request: VacancyDetailsRequest): Response
 
+    suspend fun getIndustries(): Response
+
 }
