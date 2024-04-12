@@ -80,7 +80,7 @@
         android:layout_height="@dimen/zero_space"
         android:layout_marginTop="@dimen/two_space"
         android:animationCache="true"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,5 +98,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+    <TextView
+        android:id="@+id/tvNoInternetPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/error_no_internet"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
+    <TextView
+        android:id="@+id/tvNotFoundPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/not_found"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_not_found"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
+    <TextView
+        android:id="@+id/tvFailedRequestPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/failed_message"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_failed_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etIndustry" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
