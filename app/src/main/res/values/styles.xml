@@ -152,5 +152,16 @@
         <item name="android:textColorHint">@color/gray</item>
     </style>
 
+    <style name="Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/fifteen_space</item>
+        <item name="android:layout_marginBottom">@dimen/six_space</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/sixteen_size_text</item>
+        <item name="fontWeight">500</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 
 </resources>

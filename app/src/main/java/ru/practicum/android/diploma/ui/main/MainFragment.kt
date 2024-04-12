@@ -114,7 +114,7 @@ class MainFragment : Fragment() {
         )
     }
 
-    private fun startFilteringSettingsFragment(){
+    private fun startFilteringSettingsFragment() {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToFilteringSettingsFragment()
         )
