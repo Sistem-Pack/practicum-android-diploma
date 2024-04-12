@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentMainBinding
@@ -20,7 +21,6 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.ui.main.vacancy.EmptyItemAdapter
-import ru.practicum.android.diploma.ui.main.vacancy.LoadingItemAdapter
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
@@ -48,9 +48,6 @@ class MainFragment : Fragment() {
                 startJobVacancyFragment(vacancy.vacancyId)
             }
         }
-        val emptyItemAdapter = EmptyItemAdapter()
-
-        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
 
         binding!!.rvVacancyList.adapter = concatAdapter
         binding!!.ivSearch.setOnClickListener {
@@ -157,6 +154,14 @@ class MainFragment : Fragment() {
 
             is MainFragmentStatus.NoConnection -> {
                 showNoConnectionStatus()
+            }
+
+            is MainFragmentStatus.showToastOnLoadingTrouble -> {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_in_loading_process),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

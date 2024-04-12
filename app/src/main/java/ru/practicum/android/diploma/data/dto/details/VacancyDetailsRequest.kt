@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.dto.details
 
-class VacancyDetailsRequest(id: String)
+class VacancyDetailsRequest(val id: String)

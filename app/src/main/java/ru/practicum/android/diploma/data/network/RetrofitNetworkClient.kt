@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
+import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
@@ -28,7 +29,7 @@ class RetrofitNetworkClient(
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (e: UnknownHostException) {
-                    Log.d("Exception", "$e")
+                    Log.d(ERROR_TAG, "$e")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
@@ -39,21 +40,21 @@ class RetrofitNetworkClient(
         }
     }
 
-    override suspend fun doVacancyDetailsSearch(id: String): Response {
+    override suspend fun doVacancyDetailsSearch(request: VacancyDetailsRequest): Response {
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
-                    val response = hhApi.searchVacancyDetails(id)
+                    val response = hhApi.searchVacancyDetails(request.id)
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (error: UnknownHostException) {
-                    Log.d("Exception", "$error")
+                    Log.d(ERROR_TAG, "$error")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
                     }
                 } catch (error: HttpException) {
-                    Log.d("Exception", "$error")
+                    Log.d(ERROR_TAG, "$error")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
                         resultCode = if (error.message.equals("HTTP 404 ")) {
@@ -73,6 +74,7 @@ class RetrofitNetworkClient(
 
     companion object {
         private const val ABSENCE_CODE = 404
+        private const val ERROR_TAG = "RetrofitError"
     }
 
 }
