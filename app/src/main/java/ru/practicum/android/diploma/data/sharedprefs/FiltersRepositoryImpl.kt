@@ -11,25 +11,30 @@ class FiltersRepositoryImpl(
     private val gson: Gson
 ) : FiltersRepository {
 
-    override suspend fun getFiltersFromSharedPrefs(): Filters? {
+    private val emptyFilters = Filters(
+        countryId = "",
+        countryName = "",
+        regionId = "",
+        regionName = "",
+        industryId = "",
+        industryName = "",
+        salary = 0,
+        doNotShowWithoutSalarySetting = false
+    )
+
+    override suspend fun getFiltersFromSharedPrefs(): Filters {
         val filtersInSharedPrefs = sharedPrefs.getString(FILTERS_KEY, null)
         return if (filtersInSharedPrefs != null) {
             gson.fromJson(filtersInSharedPrefs, Filters::class.java)
         } else {
-            null
+            emptyFilters
         }
     }
 
     override fun putFiltersInSharedPrefs(filters: Filters) {
-        if (filters.countryId == "" && filters.regionId == "" && filters.industryId == "" && filters.salary == 0 && !filters.doNotShowWithoutSalarySetting) {
-            sharedPrefs.edit()
-                .clear()
-                .apply()
-        } else {
             sharedPrefs.edit()
                 .putString(FILTERS_KEY, gson.toJson(filters))
                 .apply()
-        }
     }
 
     override fun clearAllFiltersInSharedPrefs() {
