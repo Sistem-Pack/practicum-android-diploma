@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
+import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -43,5 +44,9 @@ val dataModule = module {
 
     factory {
         FavoriteVacancyDbConverter()
+    }
+
+    factory {
+        IndustriesRequest()
     }
 }

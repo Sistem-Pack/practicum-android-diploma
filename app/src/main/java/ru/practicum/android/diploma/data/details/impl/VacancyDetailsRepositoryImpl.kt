@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.details.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
@@ -25,6 +26,7 @@ class VacancyDetailsRepositoryImpl(
                 val responseVacancy: VacancyDetails
                 (response as VacancyDetailsResponse).let {
                     responseVacancy = formatToVacancyDetails(it)
+                    Log.d("Network", "response $it")
                 }
                 emit(
                     VacancyDetailsResult(responseVacancy, ResponseStatus.OK, response.resultCode)

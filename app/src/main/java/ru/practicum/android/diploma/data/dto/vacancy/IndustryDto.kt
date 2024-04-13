@@ -10,5 +10,5 @@ package ru.practicum.android.diploma.data.dto.vacancy
 data class IndustryDto(
     val id: String,
     val name: String,
-    val industries: List<IndustryDto>?,
+    val industries: List<IndustryNestedDto>?,
 )

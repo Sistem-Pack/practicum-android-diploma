@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
+import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
@@ -45,6 +46,38 @@ class RetrofitNetworkClient(
             return withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.searchVacancyDetails(request.id)
+                    response.apply {
+                        resultResponse = ResponseStatus.OK
+                    }
+                } catch (error: UnknownHostException) {
+                    Log.d(ERROR_TAG, "$error")
+                    Response().apply {
+                        resultResponse = ResponseStatus.BAD
+                    }
+                } catch (error: HttpException) {
+                    Log.d(ERROR_TAG, "$error")
+                    Response().apply {
+                        resultResponse = ResponseStatus.BAD
+                        resultCode = if (error.message.equals("HTTP 404 ")) {
+                            ABSENCE_CODE
+                        } else {
+                            0
+                        }
+                    }
+                }
+            }
+        } else {
+            return Response().apply {
+                resultResponse = ResponseStatus.NO_CONNECTION
+            }
+        }
+    }
+
+    override suspend fun getIndustries(request: IndustriesRequest): Response {
+        if (util.isConnected()) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val response = hhApi.getIndustries(request.locale, request.host)
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }
