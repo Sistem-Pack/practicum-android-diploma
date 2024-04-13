@@ -98,12 +98,20 @@
     <string name="place_work">Выбор места работы</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
+  
+    <!-- Экран "Выбор страны" -->
+    <string name="select_country">Выбор страны</string>
+    <string name="country_name">Россия</string>
 
     <!-- Экран "Выбор региона" -->
     <string name="region_name">Москва</string>
     <string name="select_region">Выбор региона</string>
     <string name="enter_region">Введите регион</string>
-    <string name="failed_message_region">Такой отрасли нет</string>
+    <string name="failed_message_region">Такого региона нет</string>
+
+    <!-- Экран "Выбор страны" -->
+    <string name="select_country">Выбор страны</string>
+    <string name="country_name">Россия</string>
 
 
 </resources>
