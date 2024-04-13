@@ -30,10 +30,13 @@ class IndustryRepositoryImpl(
                 )
             }
             ResponseStatus.NO_CONNECTION -> {
-                IndustrySearchResult(
-                    emptyList(),
-                    ResponseStatus.NO_CONNECTION
+                emit(
+                    IndustrySearchResult(
+                        emptyList(),
+                        ResponseStatus.NO_CONNECTION
+                    )
                 )
+
             }
             else -> {
                 emit(
