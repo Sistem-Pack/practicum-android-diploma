@@ -94,4 +94,10 @@
     <string name="not_found">Не удалось получить\n список</string>
     <string name="failed_message">Такой отрасли нет</string>
 
+    //Экран "Выбор места работы"
+    <string name="place_work">Выбор места работы</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+
+
 </resources>
