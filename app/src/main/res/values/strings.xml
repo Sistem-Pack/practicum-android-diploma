@@ -76,7 +76,7 @@
     <string name="conditions_value">•  сильная команда, с которой можно расти\n•  возможность влиять на процесс и результат\n•  расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
     <string name="url">https://hh.kz/vacancy/</string>
 
-    //Экран "Настройки фильтрации"
+    <!-- Экран "Настройки фильтрации" -->
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="places_of_work">Место работы</string>
     <string name="industry">Отрасль</string>
@@ -86,7 +86,7 @@
     <string name="reset">Сбросить</string>
     <string name="apply">Применить</string>
 
-    //Экран "Выбор отрасли"
+    <!-- Экран "Выбор отрасли" -->
     <string name="selection_industry">Выбор отрасли</string>
     <string name="enter_industry">Введите отрасль</string>
     <string name="choose">Выбрать</string>
@@ -94,7 +94,7 @@
     <string name="not_found">Не удалось получить\n список</string>
     <string name="failed_message">Такой отрасли нет</string>
 
-    //Экран "Выбор места работы"
+    <!-- Экран "Выбор места работы" -->
     <string name="place_work">Выбор места работы</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
