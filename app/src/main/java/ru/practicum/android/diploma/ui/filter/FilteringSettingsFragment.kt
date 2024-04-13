@@ -6,8 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.EditText
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -104,17 +105,10 @@ class FilteringSettingsFragment : Fragment() {
     }
 
     private fun createTextWatcher() {
-        val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
-                binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
-                installButtonResetVisibility()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
+        (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
+            binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
+            installButtonResetVisibility()
         }
-        binding!!.tietSalary.addTextChangedListener(simpleTextWatcher)
     }
 
     private fun installButtonResetVisibility() {
