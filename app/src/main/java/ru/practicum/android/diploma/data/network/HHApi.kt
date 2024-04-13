@@ -50,7 +50,7 @@ interface HHApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: DiplomPracticumWithHH"
     )
-    @GET("/industries/")
+    @GET("/areas/")
     suspend fun getAreas(
         @Query("locale") locale: String,
         @Query("host") host: String
