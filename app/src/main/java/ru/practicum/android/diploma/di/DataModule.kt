@@ -57,10 +57,8 @@ val dataModule = module {
     factory {
         AreasRequest()
     }
-    
+
     single<SharedPreferences> {
-        androidContext()
-            .getSharedPreferences(PRACTICUM_DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
+        androidContext().getSharedPreferences(PRACTICUM_DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
     }
-    
 }
