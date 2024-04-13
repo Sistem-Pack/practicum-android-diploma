@@ -6,20 +6,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
 import ru.practicum.android.diploma.presentation.filter.FilteringSettingsViewModel
 
 class FilteringSettingsFragment : Fragment() {
-    //private var buttonsVisibility = false
 
     private var binding: FragmentFilteringSettingsBinding? = null
 
@@ -37,7 +33,7 @@ class FilteringSettingsFragment : Fragment() {
         // нужен слушатеть лайф даты с классом фильтра
         // нужен метод который из лайфдаты выставит все данные
         // кнопка применить - ее видимость определяется отдельным методом при сравнении с
-            // последним сохраненным фильтром
+        // последним сохраненным фильтром
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.blue)
@@ -52,6 +48,7 @@ class FilteringSettingsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        checkTIETContent()
         checkButtonsVisibilityStatus()
     }
 
@@ -85,10 +82,20 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.tietSalary.text!!.clear()
             binding!!.cbNoSalary.isChecked = false
             binding!!.bReset.isVisible = false
+            checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
             checkButtonsVisibilityStatus()
         }
+        binding!!.ivJobPlaceClear.setOnClickListener {
+            binding!!.tietJobPlace.text!!.clear()
+            checkTIETContent()
+        }
+        binding!!.ivIndustryClear.setOnClickListener {
+            binding!!.tietIndustry.text!!.clear()
+            checkTIETContent()
+        }
+
     }
 
     private fun createTextWatcher() {
@@ -114,6 +121,24 @@ class FilteringSettingsFragment : Fragment() {
             || binding!!.cbNoSalary.isChecked
 
         binding!!.bReset.isVisible = buttonsVisibility
+    }
+
+    private fun checkTIETContent() {
+        if (binding!!.tietJobPlace.text!!.isNotEmpty()) {
+            binding!!.ivJobPlaceClear.isVisible = true
+            binding!!.ivArrowRightJobPlace.isVisible = false
+        } else {
+            binding!!.ivJobPlaceClear.isVisible = false
+            binding!!.ivArrowRightJobPlace.isVisible = true
+        }
+        if (binding!!.tietIndustry.text!!.isNotEmpty()) {
+            binding!!.ivIndustryClear.isVisible = true
+            binding!!.ivArrowRightIndustry.isVisible = false
+        } else {
+            binding!!.ivIndustryClear.isVisible = false
+            binding!!.ivArrowRightIndustry.isVisible = true
+        }
+
     }
 }
 
