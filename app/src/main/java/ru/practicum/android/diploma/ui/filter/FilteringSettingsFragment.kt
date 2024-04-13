@@ -49,7 +49,7 @@ class FilteringSettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkTIETContent()
-        checkButtonsVisibilityStatus()
+        installButtonResetVisibility()
     }
 
     override fun onDestroyView() {
@@ -74,7 +74,7 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
             binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
-            checkButtonsVisibilityStatus()
+            installButtonResetVisibility()
         }
         binding!!.bReset.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
@@ -85,14 +85,16 @@ class FilteringSettingsFragment : Fragment() {
             checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
-            checkButtonsVisibilityStatus()
+            installButtonResetVisibility()
         }
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
+            installButtonResetVisibility()
             checkTIETContent()
         }
         binding!!.ivIndustryClear.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
+            installButtonResetVisibility()
             checkTIETContent()
         }
 
@@ -105,7 +107,7 @@ class FilteringSettingsFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
                 binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
-                checkButtonsVisibilityStatus()
+                installButtonResetVisibility()
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -114,7 +116,7 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.tietSalary.addTextChangedListener(simpleTextWatcher)
     }
 
-    private fun checkButtonsVisibilityStatus() {
+    private fun installButtonResetVisibility() {
         val buttonsVisibility = binding!!.tietIndustry.text!!.isNotEmpty()
             || binding!!.tietJobPlace.text!!.isNotEmpty()
             || binding!!.tietSalary.text!!.isNotEmpty()
