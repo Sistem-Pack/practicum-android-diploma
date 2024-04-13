@@ -49,7 +49,7 @@ class RetrofitNetworkClient(
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }
-                } catch (error: UnknownHostException) {
+                } catch (error: Exception) {
                     Log.d(ERROR_TAG, "$error")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
