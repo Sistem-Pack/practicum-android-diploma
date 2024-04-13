@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.domain.areas.impl.AreasInteractor
+import ru.practicum.android.diploma.domain.areas.impl.AreasInteractorImpl
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractorImpl
 import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
@@ -32,5 +34,9 @@ val interactorModule = module {
 
     factory<IndustryInteractor> {
         IndustryInteractorImpl(get())
+    }
+
+    factory<AreasInteractor> {
+        AreasInteractorImpl(get())
     }
 }
