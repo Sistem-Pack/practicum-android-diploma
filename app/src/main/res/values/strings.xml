@@ -99,5 +99,9 @@
     <string name="country">Страна</string>
     <string name="region">Регион</string>
 
+    <!-- Экран "Выбор страны" -->
+    <string name="select_country">Выбор страны</string>
+    <string name="country_name">Россия</string>
+
 
 </resources>
