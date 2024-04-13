@@ -28,7 +28,8 @@ class FilteringSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        createClickListeners()
+        createFirstHalfClickListeners()
+        createSecondHalfClickListeners()
         createTextWatcher()
         // нужен слушатеть лайф даты с классом фильтра
         // нужен метод который из лайфдаты выставит все данные
@@ -43,7 +44,7 @@ class FilteringSettingsFragment : Fragment() {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
             }
         }
-        (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
+        // (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
     }
 
     override fun onResume() {
@@ -57,19 +58,9 @@ class FilteringSettingsFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun createClickListeners() {
+    private fun createFirstHalfClickListeners() {
         binding!!.ivBack.setOnClickListener {
             findNavController().navigateUp()
-        }
-        binding!!.ivArrowRightJobPlace.setOnClickListener {
-            findNavController().navigate(
-                FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToPlacesOfWorkFragment()
-            )
-        }
-        binding!!.ivArrowRightIndustry.setOnClickListener {
-            findNavController().navigate(
-                FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToIndustrySelectionFragment()
-            )
         }
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
@@ -87,6 +78,9 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.cbNoSalary.setOnClickListener {
             installButtonResetVisibility()
         }
+    }
+
+    private fun createSecondHalfClickListeners() {
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
             installButtonResetVisibility()
@@ -97,21 +91,28 @@ class FilteringSettingsFragment : Fragment() {
             installButtonResetVisibility()
             checkTIETContent()
         }
-
+        binding!!.ivArrowRightJobPlace.setOnClickListener {
+            findNavController().navigate(
+                FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToPlacesOfWorkFragment()
+            )
+        }
+        binding!!.ivArrowRightIndustry.setOnClickListener {
+            findNavController().navigate(
+                FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToIndustrySelectionFragment()
+            )
+        }
     }
 
     private fun createTextWatcher() {
         val simpleTextWatcher = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, start: Int, before: Int, count: Int) {
                 binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
                 installButtonResetVisibility()
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(p0: Editable?) {}
         }
         binding!!.tietSalary.addTextChangedListener(simpleTextWatcher)
     }
