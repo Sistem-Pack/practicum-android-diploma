@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 class AreasRepositoryImpl(
     val networkClient: NetworkClient,
     val request: AreasRequest
-): AreasRepository {
+) : AreasRepository {
     override fun getAreas(): Flow<AreasSearchResult> {
         TODO("Not yet implemented")
     }

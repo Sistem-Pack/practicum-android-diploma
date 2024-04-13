@@ -4,4 +4,4 @@ import ru.practicum.android.diploma.data.dto.Response
 
 data class AreasResponse(
     val areas: List<AreasDto>
-): Response()
+) : Response()
