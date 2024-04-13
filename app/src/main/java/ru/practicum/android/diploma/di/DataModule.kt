@@ -12,6 +12,8 @@ import ru.practicum.android.diploma.app.App
 import ru.practicum.android.diploma.app.PRACTICUM_DIPLOMA_PREFERENCES
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.converters.FavoriteVacancyDbConverter
+import ru.practicum.android.diploma.data.dto.areas.AreasRequest
+import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
@@ -48,8 +50,17 @@ val dataModule = module {
         FavoriteVacancyDbConverter()
     }
 
+    factory {
+        IndustriesRequest()
+    }
+
+    factory {
+        AreasRequest()
+    }
+    
     single<SharedPreferences> {
         androidContext()
             .getSharedPreferences(PRACTICUM_DIPLOMA_PREFERENCES, Context.MODE_PRIVATE)
     }
+    
 }

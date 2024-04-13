@@ -1,10 +1,14 @@
 package ru.practicum.android.diploma.di
 
 import org.koin.dsl.module
+import ru.practicum.android.diploma.domain.areas.impl.AreasInteractor
+import ru.practicum.android.diploma.domain.areas.impl.AreasInteractorImpl
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesInteractorImpl
 import ru.practicum.android.diploma.domain.details.VacancyDetailsInteractor
 import ru.practicum.android.diploma.domain.details.impl.VacancyDetailsInteractorImpl
+import ru.practicum.android.diploma.domain.industry.IndustryInteractor
+import ru.practicum.android.diploma.domain.industry.impl.IndustryInteractorImpl
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.domain.search.impl.VacancyInteractorImpl
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
@@ -30,6 +34,14 @@ val interactorModule = module {
         SharingInteractorImpl(get())
     }
 
+    factory<IndustryInteractor> {
+        IndustryInteractorImpl(get())
+    }
+
+    factory<AreasInteractor> {
+        AreasInteractorImpl(get())
+    }
+    
     factory<FiltersInteractor> {
         FiltersInteractorImpl(get())
     }
