@@ -111,7 +111,7 @@
     <TextView
         android:id="@+id/tvFailedRequestPlaceholder"
         style="@style/PlaceholderMessage"
-        android:text="@string/failed_message"
+        android:text="@string/failed_message_region"
         android:visibility="gone"
         app:drawableTopCompat="@drawable/placeholder_failed_request"
         app:layout_constraintBottom_toBottomOf="parent"

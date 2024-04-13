@@ -128,14 +128,16 @@
     </style>
 
     <style name="CountriesAndRegions">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_white</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/sixteen_size_text</item>
         <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
         <item name="fontWeight">400</item>
+        <item name="android:layout_marginStart">@dimen/four_space</item>
+        <item name="android:layout_marginEnd">@dimen/one_space</item>
+        <item name="android:paddingStart">@dimen/zero_space</item>
     </style>
 
     <!-- Стили для экранов фильтрации -->
