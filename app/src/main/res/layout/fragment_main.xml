@@ -1,19 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.MainFragment">
 
-    <TextView
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Главный экран"
-        android:textSize="40sp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/four_space" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightBorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/four_space" />
+
+    <TextView
+        android:id="@+id/tvSearchVacancies"
+        style="@style/VacancyHeadline"
+        android:text="@string/vacancies_search"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00" />
+
+    <ImageView
+        android:id="@+id/ivFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/two_space"
+        android:layout_marginRight="@dimen/two_space"
+        android:focusable="false"
+        android:src="@drawable/ic_filter_off"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etSearch"
+        style="@style/Search"
+        android:background="@drawable/rounded_search_edit_text"
+        android:focusableInTouchMode="true"
+        android:hint="@string/enter_request"
+        android:lines="1"
+        android:paddingStart="@dimen/three_and_a_half_space"
+        android:textCursorDrawable="@drawable/cursor_search"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/tvSearchVacancies"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/ivSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/eight_space"
+        android:layout_marginEnd="@dimen/five_space"
+        android:background="@drawable/rounded_search_edit_text"
+        android:src="@drawable/ic_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSearchVacancies" />
+
+
+    <ImageView
+        android:id="@+id/ivSearchPlaceholder"
+        android:layout_width="@dimen/zero_space"
+        android:layout_height="@dimen/zero_space"
+        android:layout_marginTop="@dimen/two_space"
+        android:src="@drawable/placeholder_search"
+        android:visibility="visible"
+        app:layout_constraintDimensionRatio="h,328:223"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
+
+    <ProgressBar
+        android:id="@+id/pbSearch"
+        android:layout_width="@dimen/twelve_space"
+        android:layout_height="@dimen/twelve_space"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
+
+    <TextView
+        android:id="@+id/tvNoInternetPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/error_no_internet"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
+
+    <TextView
+        android:id="@+id/tvServerErrorPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/server_error"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_server_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
+
+    <TextView
+        android:id="@+id/tvFailedRequestPlaceholder"
+        style="@style/PlaceholderMessage"
+        android:text="@string/failed_request"
+        android:visibility="gone"
+        app:drawableTopCompat="@drawable/placeholder_failed_request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/chip" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVacancyList"
+        android:layout_width="@dimen/zero_space"
+        android:layout_height="@dimen/zero_space"
+        android:layout_marginTop="@dimen/two_space"
+        android:animationCache="true"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch"
+        tools:listitem="@layout/item_vacancy" />
+
+    <View
+        android:id="@+id/vBackGroundForPBLoading"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/twenty_space"
+        android:visibility="visible"
+        android:background="@color/white_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="@dimen/twelve_space"
+        android:layout_height="@dimen/twelve_space"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/four_space"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip"
+        style="@style/ChipMessage"
+        android:text="@string/no_vacancy"
+        android:visibility="gone"
+        app:chipBackgroundColor="@color/blue"
+        app:chipCornerRadius="@dimen/corner_radius_12"
+        app:chipStrokeColor="@color/blue"
+        app:rippleColor="@color/blue"
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@id/leftBorder"
+        app:layout_constraintTop_toBottomOf="@id/etSearch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

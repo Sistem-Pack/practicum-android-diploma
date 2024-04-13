@@ -3,14 +3,17 @@ package ru.practicum.android.diploma.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Calendar
 
 @Entity(tableName = "vacancy_table")
 data class VacancyEntity(
-    @PrimaryKey @ColumnInfo(name = "vacancy_id")
-    val vacancyId: String, // ID вакансии
+    @PrimaryKey @ColumnInfo(name = "vacancy_id_in_database")
+    val vacancyIdInDatabase: Long, // ID вакансии в базе данных создается по времени добавления
+    @ColumnInfo(name = "vacancy_id")
+    val vacancyId: String, // ID вакансии на сервере
     @ColumnInfo(name = "vacancy_name")
-    val vacancyName: String, // Название проффесии
+    val vacancyName: String, // Название профессии
+    @ColumnInfo(name = "employer")
+    val employer: String, // Работодатель
     @ColumnInfo(name = "industry")
     val industry: String, // Отрасль
     @ColumnInfo(name = "country")
@@ -27,23 +30,16 @@ data class VacancyEntity(
     val contactsPhones: String, // Контакты Телефоны
     @ColumnInfo(name = "description")
     val description: String, // Описание вакансии
-    @ColumnInfo(name = "employment_name")
-    val employmentName: String, // Тип занятости
+    @ColumnInfo(name = "employment_type")
+    val employmentType: String, // Тип занятости
     @ColumnInfo(name = "experience_name")
     val experienceName: String, // Опыт работы
-    @ColumnInfo(name = "salary_currency")
-    val salaryCurrency: String, // ЗП Валюта
-    @ColumnInfo(name = "salary_from")
-    val salaryFrom: Int, // ЗП от
-    @ColumnInfo(name = "salary_to")
-    val salaryTo: Int, // ЗП до
+    @ColumnInfo(name = "salary")
+    val salary: String, // ЗП
     @ColumnInfo(name = "key_skills")
     val keySkills: String, // Ключевые обязанности
     @ColumnInfo(name = "artwork_url")
     val artworkUrl: String, // Изображение
     @ColumnInfo(name = "is_favorite")
     val isFavorite: Boolean, // В избранном
-    @ColumnInfo(name = "add_in_db")
-    val addInDataBase: Long = Calendar.getInstance().time.time // Запись внесена в БД
-
 )

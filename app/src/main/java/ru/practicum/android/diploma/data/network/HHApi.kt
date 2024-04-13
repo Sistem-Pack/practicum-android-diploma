@@ -17,14 +17,20 @@ interface HHApi {
     )
     @GET("/vacancies/")
     suspend fun searchVacancies(
-        @QueryMap params: Map<String, String>
+        @QueryMap params: HashMap<String, String>
     ): VacancyResponse
 
-    @GET("/vacancies/")
+    @GET("/vacancies?search_field=name")
     suspend fun searchVacancies(
-        @Query("text") query: String
+        @Query("text") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
     ): VacancyResponse
 
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: DiplomPracticumWithHH"
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun searchVacancyDetails(@Path("vacancy_id") id: String): VacancyDetailsResponse
 

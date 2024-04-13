@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("androidx.navigation.safeargs")
     id("kotlin-kapt")
 }
 
@@ -44,6 +45,7 @@ android {
 dependencies {
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
+    implementation(libs.androidX.recyclerview)
 
     // UI layer libraries
     implementation(libs.ui.material)
