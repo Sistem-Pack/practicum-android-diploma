@@ -49,20 +49,10 @@ class RetrofitNetworkClient(
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }
-                } catch (error: Exception) {
+                } catch (error: RuntimeException) {
                     Log.d(ERROR_TAG, "$error")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
-                    }
-                } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                        resultCode = if (error.message.equals("HTTP 404 ")) {
-                            ABSENCE_CODE
-                        } else {
-                            0
-                        }
                     }
                 }
             }
