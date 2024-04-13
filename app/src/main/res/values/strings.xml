@@ -109,9 +109,5 @@
     <string name="enter_region">Введите регион</string>
     <string name="failed_message_region">Такого региона нет</string>
 
-    <!-- Экран "Выбор страны" -->
-    <string name="select_country">Выбор страны</string>
-    <string name="country_name">Россия</string>
-
 
 </resources>
