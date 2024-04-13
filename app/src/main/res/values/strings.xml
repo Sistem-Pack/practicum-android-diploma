@@ -98,6 +98,9 @@
     <string name="place_work">Выбор места работы</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
+    <string name="region_name">Москва</string>
+    <string name="select_region">Выбор региона</string>
+    <string name="enter_region">Введите регион</string>
 
 
 </resources>
