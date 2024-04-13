@@ -6,7 +6,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
-import ru.practicum.android.diploma.data.dto.areas.AreasResponse
+import ru.practicum.android.diploma.data.dto.areas.AreasDto
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyResponse
@@ -54,6 +54,6 @@ interface HHApi {
     suspend fun getAreas(
         @Query("locale") locale: String,
         @Query("host") host: String
-    ): AreasResponse
+    ): List<AreasDto>
 
 }
