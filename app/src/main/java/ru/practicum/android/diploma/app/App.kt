@@ -9,6 +9,9 @@ import ru.practicum.android.diploma.di.repositoryModule
 import ru.practicum.android.diploma.di.utilitiesModule
 import ru.practicum.android.diploma.di.viewModelModule
 
+const val PRACTICUM_DIPLOMA_PREFERENCES = "practicum_diploma_preferences"
+const val FILTERS_KEY = "key_for_filters"
+
 class App : Application() {
 
     override fun onCreate() {

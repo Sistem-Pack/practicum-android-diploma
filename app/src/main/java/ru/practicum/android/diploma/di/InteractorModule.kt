@@ -11,6 +11,8 @@ import ru.practicum.android.diploma.domain.industry.IndustryInteractor
 import ru.practicum.android.diploma.domain.industry.impl.IndustryInteractorImpl
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.domain.search.impl.VacancyInteractorImpl
+import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
+import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractorImpl
 import ru.practicum.android.diploma.domain.sharing.SharingInteractor
 import ru.practicum.android.diploma.domain.sharing.impl.SharingInteractorImpl
 
@@ -38,5 +40,9 @@ val interactorModule = module {
 
     factory<AreasInteractor> {
         AreasInteractorImpl(get())
+    }
+
+    factory<FiltersInteractor> {
+        FiltersInteractorImpl(get())
     }
 }
