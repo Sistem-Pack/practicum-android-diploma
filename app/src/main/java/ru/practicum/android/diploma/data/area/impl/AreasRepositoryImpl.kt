@@ -57,7 +57,7 @@ class AreasRepositoryImpl(
         }
     }
 
-    fun formatToAreasCounty(dto: List<AreasDto>): List<AreaCountry> {
+    private fun formatToAreasCounty(dto: List<AreasDto>): List<AreaCountry> {
         val resultListOfAreasCountry = mutableListOf<AreaCountry>()
         for (country in dto) {
             if (country.parentId.isNullOrEmpty()) {
@@ -72,7 +72,7 @@ class AreasRepositoryImpl(
         return resultListOfAreasCountry
     }
 
-    fun formatToAreasSubject(dto: List<AreasDto>): List<AreaSubject> {
+    private fun formatToAreasSubject(dto: List<AreasDto>): List<AreaSubject> {
         val resultListOfAreasSubject = mutableListOf<AreaSubject>()
         for (country in dto) {
             country.areas!!.forEach { subjectRegion ->
@@ -83,19 +83,26 @@ class AreasRepositoryImpl(
                         subjectRegion.name
                     )
                 )
-                if (!subjectRegion.areas.isNullOrEmpty()) {
-                    subjectRegion.areas.forEach { subjectCity ->
-                        resultListOfAreasSubject.add(
-                            AreaSubject(
-                                subjectCity.id,
-                                subjectCity.parentId ?: "",
-                                subjectCity.name
-                            )
-                        )
-                    }
-                }
+                val cities = subjectRegion.areas?.let { formatToAreasSubjectCity(it) }
+                cities?.let { resultListOfAreasSubject.addAll(it) }
             }
         }
         return resultListOfAreasSubject
+    }
+
+    private fun formatToAreasSubjectCity(dto: List<AreasDto>): List<AreaSubject> {
+        val resultListOfCitiesSubjec = mutableListOf<AreaSubject>()
+        if (!dto.isNullOrEmpty()) {
+            for (city in dto) {
+                resultListOfCitiesSubjec.add(
+                    AreaSubject(
+                        city.id,
+                        city.parentId ?: "",
+                        city.name
+                    )
+                )
+            }
+        }
+        return resultListOfCitiesSubjec
     }
 }
