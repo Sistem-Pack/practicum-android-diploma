@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data.dto.vacancy
+package ru.practicum.android.diploma.data.dto.industry
 
 data class IndustryNestedDto(
     val id: String,

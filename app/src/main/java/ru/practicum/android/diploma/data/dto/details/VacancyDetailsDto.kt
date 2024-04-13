@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.CountryDto
 import ru.practicum.android.diploma.data.dto.vacancy.EmployerDto
 import ru.practicum.android.diploma.data.dto.vacancy.EmploymentDto
 import ru.practicum.android.diploma.data.dto.vacancy.ExperienceDto
-import ru.practicum.android.diploma.data.dto.vacancy.IndustryDto
+import ru.practicum.android.diploma.data.dto.industry.IndustryDto
 import ru.practicum.android.diploma.data.dto.vacancy.KeySkillsDto
 import ru.practicum.android.diploma.data.dto.vacancy.SalaryDto
 

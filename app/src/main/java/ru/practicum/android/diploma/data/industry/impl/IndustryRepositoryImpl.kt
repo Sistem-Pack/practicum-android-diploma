@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
-import ru.practicum.android.diploma.data.dto.vacancy.IndustryDto
+import ru.practicum.android.diploma.data.dto.industry.IndustryDto
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.industry.IndustryRepository
 import ru.practicum.android.diploma.domain.models.ResponseStatus
