@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.data.dto.vacancy
+package ru.practicum.android.diploma.data.dto.industry
 
 /**
  * Data-класс dto Возвращает двухуровневый справочник всех отраслей
