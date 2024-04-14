@@ -4,7 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.areas.AreasDto
 import ru.practicum.android.diploma.data.dto.areas.AreasRequest
-import ru.practicum.android.diploma.data.dto.areas.AreasResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.areas.impl.AreasRepository
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -18,13 +17,13 @@ class AreasRepositoryImpl(
 ) : AreasRepository {
     override fun getAreas(): Flow<AreasSearchResult> = flow {
         val response = networkClient.getAreas(request)
-        when (response.resultResponse) {
+        when (response.resultResponseStatus) {
             ResponseStatus.OK -> {
-                val countyList: List<AreaCountry> = (response as AreasResponse).areas.let {
+                val countyList = response.areas.let {
                     formatToAreasCounty(it)
                 }
 
-                val subjectList: List<AreaSubject> = response.areas.let {
+                val subjectList = response.areas.let {
                     formatToAreasSubject(it)
                 }
                 emit(
