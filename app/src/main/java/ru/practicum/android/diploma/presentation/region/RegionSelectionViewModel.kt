@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.region
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +10,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
-import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
+import ru.practicum.android.diploma.domain.models.Filters
+import ru.practicum.android.diploma.domain.models.ResponseStatus
+import ru.practicum.android.diploma.domain.models.areas.AreaSubject
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
+import ru.practicum.android.diploma.ui.region.model.RegionFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class RegionSelectionViewModel(
     private val regionInteractor: AreasInteractor,
@@ -20,10 +25,10 @@ class RegionSelectionViewModel(
 ) : ViewModel() {
     private var requestText = ""
     private var job: Job? = null
-    private var list = ArrayList<Vacancy>()
+    private val regions: ArrayList<AreaSubject> = ArrayList()
 
-    private val _liveData = MutableLiveData<String>()
-    val liveData: LiveData<String> = _liveData
+    private val _regionStateData = MutableLiveData<RegionFragmentStatus>()
+    val regionStateData: LiveData<RegionFragmentStatus> = _regionStateData
 
     fun onDestroy() {
         job?.cancel()
@@ -50,59 +55,76 @@ class RegionSelectionViewModel(
     }
 
     fun search() {
-        sendRequest()
+        /*val filteredRegions: ArrayList<AreaSubject> = ArrayList()
+        regions
+        if (idParentRegionFromSavedData.isNotEmpty()) {
+            val filtered: ArrayList<AreaSubject> = ArrayList()
+            filtered.addAll(regions.filter { it.parentId == idParentRegionFromSavedData })
+            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(filtered))
+        } else {
+            regions.addAll(result.listSubject)
+            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+        }*/
     }
 
-    private fun sendRequest() {
+    fun getRegions() {
         viewModelScope.launch(Dispatchers.IO) {
-            val countryRegionId: String = filtersInteractor.getFiltersFromSharedPrefs().countryId
-            regionInteractor.getAreas().collect { result ->
-                when (result.responseStatus) {
-                    ResponseStatus.OK -> {
-                        if (_page.value!! == 0) {
-                            list.clear()
-                            list.addAll(result.results)
-                            foundVacancies = result.found
-                            _listOfVacancies.postValue(
-                                MainFragmentStatus.ListOfVacancies(result.results)
-                            )
-                            maxPages = result.pages
-                        } else {
-                            list.addAll(result.results)
-                            _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+            try {
+                regionInteractor.getAreas().collect { result ->
+                    when (result.responseStatus) {
+                        ResponseStatus.OK -> {
+                            val idParentRegionFromSavedData = filtersInteractor.getFiltersFromSharedPrefs().regionId
+                            if (idParentRegionFromSavedData.isNotEmpty()) {
+                                regions.addAll(regions.filter { it.parentId == idParentRegionFromSavedData })
+                                _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+                            } else {
+                                regions.addAll(result.listSubject)
+                                _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+                            }
                         }
-                    }
 
-                    ResponseStatus.BAD -> {
-                        list.clear()
-                        _liveData.postValue(MainFragmentStatus.Bad)
-                    }
+                        ResponseStatus.BAD -> {
+                            _regionStateData.postValue(RegionFragmentStatus.Bad)
+                        }
 
-                    ResponseStatus.DEFAULT -> {
-                        _liveData.postValue(MainFragmentStatus.Default)
-                    }
+                        ResponseStatus.NO_CONNECTION -> {
+                            _regionStateData.postValue(RegionFragmentStatus.NoConnection)
+                        }
 
-                    ResponseStatus.NO_CONNECTION -> {
-                        _liveData.postValue(MainFragmentStatus.NoConnection)
+                        ResponseStatus.LOADING, ResponseStatus.DEFAULT -> Unit
                     }
-
-                    ResponseStatus.LOADING -> Unit
                 }
-            }
-        } catch (e: SocketTimeoutException) {
-            Log.d(ERROR_TAG, "ошибка: ${e.message}")
-            _liveData.postValue(MainFragmentStatus.ShowToastOnLoadingTrouble)
-        }
+            } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
             }
         }
     }
+
+    fun setFilters(selectedRegionItem: AreaSubject) {
+        viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractor.getFiltersFromSharedPrefs().apply {
+                filtersInteractor.putFiltersInSharedPrefs(
+                    Filters(
+                        countryId = selectedRegionItem.parentId,
+                        countryName = this.countryName,
+                        regionId = selectedRegionItem.id,
+                        regionName = selectedRegionItem.name,
+                        industryId = this.industryId,
+                        industryName = this.industryName,
+                        salary = this.salary,
+                        doNotShowWithoutSalarySetting = this.doNotShowWithoutSalarySetting
+                    )
+                )
+            }
+        }
+    }
+
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val ERROR_TAG = "ErrorLoadingProcess"
     }
-
 }
 
 /*

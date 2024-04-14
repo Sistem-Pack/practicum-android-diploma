@@ -4,27 +4,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.domain.models.areas.AreaCountry
-import ru.practicum.android.diploma.ui.country.adapter.RegionViewHolder
+import ru.practicum.android.diploma.domain.models.areas.AreaSubject
 
 class RegionAdapter(
-    private val areas: List<AreaCountry>
+    private val regions: List<AreaSubject>
 ) : RecyclerView.Adapter<RegionViewHolder>() {
 
-    private var itemClickListener: ((AreaCountry) -> Unit)? = null
+    var itemClickListener: ((AreaSubject) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegionViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_region, parent, false)
         return RegionViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return areas.size
+        return regions.size
     }
 
     override fun onBindViewHolder(holder: RegionViewHolder, position: Int) {
-        holder.bind(areas[position])
+        holder.bind(regions[position])
         holder.itemView.setOnClickListener {
-            itemClickListener?.invoke(areas[position])
+            itemClickListener?.invoke(regions[position])
         }
     }
 }
