@@ -12,8 +12,8 @@ import ru.practicum.android.diploma.domain.models.areas.AreaSubject
 import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 
 class AreasRepositoryImpl(
-    val networkClient: NetworkClient,
-    val request: AreasRequest
+    private val networkClient: NetworkClient,
+    private val request: AreasRequest
 ) : AreasRepository {
     override fun getAreas(): Flow<AreasSearchResult> = flow {
         val response = networkClient.getAreas(request)

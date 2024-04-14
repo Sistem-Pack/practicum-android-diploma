@@ -4,5 +4,6 @@ import ru.practicum.android.diploma.domain.models.ResponseStatus
 
 data class AreasResponse(
     val areas: List<AreasDto>,
-    val resultResponseStatus: ResponseStatus = ResponseStatus.DEFAULT
+    val resultResponseStatus: ResponseStatus = ResponseStatus.DEFAULT,
+    val resultCode: Int = 0,
 )

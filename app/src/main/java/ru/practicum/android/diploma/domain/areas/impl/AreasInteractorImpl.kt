@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.domain.areas.AreasInteractor
 import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 
 class AreasInteractorImpl(
-    val repository: AreasRepository
+    private val repository: AreasRepository
 ) : AreasInteractor {
     override fun getAreas(): Flow<AreasSearchResult> {
         return repository.getAreas()
