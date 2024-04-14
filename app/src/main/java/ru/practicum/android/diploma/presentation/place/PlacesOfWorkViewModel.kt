@@ -56,7 +56,7 @@ class PlacesOfWorkViewModel(
                 filtersInteractor.putFiltersInSharedPrefs(
                     Filters(
                         countryId = this.countryId,
-                        countryName = this.regionId,
+                        countryName = this.countryName,
                         regionId = "",
                         regionName = "",
                         industryId = this.industryId,
