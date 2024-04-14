@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -170,14 +171,6 @@ class MainFragment : Fragment() {
             is MainFragmentStatus.NoConnection -> {
                 showNoConnectionStatus()
             }
-
-            is MainFragmentStatus.ShowToastOnLoadingTrouble -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_in_loading_process),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 
@@ -195,6 +188,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showOkStatus(listVacancies: List<Vacancy>) {
         vacancies.clear()
         if (viewModel.page.value!! == 0) {
@@ -226,6 +220,11 @@ class MainFragment : Fragment() {
         vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.error_in_loading_process),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun showNoConnectionStatus() {

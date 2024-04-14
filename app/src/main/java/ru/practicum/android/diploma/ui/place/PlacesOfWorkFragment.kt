@@ -34,11 +34,9 @@ class PlacesOfWorkFragment : Fragment() {
         }
 
         binding!!.ivArrowRightRegion.setOnClickListener {
-            if (binding!!.tietCountry.text!!.isNotEmpty()) {
-                findNavController().navigate(
-                    PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
-                )
-            }
+            findNavController().navigate(
+                PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
+            )
         }
 
         viewModel.preloadCountryState()

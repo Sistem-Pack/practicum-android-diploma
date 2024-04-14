@@ -12,6 +12,7 @@ import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class RetrofitNetworkClient(
@@ -31,8 +32,14 @@ class RetrofitNetworkClient(
                     response.apply {
                         resultResponse = ResponseStatus.OK
                     }
-                } catch (e: UnknownHostException) {
-                    Log.d(ERROR_TAG, "$e")
+                } catch (error: UnknownHostException) {
+                    Log.d(ERROR_TAG, "$error")
+                    Response().apply { resultResponse = ResponseStatus.BAD }
+                } catch (error: HttpException) {
+                    Log.d(ERROR_TAG, "$error")
+                    Response().apply { resultResponse = ResponseStatus.BAD }
+                } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, "$error")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
@@ -65,6 +72,11 @@ class RetrofitNetworkClient(
                         } else {
                             0
                         }
+                    }
+                } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, "$error")
+                    Response().apply {
+                        resultResponse = ResponseStatus.BAD
                     }
                 }
             }
@@ -109,7 +121,7 @@ class RetrofitNetworkClient(
 
     override suspend fun getAreas(request: AreasRequest): AreasResponse {
         return if (!util.isConnected()) {
-             AreasResponse(
+            AreasResponse(
                 emptyList(),
                 resultResponseStatus = ResponseStatus.NO_CONNECTION
             )
@@ -117,27 +129,22 @@ class RetrofitNetworkClient(
             withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getAreas(request.locale, request.host)
-                    AreasResponse(
-                        response.toList(),
-                        resultResponseStatus = ResponseStatus.OK
-                    )
+                    AreasResponse(response.toList(),resultResponseStatus = ResponseStatus.OK)
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    AreasResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD
-                    )
+                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.BAD)
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
-                    AreasResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
+                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.NO_CONNECTION,
                         resultCode = if (error.message.equals("HTTP 404 ")) {
                             ABSENCE_CODE
                         } else {
                             0
                         }
                     )
+                } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, "$error")
+                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.BAD)
                 }
             }
         }

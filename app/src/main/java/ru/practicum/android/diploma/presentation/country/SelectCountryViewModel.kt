@@ -80,6 +80,7 @@ class SelectCountryViewModel(
 
     companion object {
         private const val ANYMORE_REGION_ITEM = "Другие регионы"
+        private const val ERROR_TAG = "SelectCountryViewModelError"
     }
 
 }

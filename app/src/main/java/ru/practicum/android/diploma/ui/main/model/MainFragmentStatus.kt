@@ -8,5 +8,4 @@ sealed class MainFragmentStatus {
     data object NoConnection : MainFragmentStatus()
     data object Loading : MainFragmentStatus()
     data object Default : MainFragmentStatus()
-    data object ShowToastOnLoadingTrouble : MainFragmentStatus()
 }
