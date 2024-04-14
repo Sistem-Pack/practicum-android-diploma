@@ -80,9 +80,16 @@ class RegionSelectionFragment : Fragment() {
                 binding!!.rvRegion.visibility = View.GONE
             }
 
-            is RegionFragmentStatus.Bad, RegionFragmentStatus.NoLoaded -> {
+            is RegionFragmentStatus.Bad -> {
                 binding!!.tvFailedRequestPlaceholder.visibility = View.GONE
                 binding!!.tvNotFoundPlaceholder.visibility = View.VISIBLE
+                binding!!.tvNoInternetPlaceholder.visibility = View.GONE
+                binding!!.rvRegion.visibility = View.GONE
+            }
+
+            is RegionFragmentStatus.NoLoaded -> {
+                binding!!.tvFailedRequestPlaceholder.visibility = View.VISIBLE
+                binding!!.tvNotFoundPlaceholder.visibility = View.GONE
                 binding!!.tvNoInternetPlaceholder.visibility = View.GONE
                 binding!!.rvRegion.visibility = View.GONE
             }

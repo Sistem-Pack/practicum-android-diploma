@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
 import ru.practicum.android.diploma.domain.models.Filters
@@ -43,25 +44,32 @@ class RegionSelectionViewModel(
 
     fun searchDebounce() {
         job?.cancel()
-        if (utilities.eventDebounce(viewModelScope, SEARCH_DEBOUNCE_DELAY_MILLIS)) {
-            job = viewModelScope.launch {
-                search()
-            }
-        }
-        /*job = viewModelScope.launch {
+        job = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search()
-        }*/
+        }
     }
 
     fun getAllRegions() {
-        _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+        if (regions.isEmpty()) {
+            _regionStateData.postValue(RegionFragmentStatus.NoConnection)
+        } else {
+            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+        }
     }
 
     fun search() {
-        val filteredRegions: ArrayList<AreaSubject> = ArrayList()
-        filteredRegions.addAll(regions.filter { it.name.matches(Regex(".*$requestText.*")) })
-        _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(filteredRegions))
+        if (regions.isEmpty()) {
+            _regionStateData.postValue(RegionFragmentStatus.Bad)
+        } else {
+            val filteredRegions: ArrayList<AreaSubject> = ArrayList()
+            filteredRegions.addAll(regions.filter { it.name.matches(Regex(".*$requestText.*")) })
+            if (filteredRegions.isEmpty()) {
+                _regionStateData.postValue(RegionFragmentStatus.NoLoaded)
+            } else {
+                _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(filteredRegions))
+            }
+        }
     }
 
     fun getRegions() {
