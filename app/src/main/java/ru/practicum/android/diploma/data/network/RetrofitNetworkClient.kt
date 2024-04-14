@@ -55,14 +55,10 @@ class RetrofitNetworkClient(
             return withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.searchVacancyDetails(request.id)
-                    response.apply {
-                        resultResponse = ResponseStatus.OK
-                    }
+                    response.apply { resultResponse = ResponseStatus.OK }
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                    }
+                    Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
                     Response().apply {
@@ -75,15 +71,11 @@ class RetrofitNetworkClient(
                     }
                 } catch (error: SocketTimeoutException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                    }
+                    Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
         } else {
-            return Response().apply {
-                resultResponse = ResponseStatus.NO_CONNECTION
-            }
+            return Response().apply { resultResponse = ResponseStatus.NO_CONNECTION }
         }
     }
 
@@ -92,14 +84,10 @@ class RetrofitNetworkClient(
             return withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getIndustries(request.locale, request.host)
-                    response.apply {
-                        resultResponse = ResponseStatus.OK
-                    }
+                    response.apply { resultResponse = ResponseStatus.OK }
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                    }
+                    Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
                     Response().apply {
