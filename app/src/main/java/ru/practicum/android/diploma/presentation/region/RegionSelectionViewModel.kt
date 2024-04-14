@@ -73,9 +73,10 @@ class RegionSelectionViewModel(
                 regionInteractor.getAreas().collect { result ->
                     when (result.responseStatus) {
                         ResponseStatus.OK -> {
-                            val idParentRegionFromSavedData = filtersInteractor.getFiltersFromSharedPrefs().regionId
+                            val idParentRegionFromSavedData = filtersInteractor.getFiltersFromSharedPrefs().countryId
                             if (idParentRegionFromSavedData.isNotEmpty()) {
-                                regions.addAll(regions.filter { it.parentId == idParentRegionFromSavedData })
+                                val loadedRegions: ArrayList<AreaSubject> = ArrayList()
+                                regions.addAll(result.listSubject.filter { it.parentId == idParentRegionFromSavedData })
                                 _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
                             } else {
                                 regions.addAll(result.listSubject)
