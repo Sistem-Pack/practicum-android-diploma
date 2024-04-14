@@ -7,16 +7,16 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="@dimen/twelve_and_a_half_space"
-        android:layout_height="@dimen/twelve_and_a_half_space"
+        android:layout_width="@dimen/twelve_space"
+        android:layout_height="@dimen/twelve_space"
         android:layout_marginTop="@dimen/four_space"
-        android:src="@drawable/logo_plug"
-        android:scaleType="fitXY"
-        android:padding="@dimen/one_point_space"
         android:background="@drawable/vacancy_card"
+        android:padding="@dimen/one_point_space"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_plug"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/logo_plug"/>
+        tools:src="@drawable/logo_plug" />
 
     <TextView
         android:id="@+id/tvVacancyName"
