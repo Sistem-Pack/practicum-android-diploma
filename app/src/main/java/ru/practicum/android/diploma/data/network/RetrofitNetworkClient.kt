@@ -140,7 +140,8 @@ class RetrofitNetworkClient(
                     Log.d(ERROR_TAG, "$error")
                     AreasResponse(
                         emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD)
+                        resultResponseStatus = ResponseStatus.BAD
+                    )
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
                     AreasResponse(
