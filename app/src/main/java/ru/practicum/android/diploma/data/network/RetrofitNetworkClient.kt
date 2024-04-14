@@ -138,10 +138,14 @@ class RetrofitNetworkClient(
                     )
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.BAD)
+                    AreasResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.BAD)
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
-                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.NO_CONNECTION,
+                    AreasResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
                         resultCode = if (error.message.equals("HTTP 404 ")) {
                             ABSENCE_CODE
                         } else {
@@ -150,7 +154,10 @@ class RetrofitNetworkClient(
                     )
                 } catch (error: SocketTimeoutException) {
                     Log.d(ERROR_TAG, "$error")
-                    AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.BAD)
+                    AreasResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.BAD
+                    )
                 }
             }
         }
