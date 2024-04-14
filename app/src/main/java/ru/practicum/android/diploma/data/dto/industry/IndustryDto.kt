@@ -4,7 +4,7 @@ package ru.practicum.android.diploma.data.dto.industry
  * Data-класс dto Возвращает двухуровневый справочник всех отраслей
  * @param id - id
  * @param name - наименование отрасли
- * @param name - список отраслей
+ * @param industries - список отраслей
  */
 
 data class IndustryDto(

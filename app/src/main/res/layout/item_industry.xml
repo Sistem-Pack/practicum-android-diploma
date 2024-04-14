@@ -10,8 +10,11 @@
         style="@style/VacancyDetails"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/three_space"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/one_and_a_half_space"
+        android:layout_marginEnd="@dimen/one_space"
+        android:layout_marginBottom="@dimen/one_and_a_half_space"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxIndustry"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/industry_name" />
@@ -20,13 +23,14 @@
         android:id="@+id/checkboxIndustry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/one_and_a_half_space"
         android:layout_marginEnd="@dimen/one_space"
+        android:layout_marginBottom="@dimen/one_and_a_half_space"
         android:background="@drawable/custom_checkbox_background"
         android:button="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
         tools:checked="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

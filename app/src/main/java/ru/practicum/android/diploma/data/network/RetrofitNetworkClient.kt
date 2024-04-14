@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.data.dto.areas.AreasRequest
 import ru.practicum.android.diploma.data.dto.areas.AreasResponse
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
+import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
@@ -87,34 +88,38 @@ class RetrofitNetworkClient(
         }
     }
 
-    override suspend fun getIndustries(request: IndustriesRequest): Response {
-        if (util.isConnected()) {
-            return withContext(Dispatchers.IO) {
+    override suspend fun getIndustries(request: IndustriesRequest): IndustriesResponse {
+        return if (!util.isConnected()) {
+            IndustriesResponse(
+                emptyList(),
+                resultResponseStatus = ResponseStatus.NO_CONNECTION
+            )
+        } else {
+            withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getIndustries(request.locale, request.host)
-                    response.apply {
-                        resultResponse = ResponseStatus.OK
-                    }
+                    IndustriesResponse(
+                        response.toList(),
+                        resultResponseStatus = ResponseStatus.OK
+                    )
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                    }
+                    IndustriesResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.BAD
+                    )
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
+                    IndustriesResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
                         resultCode = if (error.message.equals("HTTP 404 ")) {
                             ABSENCE_CODE
                         } else {
                             0
                         }
-                    }
+                    )
                 }
-            }
-        } else {
-            return Response().apply {
-                resultResponse = ResponseStatus.NO_CONNECTION
             }
         }
     }
