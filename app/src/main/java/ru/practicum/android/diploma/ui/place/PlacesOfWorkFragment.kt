@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentPlacesOfWorkBinding
 import ru.practicum.android.diploma.presentation.place.PlacesOfWorkViewModel
+import ru.practicum.android.diploma.ui.place.model.PlacesOfWorkFragmentStatus
 
 class PlacesOfWorkFragment : Fragment() {
 
@@ -22,6 +23,10 @@ class PlacesOfWorkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding!!.ivBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding!!.ivArrowRightCountry.setOnClickListener {
             findNavController().navigate(
                 PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToSelectCountryFragment()
@@ -29,9 +34,33 @@ class PlacesOfWorkFragment : Fragment() {
         }
 
         binding!!.ivArrowRightRegion.setOnClickListener {
-            findNavController().navigate(
-                PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
-            )
+            if (binding!!.tietCountry.text!!.isNotEmpty()) {
+                findNavController().navigate(
+                    PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
+                )
+            }
+        }
+
+        viewModel.preloadCountryState()
+
+        viewModel.placeOfWorkState.observe(viewLifecycleOwner) {
+            showAllSelectedPlaceData(it)
+        }
+
+        binding!!.bChoose.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun showAllSelectedPlaceData(data: PlacesOfWorkFragmentStatus) {
+        when (data) {
+            is PlacesOfWorkFragmentStatus.SavedPlacesFilter -> {
+                binding!!.tietCountry.setText(data.countryName)
+                binding!!.tietRegion.setText(data.regionName)
+                if (data.countryName.isNotEmpty()) {
+                    binding!!.bChoose.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

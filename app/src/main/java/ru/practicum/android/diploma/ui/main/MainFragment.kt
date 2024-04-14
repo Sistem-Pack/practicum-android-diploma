@@ -171,7 +171,7 @@ class MainFragment : Fragment() {
                 showNoConnectionStatus()
             }
 
-            is MainFragmentStatus.showToastOnLoadingTrouble -> {
+            is MainFragmentStatus.ShowToastOnLoadingTrouble -> {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.error_in_loading_process),
