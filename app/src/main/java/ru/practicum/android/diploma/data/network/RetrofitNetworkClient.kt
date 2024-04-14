@@ -137,13 +137,11 @@ class RetrofitNetworkClient(
                         resultResponseStatus = ResponseStatus.OK
                     )
                 } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, "$error")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
                     )
                 } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "$error")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.NO_CONNECTION,
@@ -154,7 +152,6 @@ class RetrofitNetworkClient(
                         }
                     )
                 } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, "$error")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
