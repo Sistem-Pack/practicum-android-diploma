@@ -63,6 +63,7 @@ class RegionSelectionFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun showRegion(regionScreenStatus: RegionFragmentStatus) {
+        hideKeyboard()
         when (regionScreenStatus) {
             is RegionFragmentStatus.ListOfRegions -> {
                 regions.clear()
@@ -101,6 +102,7 @@ class RegionSelectionFragment : Fragment() {
                 binding!!.ivRegion.setImageResource(R.drawable.ic_search)
                 hideAllView()
                 breakSearch()
+                viewModel.getAllRegions()
             } else {
                 binding!!.ivRegion.setImageResource(R.drawable.ic_clear)
                 if (editTextValue != viewModel.getRequestText()) {
@@ -132,7 +134,6 @@ class RegionSelectionFragment : Fragment() {
 
     private fun breakSearch() {
         viewModel.onDestroy()
-        regions.clear()
         binding!!.rvRegion.visibility = View.GONE
     }
 }

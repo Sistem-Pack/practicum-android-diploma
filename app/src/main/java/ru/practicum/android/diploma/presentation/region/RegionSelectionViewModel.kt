@@ -50,21 +50,14 @@ class RegionSelectionViewModel(
         }
     }
 
-    fun clickDebounce(): Boolean {
-        return utilities.eventDebounce(viewModelScope, CLICK_DEBOUNCE_DELAY_MILLIS)
+    fun getAllRegions() {
+        _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
     }
 
     fun search() {
-        /*val filteredRegions: ArrayList<AreaSubject> = ArrayList()
-        regions
-        if (idParentRegionFromSavedData.isNotEmpty()) {
-            val filtered: ArrayList<AreaSubject> = ArrayList()
-            filtered.addAll(regions.filter { it.parentId == idParentRegionFromSavedData })
-            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(filtered))
-        } else {
-            regions.addAll(result.listSubject)
-            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
-        }*/
+        val filteredRegions: ArrayList<AreaSubject> = ArrayList()
+        filteredRegions.addAll(regions.filter { it.name.matches(Regex(".*$requestText.*")) })
+        _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(filteredRegions))
     }
 
     fun getRegions() {
@@ -75,7 +68,6 @@ class RegionSelectionViewModel(
                         ResponseStatus.OK -> {
                             val idParentRegionFromSavedData = filtersInteractor.getFiltersFromSharedPrefs().countryId
                             if (idParentRegionFromSavedData.isNotEmpty()) {
-                                val loadedRegions: ArrayList<AreaSubject> = ArrayList()
                                 regions.addAll(result.listSubject.filter { it.parentId == idParentRegionFromSavedData })
                                 _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
                             } else {
@@ -127,49 +119,3 @@ class RegionSelectionViewModel(
         private const val ERROR_TAG = "ErrorLoadingProcess"
     }
 }
-
-/*
-areasInteractor.getAreas().collect { areasSearchResult ->
-    when (areasSearchResult.responseStatus) {
-
-    }
-
-try {
-    vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
-        when (result.responseStatus) {
-            ResponseStatus.OK -> {
-                if (_page.value!! == 0) {
-                    list.clear()
-                    list.addAll(result.results)
-                    foundVacancies = result.found
-                    _listOfVacancies.postValue(
-                        MainFragmentStatus.ListOfVacancies(result.results)
-                    )
-                    maxPages = result.pages
-                } else {
-                    list.addAll(result.results)
-                    _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
-                }
-            }
-
-            ResponseStatus.BAD -> {
-                list.clear()
-                _liveData.postValue(MainFragmentStatus.Bad)
-            }
-
-            ResponseStatus.DEFAULT -> {
-                _liveData.postValue(MainFragmentStatus.Default)
-            }
-
-            ResponseStatus.NO_CONNECTION -> {
-                _liveData.postValue(MainFragmentStatus.NoConnection)
-            }
-
-            ResponseStatus.LOADING -> Unit
-        }
-    }
-} catch (e: SocketTimeoutException) {
-    Log.d(ERROR_TAG, "ошибка: ${e.message}")
-    _liveData.postValue(MainFragmentStatus.ShowToastOnLoadingTrouble)
-}
-}*/
