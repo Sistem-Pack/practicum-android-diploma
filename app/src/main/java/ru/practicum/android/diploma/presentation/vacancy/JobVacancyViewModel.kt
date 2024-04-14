@@ -48,8 +48,8 @@ class JobVacancyViewModel(
     }
 
     fun showDetailVacancy(vacancyId: String) {
+        jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
         viewModelScope.launch(Dispatchers.IO) {
-            jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
             checkIsFavorite(vacancyId)
             try {
                 loadVacancy(vacancyId)
