@@ -34,10 +34,13 @@ class RetrofitNetworkClient(
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (error: UnknownHostException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: HttpException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
@@ -55,10 +58,10 @@ class RetrofitNetworkClient(
                     val response = hhApi.searchVacancyDetails(request.id)
                     response.apply { resultResponse = ResponseStatus.OK }
                 } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply {
                         resultResponse = ResponseStatus.BAD
                         resultCode = if (error.message.equals("HTTP 404 ")) {
@@ -68,7 +71,7 @@ class RetrofitNetworkClient(
                         }
                     }
                 } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
@@ -92,13 +95,13 @@ class RetrofitNetworkClient(
                         resultResponseStatus = ResponseStatus.OK
                     )
                 } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     IndustriesResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
                     )
                 } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     IndustriesResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.NO_CONNECTION,
@@ -109,7 +112,7 @@ class RetrofitNetworkClient(
                         }
                     )
                 } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, "$error")
+                    Log.d(ERROR_TAG, "${error.message}")
                     IndustriesResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
@@ -134,11 +137,13 @@ class RetrofitNetworkClient(
                         resultResponseStatus = ResponseStatus.OK
                     )
                 } catch (error: UnknownHostException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
                     )
                 } catch (error: HttpException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.NO_CONNECTION,
@@ -149,6 +154,7 @@ class RetrofitNetworkClient(
                         }
                     )
                 } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, "${error.message}")
                     AreasResponse(
                         emptyList(),
                         resultResponseStatus = ResponseStatus.BAD
