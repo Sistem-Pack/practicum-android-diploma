@@ -105,11 +105,18 @@ class RegionSelectionViewModel(
     fun setFilters(selectedRegionItem: AreaSubject) {
         viewModelScope.launch(Dispatchers.IO) {
             filtersInteractor.getFiltersFromSharedPrefs().apply {
-                val parentCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
+                val parentCountry: AreaCountry
+                val findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
+                val findParentInRegions = regions.find { it.id == selectedRegionItem.parentId }
+                parentCountry = if (findParentInCountry == null) {
+                    AreaCountry(id = findParentInRegions?.id!!, name = findParentInRegions.name)
+                } else {
+                    AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
+                }
                 filtersInteractor.putFiltersInSharedPrefs(
                     Filters(
-                        countryId = parentCountry?.id ?: "",
-                        countryName = parentCountry?.name ?: "",
+                        countryId = parentCountry.id,
+                        countryName = parentCountry.name,
                         regionId = selectedRegionItem.id,
                         regionName = selectedRegionItem.name,
                         industryId = this.industryId,
