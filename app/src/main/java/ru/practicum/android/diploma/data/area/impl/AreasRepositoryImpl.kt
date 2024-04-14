@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.areas.AreasDto
 import ru.practicum.android.diploma.data.dto.areas.AreasRequest
 import ru.practicum.android.diploma.data.network.NetworkClient
-import ru.practicum.android.diploma.domain.areas.impl.AreasRepository
+import ru.practicum.android.diploma.domain.areas.AreasRepository
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.areas.AreaCountry
 import ru.practicum.android.diploma.domain.models.areas.AreaSubject
