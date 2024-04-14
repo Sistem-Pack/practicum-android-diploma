@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.presentation.filter.FilteringSettingsViewModel
 
 class FilteringSettingsFragment : Fragment() {
@@ -30,6 +31,10 @@ class FilteringSettingsFragment : Fragment() {
         createFirstHalfClickListeners()
         createSecondHalfClickListeners()
         createTextWatcher()
+        viewModel.onCreate()
+        viewModel.liveData.observe(viewLifecycleOwner){
+            insertFilterData(it)
+        }
         // нужен слушатеть лайф даты с классом фильтра
         // нужен метод который из лайфдаты выставит все данные
         // кнопка применить - ее видимость определяется отдельным методом при сравнении с
@@ -132,6 +137,11 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.ivIndustryClear.isVisible = false
             binding!!.ivArrowRightIndustry.isVisible = true
         }
+    }
 
+    private fun insertFilterData(filter: Filters){
+        if(filter.countryName.isNotEmpty()) {
+            (binding!!.tietJobPlace as EditText).text = filter.countryName
+        }
     }
 }

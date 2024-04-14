@@ -35,10 +35,6 @@ class MainViewModel(
         job?.cancel()
     }
 
-//    fun getCurrentPage(): Int {
-//        return page
-//    }
-
     fun getMaxPages(): Int {
         return maxPages
     }

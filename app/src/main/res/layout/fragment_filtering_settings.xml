@@ -59,14 +59,14 @@
             android:clickable="true"
             android:enabled="false"
             android:fontFamily="@font/ys_display_medium"
-            android:textSize="@dimen/sixteen_size_text"
             android:inputType="textCapSentences"
             android:lines="1"
             android:maxLength="225"
             android:singleLine="true"
             android:textAlignment="viewStart"
             android:textColor="@color/black_white"
-            android:textFontWeight="400" />
+            android:textFontWeight="400"
+            android:textSize="@dimen/sixteen_size_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
