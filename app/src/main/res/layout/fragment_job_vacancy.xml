@@ -117,8 +117,8 @@
                 android:layout_width="@dimen/twelve_and_a_half_space"
                 android:layout_height="@dimen/twelve_and_a_half_space"
                 android:src="@drawable/logo_plug"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="false"
+                android:scaleType="fitXY"
+                android:padding="@dimen/one_point_space"
                 android:background="@drawable/vacancy_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +128,6 @@
                 style="@style/VacancyHeadline"
                 android:layout_marginStart="@dimen/two_space"
                 android:layout_marginTop="@dimen/zero_space"
-
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
                 app:layout_constraintTop_toTopOf="parent"
@@ -137,7 +136,6 @@
             <TextView
                 android:id="@+id/tvCity"
                 style="@style/VacancyDescription"
-
                 app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
                 app:layout_constraintTop_toBottomOf="@id/tvCompanyName"
                 tools:text="@string/city" />
