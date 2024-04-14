@@ -8,4 +8,6 @@ class FilteringSettingsViewModel : ViewModel() {
 
     private val _liveData = MutableLiveData<String>()
     val liveData: LiveData<String> = _liveData
+
+
 }

@@ -43,7 +43,6 @@ class FilteringSettingsFragment : Fragment() {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
             }
         }
-        // (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
     }
 
     override fun onResume() {
