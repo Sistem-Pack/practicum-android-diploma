@@ -129,37 +129,41 @@ class RetrofitNetworkClient(
                 resultResponseStatus = ResponseStatus.NO_CONNECTION
             )
         } else {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = hhApi.getAreas(request.locale, request.host)
-                    AreasResponse(
-                        response.toList(),
-                        resultResponseStatus = ResponseStatus.OK
-                    )
-                } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, "${error.message}")
-                    AreasResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD
-                    )
-                } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "${error.message}")
-                    AreasResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
-                        resultCode = if (error.message.equals("HTTP 404 ")) {
-                            ABSENCE_CODE
-                        } else {
-                            0
-                        }
-                    )
-                } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, "${error.message}")
-                    AreasResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD
-                    )
-                }
+            getAreasEx(request)
+        }
+    }
+
+    private suspend fun getAreasEx(request: AreasRequest): AreasResponse {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = hhApi.getAreas(request.locale, request.host)
+                AreasResponse(
+                    response.toList(),
+                    resultResponseStatus = ResponseStatus.OK
+                )
+            } catch (error: UnknownHostException) {
+                Log.d(ERROR_TAG, "${error.message}")
+                AreasResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.BAD
+                )
+            } catch (error: HttpException) {
+                Log.d(ERROR_TAG, "${error.message}")
+                AreasResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.NO_CONNECTION,
+                    resultCode = if (error.message.equals("HTTP 404 ")) {
+                        ABSENCE_CODE
+                    } else {
+                        0
+                    }
+                )
+            } catch (error: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "${error.message}")
+                AreasResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.BAD
+                )
             }
         }
     }
