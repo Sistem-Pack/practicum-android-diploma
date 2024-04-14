@@ -31,6 +31,7 @@ class SelectCountryFragment : Fragment() {
         binding!!.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
         countryAdapter.itemClickListener = { areaCountry ->
             viewModel.setFilters(areaCountry)
             findNavController().navigateUp()

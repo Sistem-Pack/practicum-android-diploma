@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentPlacesOfWorkBinding
 import ru.practicum.android.diploma.presentation.place.PlacesOfWorkViewModel
 import ru.practicum.android.diploma.ui.place.model.PlacesOfWorkFragmentStatus
@@ -23,31 +24,42 @@ class PlacesOfWorkFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.preloadCountryState()
+        viewModel.placeOfWorkState.observe(viewLifecycleOwner) {
+            showAllSelectedPlaceData(it)
+        }
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
         binding!!.ivBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding!!.ivArrowRightCountry.setOnClickListener {
-            findNavController().navigate(
-                PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToSelectCountryFragment()
-            )
+            if (binding!!.tietCountry.text.toString().isNotEmpty()) {
+                viewModel.clearCountry()
+            } else {
+                findNavController().navigate(
+                    PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToSelectCountryFragment()
+                )
+            }
         }
 
         binding!!.ivArrowRightRegion.setOnClickListener {
-            findNavController().navigate(
-                PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
-            )
-        }
-
-        viewModel.preloadCountryState()
-
-        viewModel.placeOfWorkState.observe(viewLifecycleOwner) {
-            showAllSelectedPlaceData(it)
+            if (binding!!.tietRegion.text.toString().isNotEmpty()) {
+                viewModel.clearRegion()
+            } else {
+                findNavController().navigate(
+                    PlacesOfWorkFragmentDirections.actionPlacesOfWorkFragmentToRegionSelectionFragment()
+                )
+            }
         }
 
         binding!!.bChoose.setOnClickListener {
             findNavController().navigateUp()
         }
+
     }
 
     private fun showAllSelectedPlaceData(data: PlacesOfWorkFragmentStatus) {
@@ -57,6 +69,15 @@ class PlacesOfWorkFragment : Fragment() {
                 binding!!.tietRegion.setText(data.regionName)
                 if (data.countryName.isNotEmpty()) {
                     binding!!.bChoose.visibility = View.VISIBLE
+                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_clear)
+                } else {
+                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_arrow_right)
+                    binding!!.bChoose.visibility = View.GONE
+                }
+                if (data.regionName.isNotEmpty()) {
+                    binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_clear)
+                } else {
+                    binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_arrow_right)
                 }
             }
         }

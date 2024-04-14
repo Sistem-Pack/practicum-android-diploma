@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.place.model.PlacesOfWorkFragmentStatus
 
@@ -27,6 +28,46 @@ class PlacesOfWorkViewModel(
                 )
             }
         }
+    }
+
+    fun clearCountry() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractor.getFiltersFromSharedPrefs().apply {
+                filtersInteractor.putFiltersInSharedPrefs(
+                    Filters(
+                        countryId = "",
+                        countryName = "",
+                        regionId = "",
+                        regionName = "",
+                        industryId = this.industryId,
+                        industryName = this.industryName,
+                        salary = this.salary,
+                        doNotShowWithoutSalarySetting = this.doNotShowWithoutSalarySetting
+                    )
+                )
+            }
+        }
+        preloadCountryState()
+    }
+
+    fun clearRegion() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractor.getFiltersFromSharedPrefs().apply {
+                filtersInteractor.putFiltersInSharedPrefs(
+                    Filters(
+                        countryId = this.countryId,
+                        countryName = this.regionId,
+                        regionId = "",
+                        regionName = "",
+                        industryId = this.industryId,
+                        industryName = this.industryName,
+                        salary = this.salary,
+                        doNotShowWithoutSalarySetting = this.doNotShowWithoutSalarySetting
+                    )
+                )
+            }
+        }
+        preloadCountryState()
     }
 
 }
