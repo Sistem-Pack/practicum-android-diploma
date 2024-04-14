@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentSelectCountryBinding
+import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 import ru.practicum.android.diploma.presentation.country.SelectCountryViewModel
 
 class SelectCountryFragment : Fragment() {
 
     private var binding: FragmentSelectCountryBinding? = null
-
     private val viewModel by viewModel<SelectCountryViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -22,10 +22,18 @@ class SelectCountryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.showAreas()
+        viewModel.countryStateData.observe(viewLifecycleOwner) {
+            showArea(it)
+        }
     }
 
     override fun onDestroyView() {
         binding = null
         super.onDestroyView()
+    }
+
+    private fun showArea(areas: AreasSearchResult) {
+
     }
 }

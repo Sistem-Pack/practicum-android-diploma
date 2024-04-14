@@ -6,6 +6,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.areas.AreasRequest
+import ru.practicum.android.diploma.data.dto.areas.AreasResponse
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
@@ -106,34 +107,38 @@ class RetrofitNetworkClient(
         }
     }
 
-    override suspend fun getAreas(request: AreasRequest): Response {
-        if (util.isConnected()) {
-            return withContext(Dispatchers.IO) {
+    override suspend fun getAreas(request: AreasRequest): AreasResponse {
+        return if (!util.isConnected()) {
+             AreasResponse(
+                emptyList(),
+                resultResponseStatus = ResponseStatus.NO_CONNECTION
+            )
+        } else {
+            withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getAreas(request.locale, request.host)
-                    response.apply {
-                        resultResponse = ResponseStatus.OK
-                    }
+                    AreasResponse(
+                        response.toList(),
+                        resultResponseStatus = ResponseStatus.OK
+                    )
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
-                    }
+                    AreasResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.BAD
+                    )
                 } catch (error: HttpException) {
                     Log.d(ERROR_TAG, "$error")
-                    Response().apply {
-                        resultResponse = ResponseStatus.BAD
+                    AreasResponse(
+                        emptyList(),
+                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
                         resultCode = if (error.message.equals("HTTP 404 ")) {
                             ABSENCE_CODE
                         } else {
                             0
                         }
-                    }
+                    )
                 }
-            }
-        } else {
-            return Response().apply {
-                resultResponse = ResponseStatus.NO_CONNECTION
             }
         }
     }
@@ -142,5 +147,4 @@ class RetrofitNetworkClient(
         private const val ABSENCE_CODE = 404
         private const val ERROR_TAG = "RetrofitError"
     }
-
 }
