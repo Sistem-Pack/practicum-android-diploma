@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.data.dto.areas.AreasRequest
 import ru.practicum.android.diploma.data.dto.areas.AreasResponse
 import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
+import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 
 interface NetworkClient {
@@ -14,7 +15,7 @@ interface NetworkClient {
 
     suspend fun doVacancyDetailsSearch(request: VacancyDetailsRequest): Response
 
-    suspend fun getIndustries(request: IndustriesRequest): Response
+    suspend fun getIndustries(request: IndustriesRequest): IndustriesResponse
 
     suspend fun getAreas(request: AreasRequest): AreasResponse
 }
