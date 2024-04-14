@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.data.industry.impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
-import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.industry.IndustryDto
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.industry.IndustryRepository
@@ -17,14 +16,14 @@ class IndustryRepositoryImpl(
 ) : IndustryRepository {
     override fun getIndustry(): Flow<IndustrySearchResult> = flow {
         val response = networkClient.getIndustries(request)
-        when (response.resultResponse) {
+        when (response.resultResponseStatus) {
             ResponseStatus.OK -> {
-                val industry: List<Industry>? = (response as IndustriesResponse).industries?.let {
+                val industry = response.industries.let {
                     formatToIndustry(it)
                 }
                 emit(
                     IndustrySearchResult(
-                        industry!!,
+                        industry,
                         ResponseStatus.OK,
                     )
                 )
