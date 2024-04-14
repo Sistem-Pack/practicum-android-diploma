@@ -34,13 +34,10 @@ class RetrofitNetworkClient(
                         resultResponse = ResponseStatus.OK
                     }
                 } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, "ошибка: $error")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, "ошибка: $error")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, "$error")
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }
