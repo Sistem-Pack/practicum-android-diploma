@@ -105,7 +105,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/six_space"
-            android:background="@drawable/vacancy_card"
+            android:background="@drawable/vacancy_card_big"
             android:padding="@dimen/four_space"
             app:layout_constraintEnd_toStartOf="@id/rightBorder"
             app:layout_constraintHorizontal_bias="1.0"
@@ -114,10 +114,12 @@
 
             <ImageView
                 android:id="@+id/ivLogoPlug"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/vacancy_card"
+                android:layout_width="@dimen/twelve_and_a_half_space"
+                android:layout_height="@dimen/twelve_and_a_half_space"
                 android:src="@drawable/logo_plug"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="false"
+                android:background="@drawable/vacancy_card"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,7 +128,7 @@
                 style="@style/VacancyHeadline"
                 android:layout_marginStart="@dimen/two_space"
                 android:layout_marginTop="@dimen/zero_space"
-                android:background="@drawable/vacancy_card"
+
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
                 app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +137,7 @@
             <TextView
                 android:id="@+id/tvCity"
                 style="@style/VacancyDescription"
-                android:background="@drawable/vacancy_card"
+
                 app:layout_constraintStart_toEndOf="@id/ivLogoPlug"
                 app:layout_constraintTop_toBottomOf="@id/tvCompanyName"
                 tools:text="@string/city" />
