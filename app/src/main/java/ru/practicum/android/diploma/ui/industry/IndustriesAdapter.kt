@@ -15,7 +15,6 @@ class IndustriesAdapter(private val clickListener: IndustryClickListener) :
     override fun onBindViewHolder(holder: IndustriesViewHolder, position: Int) {
         holder.bind(industries[position], selectedIndustryId)
         holder.checkboxIndustry.setOnClickListener { clickListener.onIndustryClick(industries[position]) }
-        //holder.itemView.setOnClickListener { clickListener.onIndustryClick(industries[position]) }
     }
 
     override fun getItemCount(): Int {
