@@ -40,7 +40,7 @@ val viewModelModule = module {
 
     viewModel {
         FilteringSettingsViewModel(
-            filtersInteractor = get()
+            filtersInteractorImpl = get()
         )
     }
 

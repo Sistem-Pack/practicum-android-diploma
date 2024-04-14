@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -32,7 +33,7 @@ class FilteringSettingsFragment : Fragment() {
         createSecondHalfClickListeners()
         createTextWatcher()
         viewModel.onCreate()
-        viewModel.liveData.observe(viewLifecycleOwner){
+        viewModel.liveData.observe(viewLifecycleOwner) {
             insertFilterData(it)
         }
         // нужен слушатеть лайф даты с классом фильтра
@@ -139,9 +140,19 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
-    private fun insertFilterData(filter: Filters){
-        if(filter.countryName.isNotEmpty()) {
-            (binding!!.tietJobPlace as EditText).text = filter.countryName
+    private fun insertFilterData(filter: Filters) {
+        if (filter.countryName.isNotEmpty()) {
+            (binding!!.tietJobPlace as TextView).text = filter.countryName
         }
+        if (filter.regionName.isNotEmpty()) {
+            (binding!!.tietJobPlace as TextView).text = filter.countryName + ", " + filter.regionName
+        }
+        if (filter.industryName.isNotEmpty()) {
+            (binding!!.tietIndustry as TextView).text = filter.industryName
+        }
+        if (filter.salary != 0) {
+            (binding!!.tietSalary as TextView).text = filter.salary.toString()
+        }
+        binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
     }
 }
