@@ -132,7 +132,10 @@ class RetrofitNetworkClient(
             withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getAreas(request.locale, request.host)
-                    AreasResponse(response.toList(), resultResponseStatus = ResponseStatus.OK)
+                    AreasResponse(
+                        response.toList(),
+                        resultResponseStatus = ResponseStatus.OK
+                    )
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, "$error")
                     AreasResponse(emptyList(), resultResponseStatus = ResponseStatus.BAD)
