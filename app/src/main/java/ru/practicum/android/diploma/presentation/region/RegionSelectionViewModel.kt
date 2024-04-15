@@ -137,10 +137,10 @@ class RegionSelectionViewModel(
         return regions.find { it.id == parentId }
     }
 
-    private fun getParent(parentId: String): AreaCountry {
-        var findParentInCountry = parentRegions.find { it.id == parentId }
+    private fun setParent(selectedRegionItem: AreaSubject) {
+        var findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
         if (findParentInCountry == null) {
-            var listParent = getParentFromRegion(parentId)
+            var listParent = getParentFromRegion(selectedRegionItem.parentId)
             var oldParents: AreaSubject? = null
             while (true) {
                 if (listParent != null) {
@@ -154,7 +154,17 @@ class RegionSelectionViewModel(
                 }
             }
         }
-        return findParentInCountry!!
+        if (findParentInCountry != null) {
+            saveFilter(
+                AreaFilters(
+                    countryId = findParentInCountry.id,
+                    countryName = findParentInCountry.name,
+                    regionId = selectedRegionItem.id,
+                    regionName = selectedRegionItem.name,
+                    callback = true
+                )
+            )
+        }
     }
 
     private fun saveFilter(areaFilters: AreaFilters) {
@@ -175,16 +185,7 @@ class RegionSelectionViewModel(
                         )
                     )
                 } else {
-                    val parentCountry: AreaCountry = getParent(selectedRegionItem.parentId)
-                    saveFilter(
-                        AreaFilters(
-                            countryId = parentCountry.id,
-                            countryName = parentCountry.name,
-                            regionId = selectedRegionItem.id,
-                            regionName = selectedRegionItem.name,
-                            callback = true
-                        )
-                    )
+                    setParent(selectedRegionItem)
                 }
             }
         }
