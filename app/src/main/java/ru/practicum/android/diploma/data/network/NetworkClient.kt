@@ -6,9 +6,10 @@ import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
+import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequestTemp
 
 interface NetworkClient {
-    suspend fun doVacancySearch(request: Map<String, String>): Response
+    suspend fun doVacancySearch(request: VacancySearchRequestTemp): Response
 
     suspend fun doVacancySearch(request: VacancySearchRequest): Response
 
