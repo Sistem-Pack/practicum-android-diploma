@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.filter
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,26 +21,14 @@ class FilteringSettingsViewModel(
     private val _filter = MutableLiveData(EMPTY_FILTER)
     val liveData: LiveData<Filters> = _filter
 
-    private var oldFilter = getOldFilter()
-    var currentFilter = _filter.value
+    private var oldFilter = EMPTY_FILTER
+    private var currentFilter = _filter.value
 
     fun onCreate() {
-        var savedFilter: Filters = EMPTY_FILTER
-        jobGet = viewModelScope.launch {
-            savedFilter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
-            currentFilter = savedFilter
-            Log.d("MY_TAG", "job thread")
-        }
-        Log.d("MY_TAG", "after job thread")
-        if (savedFilter.equals(EMPTY_FILTER)) {
-            return
-        }
-        if (_filter.value!!.equals(EMPTY_FILTER) && !savedFilter.equals(EMPTY_FILTER)) {
-            _filter.value = savedFilter
-            return
-        }
-        if (!savedFilter.equals(_filter.value!!)) {
-            _filter.value = savedFilter
+        jobGet = viewModelScope.launch(Dispatchers.IO) {
+            currentFilter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
+            oldFilter = filtersInteractorImpl.getOldFilterFromSharedPrefs()
+            _filter.postValue(currentFilter)
         }
     }
 
@@ -68,13 +55,12 @@ class FilteringSettingsViewModel(
             salary = if (salary.isEmpty()) 0 else salary.toInt(),
             doNotShowWithoutSalarySetting = doNotShowWithoutSalary
         )
-        //_filter.postValue(filter)
         currentFilter = filter
+        putFilterInSharedPrefs()
     }
 
-    fun putFilterInSharedPrefs() {
+    private fun putFilterInSharedPrefs() {
         jobPut = viewModelScope.launch(Dispatchers.IO) {
-            //filtersInteractorImpl.putActualFilterInSharedPrefs(_filter.value!!)
             filtersInteractorImpl.putActualFilterInSharedPrefs(currentFilter!!)
         }
     }
@@ -85,21 +71,11 @@ class FilteringSettingsViewModel(
         }
     }
 
-    private fun getOldFilter(): Filters {
-        var filter = EMPTY_FILTER
-        jobGet = viewModelScope.launch(Dispatchers.IO) {
-            filter = filtersInteractorImpl.getOldFilterFromSharedPrefs()
-        }
-        return filter
-    }
-
     fun compareFilters(): Boolean {
-        if (_filter.value!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER))  {
+        if (currentFilter!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER))  {
             return false
         }
-        //return _filter.value!!.equals(oldFilter)
         return currentFilter!!.equals(oldFilter)
-
     }
 
     companion object {

@@ -40,9 +40,6 @@ class MainViewModel(
     fun onDestroy() {
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
-        viewModelScope.launch(Dispatchers.IO) {
-            filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
-        }
     }
 
     fun breakSearch() {
@@ -140,6 +137,7 @@ class MainViewModel(
     fun getFilterFromSharedPref() {
         viewModelScope.launch(Dispatchers.IO) {
             filter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
+            filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
         }
     }
 

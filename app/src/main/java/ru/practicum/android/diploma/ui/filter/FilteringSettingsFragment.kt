@@ -34,7 +34,6 @@ class FilteringSettingsFragment : Fragment() {
         createTextWatcher()
         viewModel.onCreate()
 
-        //insertFilterData(viewModel.liveData.value!!)
         viewModel.liveData.observe(viewLifecycleOwner) {
             insertFilterData(it)
         }
@@ -61,7 +60,6 @@ class FilteringSettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        viewModel.putFilterInSharedPrefs()
         viewModel.onDestroy()
         binding = null
         super.onDestroyView()
@@ -95,8 +93,6 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.putStarSearchStatusInSharedPrefs(true)
             findNavController().navigateUp()
         }
-
-
     }
 
     private fun createSecondHalfClickListeners() {
@@ -141,7 +137,7 @@ class FilteringSettingsFragment : Fragment() {
             || binding!!.cbNoSalary.isChecked
 
         binding!!.bReset.isVisible = buttonsVisibility
-        binding!!.bApply.isVisible = viewModel.compareFilters()
+        binding!!.bApply.isVisible = !viewModel.compareFilters()
     }
 
     private fun checkTIETContent() {
@@ -184,5 +180,6 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.tietSalary.text.toString(),
             binding!!.cbNoSalary.isChecked
         )
+        installButtonResetVisibility()
     }
 }
