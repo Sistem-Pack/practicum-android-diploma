@@ -47,7 +47,6 @@ class FilteringSettingsFragment : Fragment() {
                     ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
             }
         }
-        // (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
     }
 
     override fun onResume() {
