@@ -20,7 +20,8 @@ class FilteringSettingsViewModel(
 
     private val _filter = MutableLiveData(EMPTY_FILTER)
     val liveData: LiveData<Filters> = _filter
-    private var filterDataIsChange = false
+    private val _filterDataIsChange = MutableLiveData(false)
+    val filterDataIsChange: LiveData<Boolean> = _filterDataIsChange
 
     fun onCreate() {
         var savedFilter: Filters = EMPTY_FILTER
@@ -37,7 +38,7 @@ class FilteringSettingsViewModel(
             return
         }
         if (!savedFilter.equals(_filter.value!!)) {
-            filterDataIsChange = true
+            _filterDataIsChange.value = true
             _filter.value = savedFilter
             // надо заполнить поля фрагмента
             // отобразить кнопки
@@ -49,10 +50,6 @@ class FilteringSettingsViewModel(
         jobGet?.cancel()
         jobClear?.cancel()
         jobPut?.cancel()
-    }
-
-    fun getFilterDataIsChange(): Boolean {
-        return filterDataIsChange
     }
 
     fun putFilterInSharedPrefs(salary: String, doNotShowWithoutSalary: Boolean) {
@@ -70,7 +67,9 @@ class FilteringSettingsViewModel(
                 )
             )
         }
+        _filterDataIsChange.value = true
     }
+
 
 
     companion object {

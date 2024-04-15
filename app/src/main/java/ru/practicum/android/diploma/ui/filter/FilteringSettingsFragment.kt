@@ -36,6 +36,9 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.liveData.observe(viewLifecycleOwner) {
             insertFilterData(it)
         }
+        viewModel.filterDataIsChange.observe(viewLifecycleOwner){
+            binding!!.bApply.isVisible = it
+        }
         // нужен слушатеть лайф даты с классом фильтра
         // нужен метод который из лайфдаты выставит все данные
         // кнопка применить - ее видимость определяется отдельным методом при сравнении с
@@ -49,7 +52,6 @@ class FilteringSettingsFragment : Fragment() {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
             }
         }
-        binding!!.bApply.isVisible = viewModel.getFilterDataIsChange()
     }
 
     override fun onResume() {
