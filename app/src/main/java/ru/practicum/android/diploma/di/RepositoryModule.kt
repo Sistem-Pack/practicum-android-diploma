@@ -30,7 +30,7 @@ val repositoryModule = module {
         VacancyDetailsRepositoryImpl(get(), get())
     }
 
-    factory<SharingRepository> {
+    single<SharingRepository> {
         SharingRepositoryImpl(get())
     }
 

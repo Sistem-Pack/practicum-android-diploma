@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class MainViewModel(
     fun onDestroy() {
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
         }
     }
@@ -66,7 +67,7 @@ class MainViewModel(
 
     fun searchDebounce() {
         searchDebounceJob?.cancel()
-        searchDebounceJob = viewModelScope.launch {
+        searchDebounceJob = viewModelScope.launch(Dispatchers.IO) {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search()
         }
@@ -94,7 +95,7 @@ class MainViewModel(
     }
 
     private fun sendRequest() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
                     when (result.responseStatus) {
@@ -137,7 +138,7 @@ class MainViewModel(
     }
 
     fun getFilterFromSharedPref() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             filter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
         }
     }
@@ -148,7 +149,7 @@ class MainViewModel(
 
     fun getStarSearchStatusFromSharedPrefs(): Boolean {
         var value = false
-        getDataFromSharedPrefsJob = viewModelScope.launch {
+        getDataFromSharedPrefsJob = viewModelScope.launch(Dispatchers.IO) {
             value = filtersInteractorImpl.getStarSearchStatus()
         }
         return value

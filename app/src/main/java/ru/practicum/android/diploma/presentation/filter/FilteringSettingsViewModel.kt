@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.models.Filters
@@ -22,12 +23,13 @@ class FilteringSettingsViewModel(
     val liveData: LiveData<Filters> = _filter
 
     private var oldFilter = getOldFilter()
-    private var currentFilter = _filter.value
+    var currentFilter = _filter.value
 
     fun onCreate() {
         var savedFilter: Filters = EMPTY_FILTER
         jobGet = viewModelScope.launch {
             savedFilter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
+            currentFilter = savedFilter
             Log.d("MY_TAG", "job thread")
         }
         Log.d("MY_TAG", "after job thread")
@@ -48,7 +50,6 @@ class FilteringSettingsViewModel(
         jobClear?.cancel()
         jobPut?.cancel()
         jobStarSearchStatus?.cancel()
-        putFilterInSharedPrefs()
     }
 
     fun makeCurrentFilter(
@@ -67,25 +68,26 @@ class FilteringSettingsViewModel(
             salary = if (salary.isEmpty()) 0 else salary.toInt(),
             doNotShowWithoutSalarySetting = doNotShowWithoutSalary
         )
-        _filter.value = filter
+        //_filter.postValue(filter)
+        currentFilter = filter
     }
 
-    private fun putFilterInSharedPrefs() {
-        jobPut = viewModelScope.launch {
+    fun putFilterInSharedPrefs() {
+        jobPut = viewModelScope.launch(Dispatchers.IO) {
+            //filtersInteractorImpl.putActualFilterInSharedPrefs(_filter.value!!)
             filtersInteractorImpl.putActualFilterInSharedPrefs(currentFilter!!)
         }
-
     }
 
     fun putStarSearchStatusInSharedPrefs(value: Boolean) {
-        jobStarSearchStatus = viewModelScope.launch {
+        jobStarSearchStatus = viewModelScope.launch(Dispatchers.IO) {
             filtersInteractorImpl.putStarSearchStatus(value)
         }
     }
 
     private fun getOldFilter(): Filters {
         var filter = EMPTY_FILTER
-        jobGet = viewModelScope.launch {
+        jobGet = viewModelScope.launch(Dispatchers.IO) {
             filter = filtersInteractorImpl.getOldFilterFromSharedPrefs()
         }
         return filter
@@ -95,7 +97,9 @@ class FilteringSettingsViewModel(
         if (_filter.value!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER))  {
             return false
         }
-        return _filter.value!!.equals(oldFilter)
+        //return _filter.value!!.equals(oldFilter)
+        return currentFilter!!.equals(oldFilter)
+
     }
 
     companion object {

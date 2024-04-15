@@ -33,6 +33,8 @@ class FilteringSettingsFragment : Fragment() {
         createSecondHalfClickListeners()
         createTextWatcher()
         viewModel.onCreate()
+
+        //insertFilterData(viewModel.liveData.value!!)
         viewModel.liveData.observe(viewLifecycleOwner) {
             insertFilterData(it)
         }
@@ -59,8 +61,9 @@ class FilteringSettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        binding = null
+        viewModel.putFilterInSharedPrefs()
         viewModel.onDestroy()
+        binding = null
         super.onDestroyView()
     }
 
@@ -72,7 +75,7 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
             binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
-            putFilterInSharedPrefs()
+            makeCurrentFilter()
             installButtonResetVisibility()
         }
         binding!!.bReset.setOnClickListener {
@@ -81,11 +84,11 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.tietSalary.text!!.clear()
             binding!!.cbNoSalary.isChecked = false
             binding!!.bReset.isVisible = false
-            putFilterInSharedPrefs()
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
-            putFilterInSharedPrefs()
+            makeCurrentFilter()
             installButtonResetVisibility()
         }
         binding!!.bApply.setOnClickListener {
@@ -93,19 +96,20 @@ class FilteringSettingsFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+
     }
 
     private fun createSecondHalfClickListeners() {
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
             installButtonResetVisibility()
-            putFilterInSharedPrefs()
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.ivIndustryClear.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
             installButtonResetVisibility()
-            putFilterInSharedPrefs()
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.ivArrowRightJobPlace.setOnClickListener {
@@ -123,7 +127,9 @@ class FilteringSettingsFragment : Fragment() {
     private fun createTextWatcher() {
         (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
             binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
-            putFilterInSharedPrefs()
+            if (binding!!.tietSalary.isFocused) {
+                makeCurrentFilter()
+            }
             installButtonResetVisibility()
         }
     }
@@ -171,7 +177,7 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
     }
 
-    private fun putFilterInSharedPrefs() {
+    private fun makeCurrentFilter() {
         viewModel.makeCurrentFilter(
             binding!!.tietJobPlace.text!!.isEmpty(),
             binding!!.tietIndustry.text!!.isEmpty(),
