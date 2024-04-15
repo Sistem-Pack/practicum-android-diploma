@@ -149,24 +149,35 @@ class RegionSelectionViewModel(
 
     private fun setFiltersWithParent(selectedRegionItem: AreaSubject) {
         viewModelScope.launch(Dispatchers.IO) {
-            var findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
+            val findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
             if (findParentInCountry != null) {
                 saveDataWithParent(findParentInCountry, selectedRegionItem)
             } else {
-                var listParent = regions.find { it.id == selectedRegionItem.parentId }
-                var oldParents: AreaSubject? = null
-                while (true) {
-                    if (listParent != null) {
-                        oldParents = listParent
-                        listParent = regions.find { it.id == oldParents.parentId }
-                    } else {
-                        if (oldParents != null) {
-                            findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
-                            if (findParentInCountry != null) {
-                                saveDataWithParent(findParentInCountry, selectedRegionItem)
-                            }
-                            break
+                iDontKnowNameForThisFunctionDetect(selectedRegionItem)
+            }
+        }
+    }
+
+    /*
+    Не знаю зачем, но я разбиваю эту функцию в пятый раз, или дальже больше, в угоду детекту, черт побери!
+    То она слишком deeply, то cognitiveComplexyty до урезания 15 а после 17 и еще после 22! Карл!!!
+    Как при уменьшеении выросла её сложность? Facepalm!!!
+     */
+    private fun iDontKnowNameForThisFunctionDetect(selectedRegionItem: AreaSubject) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var listParent = regions.find { it.id == selectedRegionItem.parentId }
+            var oldParents: AreaSubject? = null
+            while (true) {
+                if (listParent != null) {
+                    oldParents = listParent
+                    listParent = regions.find { it.id == oldParents.parentId }
+                } else {
+                    if (oldParents != null) {
+                        val findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
+                        if (findParentInCountry != null) {
+                            saveDataWithParent(findParentInCountry, selectedRegionItem)
                         }
+                        break
                     }
                 }
             }
