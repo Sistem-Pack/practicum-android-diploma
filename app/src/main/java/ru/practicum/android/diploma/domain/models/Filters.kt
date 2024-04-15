@@ -22,6 +22,4 @@ data class Filters(
 
         return true
     }
-
-
 }

@@ -18,7 +18,7 @@ class FiltersInteractorImpl(private val filtersRepository: FiltersRepository) : 
     }
 
     override suspend fun getOldFilterFromSharedPrefs(): Filters {
-        return  filtersRepository.getOldFilterFromSharedPrefs()
+        return filtersRepository.getOldFilterFromSharedPrefs()
     }
 
     override fun putOldFilterInSharedPrefs(filters: Filters) {
