@@ -163,6 +163,7 @@ class RegionSelectionViewModel(
     То она слишком deeply, то cognitiveComplexyty до урезания 15 а после 17 и еще после 22! Карл!!!
     Как при уменьшеении выросла её сложность? Facepalm!!!
      */
+
     private fun iDontKnowNameForThisFunctionDetect(selectedRegionItem: AreaSubject) {
         viewModelScope.launch(Dispatchers.IO) {
             var listParent = regions.find { it.id == selectedRegionItem.parentId }
@@ -173,13 +174,19 @@ class RegionSelectionViewModel(
                     listParent = regions.find { it.id == oldParents.parentId }
                 } else {
                     if (oldParents != null) {
-                        val findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
-                        if (findParentInCountry != null) {
-                            saveDataWithParent(findParentInCountry, selectedRegionItem)
-                        }
+                        iDontKnowNameForThisFunctionDetect2(oldParents)
                         break
                     }
                 }
+            }
+        }
+    }
+
+    private fun iDontKnowNameForThisFunctionDetect2(selectedRegionItem: AreaSubject) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
+            if (findParentInCountry != null) {
+                saveDataWithParent(findParentInCountry, selectedRegionItem)
             }
         }
     }
