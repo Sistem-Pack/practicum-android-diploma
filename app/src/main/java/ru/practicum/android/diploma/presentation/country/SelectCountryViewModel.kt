@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
+import ru.practicum.android.diploma.domain.models.AreaFilters
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.areas.AreaCountry
@@ -61,17 +62,14 @@ class SelectCountryViewModel(
 
     fun setFilters(selectedCountryItem: AreaCountry) {
         viewModelScope.launch(Dispatchers.IO) {
-            filtersInteractor.getFiltersFromSharedPrefs().apply {
-                filtersInteractor.putFiltersInSharedPrefs(
-                    Filters(
+            filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
+                filtersInteractor.putFiltersInSharedPrefsForAreas(
+                    AreaFilters(
                         countryId = selectedCountryItem.id,
                         countryName = selectedCountryItem.name,
                         regionId = this.regionId,
                         regionName = this.regionName,
-                        industryId = this.industryId,
-                        industryName = this.industryName,
-                        salary = this.salary,
-                        doNotShowWithoutSalarySetting = this.doNotShowWithoutSalarySetting
+                        callback = true
                     )
                 )
             }
@@ -80,7 +78,6 @@ class SelectCountryViewModel(
 
     companion object {
         private const val ANYMORE_REGION_ITEM = "Другие регионы"
-        private const val ERROR_TAG = "SelectCountryViewModelError"
     }
 
 }

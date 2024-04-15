@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
+import ru.practicum.android.diploma.domain.models.AreaFilters
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.areas.AreaCountry
@@ -104,7 +105,7 @@ class RegionSelectionViewModel(
 
     fun setFilters(selectedRegionItem: AreaSubject) {
         viewModelScope.launch(Dispatchers.IO) {
-            filtersInteractor.getFiltersFromSharedPrefs().apply {
+            filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
                 val parentCountry: AreaCountry
                 val findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
                 val findParentInRegions = regions.find { it.id == selectedRegionItem.parentId }
@@ -113,16 +114,13 @@ class RegionSelectionViewModel(
                 } else {
                     AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
                 }
-                filtersInteractor.putFiltersInSharedPrefs(
-                    Filters(
+                filtersInteractor.putFiltersInSharedPrefsForAreas(
+                    AreaFilters(
                         countryId = parentCountry.id,
                         countryName = parentCountry.name,
                         regionId = selectedRegionItem.id,
                         regionName = selectedRegionItem.name,
-                        industryId = this.industryId,
-                        industryName = this.industryName,
-                        salary = this.salary,
-                        doNotShowWithoutSalarySetting = this.doNotShowWithoutSalarySetting
+                        callback = true
                     )
                 )
             }
@@ -130,8 +128,6 @@ class RegionSelectionViewModel(
     }
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
-        private const val ERROR_TAG = "ErrorLoadingProcess"
     }
 }

@@ -1,9 +1,12 @@
 package ru.practicum.android.diploma.ui.place
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,8 +34,29 @@ class PlacesOfWorkFragment : Fragment() {
         setOnClickListeners()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.clearAllSettingsForFragment()
+                    findNavController().navigateUp()
+                }
+            }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            callback
+        )
+    }
+
+    override fun onDestroyView() {
+        binding = null
+        super.onDestroyView()
+    }
+
     private fun setOnClickListeners() {
         binding!!.ivBack.setOnClickListener {
+            viewModel.clearAllSettingsForFragment()
             findNavController().navigateUp()
         }
 
@@ -57,6 +81,7 @@ class PlacesOfWorkFragment : Fragment() {
         }
 
         binding!!.bChoose.setOnClickListener {
+            viewModel.setSaveSettings()
             findNavController().navigateUp()
         }
 
@@ -83,8 +108,5 @@ class PlacesOfWorkFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        binding = null
-        super.onDestroyView()
-    }
+
 }
