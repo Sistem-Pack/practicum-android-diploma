@@ -3,6 +3,8 @@ package ru.practicum.android.diploma.data.sharedprefs
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.practicum.android.diploma.app.FILTERS_KEY
+import ru.practicum.android.diploma.app.FILTERS_KEY_AREA
+import ru.practicum.android.diploma.domain.models.AreaFilters
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
 
@@ -20,6 +22,13 @@ class FiltersRepositoryImpl(
         industryName = "",
         salary = 0,
         doNotShowWithoutSalarySetting = false
+    )
+
+    private val emptyAreaFilters = AreaFilters(
+        countryId = "",
+        countryName = "",
+        regionId = "",
+        regionName = ""
     )
 
     override suspend fun getFiltersFromSharedPrefs(): Filters {
@@ -40,6 +49,27 @@ class FiltersRepositoryImpl(
     override fun clearAllFiltersInSharedPrefs() {
         sharedPrefs.edit()
             .clear()
+            .apply()
+    }
+
+    override suspend fun getFiltersFromSharedPrefsForAreas(): AreaFilters {
+        val filtersInSharedPrefs = sharedPrefs.getString(FILTERS_KEY_AREA, null)
+        return if (filtersInSharedPrefs != null) {
+            gson.fromJson(filtersInSharedPrefs, AreaFilters::class.java)
+        } else {
+            emptyAreaFilters
+        }
+    }
+
+    override fun putFiltersInSharedPrefsForAreas(filters: AreaFilters) {
+        sharedPrefs.edit()
+            .putString(FILTERS_KEY_AREA, gson.toJson(filters))
+            .apply()
+    }
+
+    override fun clearAllFiltersInSharedPrefsForAreas() {
+        sharedPrefs.edit()
+            .putString(FILTERS_KEY_AREA, gson.toJson(emptyAreaFilters))
             .apply()
     }
 
