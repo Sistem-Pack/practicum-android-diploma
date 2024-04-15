@@ -23,7 +23,8 @@ class MainViewModel(
     private val filtersInteractorImpl: FiltersInteractor
 ) : ViewModel() {
     private var requestText = ""
-    private var job: Job? = null
+    private var searchDebounceJob: Job? = null
+    private var getDataFromSharedPrefsJob: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
     private var maxPages: Int = 0
@@ -36,7 +37,15 @@ class MainViewModel(
     val page: LiveData<Int> = _page
 
     fun onDestroy() {
-        job?.cancel()
+        searchDebounceJob?.cancel()
+        getDataFromSharedPrefsJob?.cancel()
+        viewModelScope.launch {
+            filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
+        }
+    }
+
+    fun breakSearch() {
+        searchDebounceJob?.cancel()
     }
 
     fun getMaxPages(): Int {
@@ -56,8 +65,8 @@ class MainViewModel(
     }
 
     fun searchDebounce() {
-        job?.cancel()
-        job = viewModelScope.launch {
+        searchDebounceJob?.cancel()
+        searchDebounceJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search()
         }
@@ -129,16 +138,20 @@ class MainViewModel(
 
     fun getFilterFromSharedPref() {
         viewModelScope.launch {
-            filter = filtersInteractorImpl.getFiltersFromSharedPrefs()
+            filter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
         }
-    }
-
-    fun getCurrentFilter(): Filters {
-        return filter
     }
 
     fun checkForFilter(): Boolean {
         return filter.equals(EMPTY_FILTER)
+    }
+
+    fun getStarSearchStatusFromSharedPrefs(): Boolean {
+        var value = false
+        getDataFromSharedPrefsJob = viewModelScope.launch {
+            value = filtersInteractorImpl.getStarSearchStatus()
+        }
+        return value
     }
 
     companion object {

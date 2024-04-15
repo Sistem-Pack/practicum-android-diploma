@@ -32,6 +32,7 @@ class MainFragment : Fragment() {
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
     private var loadingItemAdapter = LoadingItemAdapter()
     private var concatAdapter: ConcatAdapter = ConcatAdapter()
+    private var startNewSearch = false
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -44,13 +45,16 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         createTextWatcher()
         createClickListeners()
-        setFilterButtonImage()
         viewModel.getFilterFromSharedPref()
+        setFilterButtonImage()
+        startNewSearch = viewModel.getStarSearchStatusFromSharedPrefs()
+
         adapter.itemClickListener = { vacancy ->
             if (viewModel.clickDebounce()) {
                 startJobVacancyFragment(vacancy.vacancyId)
             }
         }
+
         val emptyItemAdapter = EmptyItemAdapter()
         concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
         binding!!.rvVacancyList.adapter = concatAdapter
@@ -61,24 +65,7 @@ class MainFragment : Fragment() {
         viewModel.page.observe(viewLifecycleOwner) {
             loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
         }
-
-        binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0) {
-                    val pos =
-                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
-                        if (viewModel.page.value!! < viewModel.getMaxPages() - 1) {
-                            viewModel.installPage(true)
-                            viewModel.search()
-                        }
-                    }
-                }
-            }
-        })
+        createScrollListener()
     }
 
     override fun onDestroyView() {
@@ -99,6 +86,26 @@ class MainFragment : Fragment() {
                 startFilteringSettingsFragment()
             }
         }
+    }
+
+    private fun createScrollListener() {
+        binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos =
+                        (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
+                        if (viewModel.page.value!! < viewModel.getMaxPages() - 1) {
+                            viewModel.installPage(true)
+                            viewModel.search()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -240,7 +247,7 @@ class MainFragment : Fragment() {
     }
 
     private fun breakSearch() {
-        viewModel.onDestroy()
+        viewModel.breakSearch()
         vacancies.clear()
         binding!!.ivSearchPlaceholder.isVisible = true
         binding!!.pbSearch.isVisible = false

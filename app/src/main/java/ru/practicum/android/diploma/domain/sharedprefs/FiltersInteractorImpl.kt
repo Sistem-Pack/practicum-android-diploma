@@ -4,15 +4,31 @@ import ru.practicum.android.diploma.domain.models.Filters
 
 class FiltersInteractorImpl(private val filtersRepository: FiltersRepository) : FiltersInteractor {
 
-    override suspend fun getFiltersFromSharedPrefs(): Filters {
-        return filtersRepository.getFiltersFromSharedPrefs()
+    override suspend fun getActualFilterFromSharedPrefs(): Filters {
+        return filtersRepository.getActualFilterFromSharedPrefs()
     }
 
-    override fun putFiltersInSharedPrefs(filters: Filters) {
-        return filtersRepository.putFiltersInSharedPrefs(filters)
+    override fun putActualFilterInSharedPrefs(filters: Filters) {
+        return filtersRepository.putActualFilterInSharedPrefs(filters)
     }
 
-    override fun clearAllFiltersInSharedPrefs() {
-        filtersRepository.clearAllFiltersInSharedPrefs()
+    override fun clearActualFilterInSharedPrefs() {
+        filtersRepository.clearActualFilterInSharedPrefs()
+    }
+
+    override suspend fun getOldFilterFromSharedPrefs(): Filters {
+        return  filtersRepository.getOldFilterFromSharedPrefs()
+    }
+
+    override fun putOldFilterInSharedPrefs(filters: Filters) {
+        filtersRepository.putOldFilterInSharedPrefs(filters)
+    }
+
+    override suspend fun getStarSearchStatus(): Boolean {
+        return filtersRepository.getStarSearchStatus()
+    }
+
+    override fun putStarSearchStatus(value: Boolean) {
+        filtersRepository.putStarSearchStatus(value)
     }
 }
