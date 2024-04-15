@@ -103,14 +103,15 @@ class RegionSelectionViewModel(
 
     private fun getRegionsByParent(areasResult: AreasSearchResult, parentId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            regions.addAll(areasResult.listSubject.filter { it.parentId == parentId })
+            val notSortedRegions = areasResult.listSubject.filter { it.parentId == parentId }
+            regions.addAll(notSortedRegions.sortedBy { it.name })
             _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
         }
     }
 
     private fun getAllRegions(areasResult: AreasSearchResult) {
         viewModelScope.launch(Dispatchers.IO) {
-            regions.addAll(areasResult.listSubject)
+            regions.addAll(areasResult.listSubject.sortedBy { it.name })
             parentRegions.addAll(areasResult.listCountry)
             _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
         }
@@ -167,31 +168,28 @@ class RegionSelectionViewModel(
         }
     }
 
-    private fun getP(parentId: String): AreaSubject? {
-        return regions.find { it.parentId == parentId }
+    private fun getParentFromRegion(parentId: String): AreaSubject? {
+        return regions.find { it.id == parentId }
     }
 
     private fun getParent(parentId: String): AreaCountry {
         var findParentInCountry = parentRegions.find { it.id == parentId }
-        return if (findParentInCountry != null) {
-            AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
-        } else {
-            var listParent: AreaSubject?
-            var oldParents: AreaSubject?
+        if (findParentInCountry == null) {
+            var listParent = getParentFromRegion(parentId)
+            var oldParents: AreaSubject? = null
             while (true) {
-                listParent = getP(parentId)
                 if (listParent != null) {
-                    if (oldParents?.parentId == null) {
-                        findParentInCountry = AreaCountry()
-                    } else {
-                        oldParents = listParent
-                    }
+                    oldParents = listParent
+                    listParent = getParentFromRegion(oldParents.parentId)
                 } else {
-                  val findCountry = oldParents.find { it.id == parentId }
+                    if (oldParents != null) {
+                        findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
+                        break
+                    }
                 }
             }
-            return findParentInCountry!!
         }
+        return findParentInCountry!!
     }
 
     companion object {
