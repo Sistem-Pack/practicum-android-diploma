@@ -54,7 +54,6 @@ class FiltersRepositoryImpl(
             .apply()
     }
 
-
     override fun putOldFilterInSharedPrefs(filters: Filters) {
         sharedPrefs.edit()
             .putString(FILTERS_OLD_KEY, gson.toJson(filters))
@@ -75,7 +74,6 @@ class FiltersRepositoryImpl(
             .putString(START_NEW_SEARCH, gson.toJson(value))
             .apply()
     }
-
 
     override suspend fun getStarSearchStatus(): Boolean {
         val filtersInSharedPrefs = sharedPrefs.getString(START_NEW_SEARCH, null)
@@ -105,7 +103,5 @@ class FiltersRepositoryImpl(
         sharedPrefs.edit()
             .putString(FILTERS_KEY_AREA, gson.toJson(emptyAreaFilters))
             .apply()
-
     }
 }
-

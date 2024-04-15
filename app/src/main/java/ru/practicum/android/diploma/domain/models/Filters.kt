@@ -14,15 +14,14 @@ data class Filters(
         if (this === other) return true
         if (other !is Filters) return false
 
-        if (countryId != other.countryId) return false
-        if (countryName != other.countryName) return false
-        if (regionId != other.regionId) return false
-        if (regionName != other.regionName) return false
-        if (industryId != other.industryId) return false
-        if (industryName != other.industryName) return false
+        if (countryId != other.countryId || countryName != other.countryName) return false
+        if (regionId != other.regionId || regionName != other.regionName) return false
+        if (industryId != other.industryId || industryName != other.industryName) return false
         if (salary != other.salary) return false
         if (doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting) return false
 
         return true
     }
+
+
 }

@@ -134,7 +134,7 @@ class MainViewModel(
                 }
             } catch (e: SocketTimeoutException) {
                 Log.d(ERROR_TAG, "ошибка: ${e.message}")
-                //_listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+                // _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
             }
         }
     }
