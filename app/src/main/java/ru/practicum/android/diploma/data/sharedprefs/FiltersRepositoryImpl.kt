@@ -76,6 +76,7 @@ class FiltersRepositoryImpl(
             .apply()
     }
 
+
     override suspend fun getStarSearchStatus(): Boolean {
         val filtersInSharedPrefs = sharedPrefs.getString(START_NEW_SEARCH, null)
         return if (filtersInSharedPrefs != null) {
@@ -83,6 +84,7 @@ class FiltersRepositoryImpl(
         } else {
             false
         }
+    }
 
     override suspend fun getFiltersFromSharedPrefsForAreas(): AreaFilters {
         val filtersInSharedPrefs = sharedPrefs.getString(FILTERS_KEY_AREA, null)
@@ -105,5 +107,5 @@ class FiltersRepositoryImpl(
             .apply()
 
     }
-
 }
+

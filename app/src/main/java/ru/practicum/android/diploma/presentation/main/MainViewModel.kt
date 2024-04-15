@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import ru.practicum.android.diploma.domain.search.VacancyInteractor
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
@@ -115,25 +117,26 @@ class MainViewModel(
                         }
 
                         ResponseStatus.BAD -> {
-                        list.clear()
-                        _listOfVacancies.postValue(MainFragmentStatus.Bad)
-                    }
+                            list.clear()
+                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                        }
 
-                    ResponseStatus.DEFAULT -> {
-                        _listOfVacancies.postValue(MainFragmentStatus.Default)
-                    }
+                        ResponseStatus.DEFAULT -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.Default)
+                        }
 
-                    ResponseStatus.NO_CONNECTION -> {
-                        _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
-                    }
+                        ResponseStatus.NO_CONNECTION -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                        }
 
-                    ResponseStatus.LOADING -> Unit
+                        ResponseStatus.LOADING -> Unit
+                    }
                 }
-            }
-        } catch (e: SocketTimeoutException) {
+            } catch (e: SocketTimeoutException) {
                 Log.d(ERROR_TAG, "ошибка: ${e.message}")
-                _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+                //_listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
             }
+        }
     }
 
     fun getFilterFromSharedPref() {
@@ -152,6 +155,7 @@ class MainViewModel(
             _startNewSearch.postValue(filtersInteractorImpl.getStarSearchStatus())
         }
     }
+
     fun putStarSearchStatusInSharedPrefs(value: Boolean) {
         jobStarSearchStatus = viewModelScope.launch(Dispatchers.IO) {
             filtersInteractorImpl.putStarSearchStatus(value)
@@ -174,3 +178,4 @@ class MainViewModel(
         )
     }
 }
+
