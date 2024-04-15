@@ -40,23 +40,27 @@ class PlacesOfWorkViewModel(
                     )
                 }
             } else {
-                filtersInteractor.getFiltersFromSharedPrefs().apply {
-                    filtersInteractor.putFiltersInSharedPrefsForAreas(
-                        AreaFilters(
-                            countryId = this.countryId,
-                            countryName = this.countryName,
-                            regionId = this.regionId,
-                            regionName = this.regionName
-                        )
-                    )
-                    _placeOfWorkState.postValue(
-                        PlacesOfWorkFragmentStatus.SavedPlacesFilter(
-                            countryName = this.countryName,
-                            regionName = this.regionName
-                        )
-                    )
-                }
+                preload()
             }
+        }
+    }
+
+    private suspend fun preload() {
+        filtersInteractor.getFiltersFromSharedPrefs().apply {
+            filtersInteractor.putFiltersInSharedPrefsForAreas(
+                AreaFilters(
+                    countryId = this.countryId,
+                    countryName = this.countryName,
+                    regionId = this.regionId,
+                    regionName = this.regionName
+                )
+            )
+            _placeOfWorkState.postValue(
+                PlacesOfWorkFragmentStatus.SavedPlacesFilter(
+                    countryName = this.countryName,
+                    regionName = this.regionName
+                )
+            )
         }
     }
 
@@ -68,12 +72,13 @@ class PlacesOfWorkViewModel(
                         countryId = this.countryId,
                         countryName = this.countryName,
                         regionId = "",
-                        regionName = ""
+                        regionName = "",
+                        callback = true
                     )
                 )
             }
+            setSaveSettings(true)
         }
-        preloadCountryState()
     }
 
     fun clearCountry() {
@@ -87,9 +92,9 @@ class PlacesOfWorkViewModel(
                         regionName = ""
                     )
                 )
+                setSaveSettings(true)
             }
         }
-        preloadCountryState()
     }
 
     fun clearAllSettingsForFragment() {
@@ -98,7 +103,7 @@ class PlacesOfWorkViewModel(
         }
     }
 
-    fun setSaveSettings() {
+    fun setSaveSettings(updateVisualInterface: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
                 filtersInteractor.getFiltersFromSharedPrefs().let {
@@ -116,6 +121,9 @@ class PlacesOfWorkViewModel(
                         )
                     )
                 }
+            }
+            if (updateVisualInterface) {
+                preloadCountryState()
             }
         }
     }
