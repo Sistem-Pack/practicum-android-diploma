@@ -138,32 +138,34 @@ class RegionSelectionViewModel(
     }
 
     private fun setParent(selectedRegionItem: AreaSubject) {
-        var findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
-        if (findParentInCountry == null) {
-            var listParent = getParentFromRegion(selectedRegionItem.parentId)
-            var oldParents: AreaSubject? = null
-            while (true) {
-                if (listParent != null) {
-                    oldParents = listParent
-                    listParent = getParentFromRegion(oldParents.parentId)
-                } else {
-                    if (oldParents != null) {
-                        findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
-                        break
+        viewModelScope.launch(Dispatchers.IO) {
+            var findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
+            if (findParentInCountry == null) {
+                var listParent = getParentFromRegion(selectedRegionItem.parentId)
+                var oldParents: AreaSubject? = null
+                while (true) {
+                    if (listParent != null) {
+                        oldParents = listParent
+                        listParent = getParentFromRegion(oldParents.parentId)
+                    } else {
+                        if (oldParents != null) {
+                            findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
+                            break
+                        }
                     }
                 }
             }
-        }
-        if (findParentInCountry != null) {
-            saveFilter(
-                AreaFilters(
-                    countryId = findParentInCountry.id,
-                    countryName = findParentInCountry.name,
-                    regionId = selectedRegionItem.id,
-                    regionName = selectedRegionItem.name,
-                    callback = true
+            if (findParentInCountry != null) {
+                saveFilter(
+                    AreaFilters(
+                        countryId = findParentInCountry.id,
+                        countryName = findParentInCountry.name,
+                        regionId = selectedRegionItem.id,
+                        regionName = selectedRegionItem.name,
+                        callback = true
+                    )
                 )
-            )
+            }
         }
     }
 
