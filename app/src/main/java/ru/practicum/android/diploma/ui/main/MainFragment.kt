@@ -43,7 +43,9 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createTextWatcher()
-
+        createClickListeners()
+        setFilterButtonImage()
+        viewModel.getFilterFromSharedPref()
         adapter.itemClickListener = { vacancy ->
             if (viewModel.clickDebounce()) {
                 startJobVacancyFragment(vacancy.vacancyId)
@@ -51,19 +53,7 @@ class MainFragment : Fragment() {
         }
         val emptyItemAdapter = EmptyItemAdapter()
         concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
-
         binding!!.rvVacancyList.adapter = concatAdapter
-        binding!!.ivSearch.setOnClickListener {
-            binding!!.etSearch.setText("")
-            hideAllView()
-            breakSearch()
-        }
-
-        binding!!.ivFilter.setOnClickListener {
-            if (viewModel.clickDebounce()) {
-                startFilteringSettingsFragment()
-            }
-        }
 
         viewModel.listOfVacancies.observe(viewLifecycleOwner) {
             processingSearchStatus(it)
@@ -95,6 +85,20 @@ class MainFragment : Fragment() {
         binding = null
         viewModel.onDestroy()
         super.onDestroyView()
+    }
+
+    private fun createClickListeners() {
+        binding!!.ivSearch.setOnClickListener {
+            binding!!.etSearch.setText("")
+            hideAllView()
+            breakSearch()
+        }
+
+        binding!!.ivFilter.setOnClickListener {
+            if (viewModel.clickDebounce()) {
+                startFilteringSettingsFragment()
+            }
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -249,4 +253,13 @@ class MainFragment : Fragment() {
             " " + viewModel.getFoundVacancies().toString() + " " +
             requireContext().resources.getQuantityString(R.plurals.vacancy, viewModel.getFoundVacancies())
     }
+
+    private fun setFilterButtonImage() {
+        if (viewModel.checkForFilter()) {
+            binding!!.ivFilter.setImageResource(R.drawable.ic_filter_off)
+        } else {
+            binding!!.ivFilter.setImageResource(R.drawable.ic_filter_on)
+        }
+    }
+
 }

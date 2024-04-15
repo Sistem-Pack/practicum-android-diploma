@@ -7,28 +7,36 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
+import ru.practicum.android.diploma.presentation.main.MainViewModel
 
 class FilteringSettingsViewModel(
     private val filtersInteractorImpl: FiltersInteractor
 ) : ViewModel() {
 
-    private val _filter = MutableLiveData<Filters>()
+    private val _filter = MutableLiveData(EMPTY_FILTER)
     val liveData: LiveData<Filters> = _filter
-    var oldFilter = Filters(
-        countryId = "",
-        countryName = "",
-        regionId = "",
-        regionName = "",
-        industryId = "",
-        industryName = "",
-        salary = 0,
-        doNotShowWithoutSalarySetting = false
-    )
+    private var filterDataIsChange = false
+    var oldFilter = (viewModel as? MainViewModel)?.getCurrentFilter()
 
     fun onCreate(){
+        var savedFilter: Filters = EMPTY_FILTER
         viewModelScope.launch {
-            _filter.value = filtersInteractorImpl.getFiltersFromSharedPrefs()
+            savedFilter = filtersInteractorImpl.getFiltersFromSharedPrefs()
         }
-        oldFilter = _filter.value!!
+    }
+
+
+
+    companion object {
+        private val EMPTY_FILTER = Filters(
+            countryId = "",
+            countryName = "",
+            regionId = "",
+            regionName = "",
+            industryId = "",
+            industryName = "",
+            salary = 0,
+            doNotShowWithoutSalarySetting = false
+        )
     }
 }

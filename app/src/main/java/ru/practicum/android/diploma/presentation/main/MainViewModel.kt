@@ -8,22 +8,26 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
+import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
 import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
-    private val utilities: Utilities
+    private val utilities: Utilities,
+    private val filtersInteractorImpl: FiltersInteractor
 ) : ViewModel() {
     private var requestText = ""
     private var job: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
     private var maxPages: Int = 0
+    private var filter: Filters = EMPTY_FILTER
 
     private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
     val listOfVacancies: LiveData<MainFragmentStatus> = _listOfVacancies
@@ -123,9 +127,33 @@ class MainViewModel(
         }
     }
 
+    fun getFilterFromSharedPref() {
+        viewModelScope.launch {
+            filter = filtersInteractorImpl.getFiltersFromSharedPrefs()
+        }
+    }
+
+    fun getCurrentFilter(): Filters {
+        return filter
+    }
+
+    fun checkForFilter(): Boolean {
+        return filter == EMPTY_FILTER
+    }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val ERROR_TAG = "ErrorLoadingProcess"
+        private val EMPTY_FILTER = Filters(
+            countryId = "",
+            countryName = "",
+            regionId = "",
+            regionName = "",
+            industryId = "",
+            industryName = "",
+            salary = 0,
+            doNotShowWithoutSalarySetting = false
+        )
     }
 }
