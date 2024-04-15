@@ -32,7 +32,6 @@ class MainFragment : Fragment() {
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
     private var loadingItemAdapter = LoadingItemAdapter()
     private var concatAdapter: ConcatAdapter = ConcatAdapter()
-    private var startNewSearch = false
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -47,7 +46,7 @@ class MainFragment : Fragment() {
         createClickListeners()
         viewModel.getFilterFromSharedPref()
         setFilterButtonImage()
-        startNewSearch = viewModel.getStarSearchStatusFromSharedPrefs()
+        viewModel.getStarSearchStatusFromSharedPrefs()
 
         adapter.itemClickListener = { vacancy ->
             if (viewModel.clickDebounce()) {
@@ -64,6 +63,9 @@ class MainFragment : Fragment() {
         }
         viewModel.page.observe(viewLifecycleOwner) {
             loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
+        }
+        viewModel.startNewSearch.observe(viewLifecycleOwner) {
+            startNewSearch(it)
         }
         createScrollListener()
     }
@@ -83,6 +85,7 @@ class MainFragment : Fragment() {
 
         binding!!.ivFilter.setOnClickListener {
             if (viewModel.clickDebounce()) {
+                viewModel.putStarSearchStatusInSharedPrefs(false)
                 startFilteringSettingsFragment()
             }
         }
@@ -269,4 +272,9 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun startNewSearch(value: Boolean) {
+        if (value) {
+            startSearch()
+        }
+    }
 }

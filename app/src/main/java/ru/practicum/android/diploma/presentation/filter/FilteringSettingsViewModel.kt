@@ -72,7 +72,7 @@ class FilteringSettingsViewModel(
     }
 
     fun compareFilters(): Boolean {
-        if (currentFilter!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER))  {
+        if (currentFilter!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER)) {
             return false
         }
         return currentFilter!!.equals(oldFilter)

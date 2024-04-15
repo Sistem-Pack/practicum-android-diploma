@@ -37,11 +37,6 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.liveData.observe(viewLifecycleOwner) {
             insertFilterData(it)
         }
-
-        // нужен слушатеть лайф даты с классом фильтра
-        // нужен метод который из лайфдаты выставит все данные
-        // кнопка применить - ее видимость определяется отдельным методом при сравнении с
-        // последним сохраненным фильтром
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.blue)

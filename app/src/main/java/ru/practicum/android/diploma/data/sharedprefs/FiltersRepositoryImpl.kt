@@ -41,7 +41,6 @@ class FiltersRepositoryImpl(
 
     override fun clearActualFilterInSharedPrefs() {
         sharedPrefs.edit()
-            //.clear()
             .putString(FILTERS_KEY, null)
             .apply()
     }

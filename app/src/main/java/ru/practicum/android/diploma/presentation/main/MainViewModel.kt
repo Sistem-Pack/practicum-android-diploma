@@ -26,6 +26,7 @@ class MainViewModel(
     private var requestText = ""
     private var searchDebounceJob: Job? = null
     private var getDataFromSharedPrefsJob: Job? = null
+    private var jobStarSearchStatus: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
     private var maxPages: Int = 0
@@ -37,9 +38,13 @@ class MainViewModel(
     private var _page: MutableLiveData<Int> = MutableLiveData(0)
     val page: LiveData<Int> = _page
 
+    private var _startNewSearch: MutableLiveData<Boolean> = MutableLiveData(false)
+    val startNewSearch: LiveData<Boolean> = _startNewSearch
+
     fun onDestroy() {
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
+        jobStarSearchStatus?.cancel()
     }
 
     fun breakSearch() {
@@ -145,12 +150,15 @@ class MainViewModel(
         return filter.equals(EMPTY_FILTER)
     }
 
-    fun getStarSearchStatusFromSharedPrefs(): Boolean {
-        var value = false
+    fun getStarSearchStatusFromSharedPrefs() {
         getDataFromSharedPrefsJob = viewModelScope.launch(Dispatchers.IO) {
-            value = filtersInteractorImpl.getStarSearchStatus()
+            _startNewSearch.postValue(filtersInteractorImpl.getStarSearchStatus())
         }
-        return value
+    }
+    fun putStarSearchStatusInSharedPrefs(value: Boolean) {
+        jobStarSearchStatus = viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractorImpl.putStarSearchStatus(value)
+        }
     }
 
     companion object {
