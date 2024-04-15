@@ -5,7 +5,9 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
+import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequestTemp
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
@@ -16,8 +18,45 @@ class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val utils: SalaryInfo
 ) : VacancyRepository {
-    override fun searchVacancy(params: Map<String, String>): Flow<VacancySearchResult> {
-        TODO("Not yet implemented")
+    override fun searchVacancy(expression: String, filters: Filters, page: Int): Flow<VacancySearchResult> = flow {
+        val response = networkClient.doVacancySearch(
+            VacancySearchRequestTemp(formatToQueryMap(expression, filters, page))
+        )
+        when (response.resultResponse) {
+            ResponseStatus.OK -> {
+                val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
+                    formatToVacancy(it)
+                } ?: emptyList()
+                emit(
+                    VacancySearchResult(
+                        vacancies,
+                        ResponseStatus.OK,
+                        response.found ?: 0,
+                        response.page ?: 0,
+                        response.pages ?: 0
+                    )
+                )
+            }
+
+            ResponseStatus.NO_CONNECTION -> {
+                emit(
+                    NO_CONNECTION
+                )
+            }
+
+            ResponseStatus.BAD -> {
+                emit(
+                    BAD_RESPONSE
+                )
+            }
+
+            ResponseStatus.DEFAULT -> emit(
+                DEFAULT
+            )
+
+            else -> {
+            }
+        }
     }
 
     override fun searchVacancy(expression: String, page: Int): Flow<VacancySearchResult> = flow {
@@ -72,6 +111,19 @@ class VacancyRepositoryImpl(
             ),
             artworkUrl = vacancyDto.employer?.logoUrls?.mediumLogoUrl240 ?: ""
         )
+    }
+
+    private fun formatToQueryMap(expression: String, filters: Filters, page: Int): HashMap<String, String> {
+        val queryParameters: HashMap<String, String> = HashMap()
+        queryParameters["text"] = expression
+        queryParameters["page"] = page.toString()
+        queryParameters["per_page"] = "20" // пока заглушка
+        if (filters.countryId.isNotEmpty()) queryParameters["area"] = filters.countryId
+        if (filters.regionId.isNotEmpty()) queryParameters["area"] = filters.regionId
+        if (filters.salary != 0) queryParameters["salary"] = filters.salary.toString()
+        if (filters.industryId.isNotEmpty()) queryParameters["industry"] = filters.industryId
+        queryParameters["only_with_salary"] = filters.doNotShowWithoutSalarySetting.toString()
+        return queryParameters
     }
 
     companion object {
