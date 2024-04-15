@@ -35,6 +35,7 @@ class RegionSelectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         createTextWatcher()
         binding!!.ivBack.setOnClickListener {
+            viewModel.savePermanentFilterOnBackToPlaceOfWork()
             findNavController().navigateUp()
         }
 

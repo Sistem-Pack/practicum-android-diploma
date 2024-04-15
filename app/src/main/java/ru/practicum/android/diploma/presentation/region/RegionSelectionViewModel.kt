@@ -10,10 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
 import ru.practicum.android.diploma.domain.models.AreaFilters
-import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.areas.AreaCountry
 import ru.practicum.android.diploma.domain.models.areas.AreaSubject
+import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.region.model.RegionFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
@@ -78,14 +78,12 @@ class RegionSelectionViewModel(
             regionInteractor.getAreas().collect { result ->
                 when (result.responseStatus) {
                     ResponseStatus.OK -> {
-                        val idParentRegionFromSavedData = filtersInteractor.getFiltersFromSharedPrefs().countryId
-                        if (idParentRegionFromSavedData.isNotEmpty()) {
-                            regions.addAll(result.listSubject.filter { it.parentId == idParentRegionFromSavedData })
-                            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
-                        } else {
-                            regions.addAll(result.listSubject)
-                            parentRegions.addAll(result.listCountry)
-                            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+                        filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
+                            if (this.countryId.isNotEmpty()) {
+                                getRegionsByParent(result, this.countryId)
+                            } else {
+                                getAllRegions(result)
+                            }
                         }
                     }
 
@@ -103,27 +101,96 @@ class RegionSelectionViewModel(
         }
     }
 
+    private fun getRegionsByParent(areasResult: AreasSearchResult, parentId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            regions.addAll(areasResult.listSubject.filter { it.parentId == parentId })
+            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+        }
+    }
+
+    private fun getAllRegions(areasResult: AreasSearchResult) {
+        viewModelScope.launch(Dispatchers.IO) {
+            regions.addAll(areasResult.listSubject)
+            parentRegions.addAll(areasResult.listCountry)
+            _regionStateData.postValue(RegionFragmentStatus.ListOfRegions(regions))
+        }
+    }
+
+    fun savePermanentFilterOnBackToPlaceOfWork() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
+                if (this.countryId.isNotEmpty()) {
+                    saveFilter(
+                        AreaFilters(
+                            countryId = this.countryId,
+                            countryName = this.countryName,
+                            regionId = this.regionId,
+                            regionName = this.regionName,
+                            callback = true
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun saveFilter(areaFilters: AreaFilters) {
+        filtersInteractor.putFiltersInSharedPrefsForAreas(areaFilters)
+    }
+
     fun setFilters(selectedRegionItem: AreaSubject) {
         viewModelScope.launch(Dispatchers.IO) {
             filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
-                val parentCountry: AreaCountry
-                val findParentInCountry = parentRegions.find { it.id == selectedRegionItem.parentId }
-                val findParentInRegions = regions.find { it.id == selectedRegionItem.parentId }
-                parentCountry = if (findParentInCountry == null) {
-                    AreaCountry(id = findParentInRegions?.id!!, name = findParentInRegions.name)
-                } else {
-                    AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
-                }
-                filtersInteractor.putFiltersInSharedPrefsForAreas(
-                    AreaFilters(
-                        countryId = parentCountry.id,
-                        countryName = parentCountry.name,
-                        regionId = selectedRegionItem.id,
-                        regionName = selectedRegionItem.name,
-                        callback = true
+                if (this.countryId.isNotEmpty()) {
+                    saveFilter(
+                        AreaFilters(
+                            countryId = this.countryId,
+                            countryName = this.countryName,
+                            regionId = selectedRegionItem.id,
+                            regionName = selectedRegionItem.name,
+                            callback = true
+                        )
                     )
-                )
+                } else {
+                    val parentCountry: AreaCountry = getParent(selectedRegionItem.parentId)
+                    saveFilter(
+                        AreaFilters(
+                            countryId = parentCountry.id,
+                            countryName = parentCountry.name,
+                            regionId = selectedRegionItem.id,
+                            regionName = selectedRegionItem.name,
+                            callback = true
+                        )
+                    )
+                }
             }
+        }
+    }
+
+    private fun getP(parentId: String): AreaSubject? {
+        return regions.find { it.parentId == parentId }
+    }
+
+    private fun getParent(parentId: String): AreaCountry {
+        var findParentInCountry = parentRegions.find { it.id == parentId }
+        return if (findParentInCountry != null) {
+            AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
+        } else {
+            while(getP().parentId != null)
+
+
+            /*
+            var findRegions = regions.find { it.parentId == parentId } // это вернет какого-то родителя из регионов
+            if (findRegions != null) { //
+                while (findRegions?.parentId != null) {
+                    findRegions = regions.find { it.parentId == parentId }
+                }
+                findParentInCountry = parentRegions.find { it.id == findRegions?.parentId }
+                AreaCountry(id = findParentInCountry!!.id, name = findParentInCountry!!.name)
+            } else {
+                findParentInCountry = parentRegions.find { it.id == findRegions?.parentId }
+                AreaCountry(id = findParentInCountry!!.id, name = findParentInCountry!!.name)
+            }*/
         }
     }
 
