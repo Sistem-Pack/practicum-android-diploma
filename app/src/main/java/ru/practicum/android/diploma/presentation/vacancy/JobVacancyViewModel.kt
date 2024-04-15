@@ -145,29 +145,24 @@ class JobVacancyViewModel(
     }
 
     private suspend fun getFavoriteVacancyFromDataBase(vacancyId: String) {
-        try {
-            favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect { favoriteVacancyState ->
-                when (favoriteVacancyState) {
-                    is FavoriteVacancyState.SuccessfulRequest -> {
-                        jobVacancyScreenStateLiveData.postValue(
-                            JobVacancyScreenState.VacancyUploaded(
-                                updateVacancy(
-                                    favoriteVacancyState.vacancy,
-                                    favoriteVacancyState.vacancy.vacancyIdInDatabase
-                                )
+        favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect { favoriteVacancyState ->
+            when (favoriteVacancyState) {
+                is FavoriteVacancyState.SuccessfulRequest -> {
+                    jobVacancyScreenStateLiveData.postValue(
+                        JobVacancyScreenState.VacancyUploaded(
+                            updateVacancy(
+                                favoriteVacancyState.vacancy,
+                                favoriteVacancyState.vacancy.vacancyIdInDatabase
                             )
                         )
-                    }
-
-                    is FavoriteVacancyState.FailedRequest -> jobVacancyScreenStateLiveData.postValue(
-                        JobVacancyScreenState.FailedRequest(favoriteVacancyState.error)
                     )
-
                 }
+
+                is FavoriteVacancyState.FailedRequest -> jobVacancyScreenStateLiveData.postValue(
+                    JobVacancyScreenState.FailedRequest(favoriteVacancyState.error)
+                )
+
             }
-        } catch (e: NullPointerException) {
-            Log.e(ERROR_TAG, "Ошибка загрузки вакансии из БД")
-            jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
         }
     }
 

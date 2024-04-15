@@ -27,9 +27,13 @@ class FavoriteVacanciesRepositoryImpl(
     override fun getFavoriteVacancy(vacancyId: String): Flow<FavoriteVacancyState> = flow {
         try {
             val favoriteVacancyFromDataBase = appDatabase.favoriteVacanciesDao().getFavoriteVacancy(vacancyId)
-            val convertedFavoriteVacancy =
-                favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
-            emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
+            if (favoriteVacancyFromDataBase == null) {
+                emit(FavoriteVacancyState.FailedRequest(error = "В БД отсутствует вакансия"))
+            } else {
+                val convertedFavoriteVacancy =
+                    favoriteVacancyDbConverter.map(favoriteVacancyFromDataBase)
+                emit(FavoriteVacancyState.SuccessfulRequest(vacancy = convertedFavoriteVacancy))
+            }
         } catch (error: SQLException) {
             emit(FavoriteVacancyState.FailedRequest(error = "$error"))
         }
