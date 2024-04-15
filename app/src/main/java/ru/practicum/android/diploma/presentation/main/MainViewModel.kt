@@ -138,7 +138,7 @@ class MainViewModel(
     }
 
     fun checkForFilter(): Boolean {
-        return filter == EMPTY_FILTER
+        return filter.equals(EMPTY_FILTER)
     }
 
     companion object {

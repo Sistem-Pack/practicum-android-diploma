@@ -49,6 +49,7 @@ class FilteringSettingsFragment : Fragment() {
                 binding!!.tilSalaryLayout.defaultHintTextColor = resources.getColorStateList(R.color.gray_white)
             }
         }
+        binding!!.bApply.isVisible = viewModel.getFilterDataIsChange()
     }
 
     override fun onResume() {
@@ -59,6 +60,7 @@ class FilteringSettingsFragment : Fragment() {
 
     override fun onDestroyView() {
         binding = null
+        viewModel.onDestroy()
         super.onDestroyView()
     }
 
@@ -80,6 +82,7 @@ class FilteringSettingsFragment : Fragment() {
             checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
+            viewModel.putFilterInSharedPrefs(binding!!.tietSalary.text.toString(), binding!!.cbNoSalary.isChecked)
             installButtonResetVisibility()
         }
     }
@@ -110,6 +113,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun createTextWatcher() {
         (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
             binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
+            viewModel.putFilterInSharedPrefs(binding!!.tietSalary.text.toString(), binding!!.cbNoSalary.isChecked)
             installButtonResetVisibility()
         }
     }

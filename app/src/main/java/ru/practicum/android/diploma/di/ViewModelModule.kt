@@ -19,7 +19,11 @@ val viewModelModule = module {
     }
 
     viewModel {
-        MainViewModel(get(), get())
+        MainViewModel(
+            vacancyInteractor = get(),
+            utilities = get(),
+            filtersInteractorImpl = get()
+        )
     }
 
     viewModel {
