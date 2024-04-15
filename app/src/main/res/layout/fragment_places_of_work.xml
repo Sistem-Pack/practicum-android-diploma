@@ -159,8 +159,6 @@
     <Button
         android:id="@+id/bChoose"
         style="@style/Button"
-        android:layout_marginStart="@dimen/four_space"
-        android:layout_marginEnd="@dimen/four_space"
         android:background="@drawable/rounded_background_12_blue"
         android:text="@string/choose"
         android:visibility="gone"

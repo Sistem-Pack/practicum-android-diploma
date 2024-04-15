@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.data.industry.impl.IndustryRepositoryImpl
 import ru.practicum.android.diploma.data.search.impl.VacancyRepositoryImpl
 import ru.practicum.android.diploma.data.sharedprefs.FiltersRepositoryImpl
 import ru.practicum.android.diploma.data.sharing.impl.SharingRepositoryImpl
-import ru.practicum.android.diploma.domain.areas.impl.AreasRepository
+import ru.practicum.android.diploma.domain.areas.AreasRepository
 import ru.practicum.android.diploma.domain.db.FavoriteVacanciesRepository
 import ru.practicum.android.diploma.domain.details.VacancyDetailsRepository
 import ru.practicum.android.diploma.domain.industry.IndustryRepository

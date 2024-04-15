@@ -5,6 +5,8 @@ import com.google.gson.Gson
 import ru.practicum.android.diploma.app.FILTERS_KEY
 import ru.practicum.android.diploma.app.FILTERS_OLD_KEY
 import ru.practicum.android.diploma.app.START_NEW_SEARCH
+import ru.practicum.android.diploma.app.FILTERS_KEY_AREA
+import ru.practicum.android.diploma.domain.models.AreaFilters
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
 
@@ -22,6 +24,13 @@ class FiltersRepositoryImpl(
         industryName = "",
         salary = 0,
         doNotShowWithoutSalarySetting = false
+    )
+
+    private val emptyAreaFilters = AreaFilters(
+        countryId = "",
+        countryName = "",
+        regionId = "",
+        regionName = ""
     )
 
     override suspend fun getActualFilterFromSharedPrefs(): Filters {
@@ -44,6 +53,7 @@ class FiltersRepositoryImpl(
             .putString(FILTERS_KEY, null)
             .apply()
     }
+
 
     override fun putOldFilterInSharedPrefs(filters: Filters) {
         sharedPrefs.edit()
@@ -73,6 +83,27 @@ class FiltersRepositoryImpl(
         } else {
             false
         }
+
+    override suspend fun getFiltersFromSharedPrefsForAreas(): AreaFilters {
+        val filtersInSharedPrefs = sharedPrefs.getString(FILTERS_KEY_AREA, null)
+        return if (filtersInSharedPrefs != null) {
+            gson.fromJson(filtersInSharedPrefs, AreaFilters::class.java)
+        } else {
+            emptyAreaFilters
+        }
+    }
+
+    override fun putFiltersInSharedPrefsForAreas(filters: AreaFilters) {
+        sharedPrefs.edit()
+            .putString(FILTERS_KEY_AREA, gson.toJson(filters))
+            .apply()
+    }
+
+    override fun clearAllFiltersInSharedPrefsForAreas() {
+        sharedPrefs.edit()
+            .putString(FILTERS_KEY_AREA, gson.toJson(emptyAreaFilters))
+            .apply()
+
     }
 
 }
