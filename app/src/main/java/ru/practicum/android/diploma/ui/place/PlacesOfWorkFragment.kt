@@ -94,13 +94,13 @@ class PlacesOfWorkFragment : Fragment() {
                 binding!!.tietRegion.setText(data.regionName)
                 if (data.countryName.isNotEmpty()) {
                     binding!!.bChoose.visibility = View.VISIBLE
-                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_clear)
+                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_cross)
                 } else {
                     binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_arrow_right)
                     binding!!.bChoose.visibility = View.GONE
                 }
                 if (data.regionName.isNotEmpty()) {
-                    binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_clear)
+                    binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_cross)
                 } else {
                     binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_arrow_right)
                 }
