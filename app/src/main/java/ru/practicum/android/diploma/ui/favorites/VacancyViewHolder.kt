@@ -29,7 +29,7 @@ class VacancyViewHolder(parent: ViewGroup) :
             .load(model.artworkUrl)
             .placeholder(R.drawable.logo_plug)
             .centerCrop()
-            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.half_space)))
+            .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.three_space)))
             .into(logo)
     }
 }
