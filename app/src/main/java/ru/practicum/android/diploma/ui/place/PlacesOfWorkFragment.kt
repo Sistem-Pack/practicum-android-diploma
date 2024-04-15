@@ -97,7 +97,7 @@ class PlacesOfWorkFragment : Fragment() {
                     binding!!.tilCountry.defaultHintTextColor =
                         ContextCompat.getColorStateList(requireContext(), R.color.black_white)
                     binding!!.bChoose.visibility = View.VISIBLE
-                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_clear)
+                    binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_cross)
                 } else {
                     binding!!.tilCountry.defaultHintTextColor =
                         ContextCompat.getColorStateList(requireContext(), R.color.gray)
@@ -108,6 +108,7 @@ class PlacesOfWorkFragment : Fragment() {
                     binding!!.tilRegion.defaultHintTextColor =
                         ContextCompat.getColorStateList(requireContext(), R.color.black_white)
                     binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_clear)
+                    binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_cross)
                 } else {
                     binding!!.tilRegion.defaultHintTextColor =
                         ContextCompat.getColorStateList(requireContext(), R.color.gray)

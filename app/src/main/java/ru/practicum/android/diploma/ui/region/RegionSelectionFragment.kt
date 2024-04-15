@@ -145,4 +145,3 @@ class RegionSelectionFragment : Fragment() {
         binding!!.rvRegion.visibility = View.GONE
     }
 }
-
