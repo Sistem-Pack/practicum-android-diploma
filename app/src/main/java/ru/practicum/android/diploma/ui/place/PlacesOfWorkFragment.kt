@@ -108,5 +108,4 @@ class PlacesOfWorkFragment : Fragment() {
         }
     }
 
-
 }

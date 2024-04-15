@@ -16,12 +16,10 @@ import ru.practicum.android.diploma.domain.models.areas.AreaSubject
 import ru.practicum.android.diploma.domain.models.areas.AreasSearchResult
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.region.model.RegionFragmentStatus
-import ru.practicum.android.diploma.util.Utilities
 
 class RegionSelectionViewModel(
     private val regionInteractor: AreasInteractor,
     private val filtersInteractor: FiltersInteractor,
-    private val utilities: Utilities
 ) : ViewModel() {
     private var requestText = ""
     private var job: Job? = null
@@ -135,6 +133,30 @@ class RegionSelectionViewModel(
         }
     }
 
+    private fun getParentFromRegion(parentId: String): AreaSubject? {
+        return regions.find { it.id == parentId }
+    }
+
+    private fun getParent(parentId: String): AreaCountry {
+        var findParentInCountry = parentRegions.find { it.id == parentId }
+        if (findParentInCountry == null) {
+            var listParent = getParentFromRegion(parentId)
+            var oldParents: AreaSubject? = null
+            while (true) {
+                if (listParent != null) {
+                    oldParents = listParent
+                    listParent = getParentFromRegion(oldParents.parentId)
+                } else {
+                    if (oldParents != null) {
+                        findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
+                        break
+                    }
+                }
+            }
+        }
+        return findParentInCountry!!
+    }
+
     private fun saveFilter(areaFilters: AreaFilters) {
         filtersInteractor.putFiltersInSharedPrefsForAreas(areaFilters)
     }
@@ -166,30 +188,6 @@ class RegionSelectionViewModel(
                 }
             }
         }
-    }
-
-    private fun getParentFromRegion(parentId: String): AreaSubject? {
-        return regions.find { it.id == parentId }
-    }
-
-    private fun getParent(parentId: String): AreaCountry {
-        var findParentInCountry = parentRegions.find { it.id == parentId }
-        if (findParentInCountry == null) {
-            var listParent = getParentFromRegion(parentId)
-            var oldParents: AreaSubject? = null
-            while (true) {
-                if (listParent != null) {
-                    oldParents = listParent
-                    listParent = getParentFromRegion(oldParents.parentId)
-                } else {
-                    if (oldParents != null) {
-                        findParentInCountry = parentRegions.find { it.id == oldParents.parentId }
-                        break
-                    }
-                }
-            }
-        }
-        return findParentInCountry!!
     }
 
     companion object {

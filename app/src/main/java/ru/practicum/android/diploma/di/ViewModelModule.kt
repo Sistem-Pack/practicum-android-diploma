@@ -50,7 +50,6 @@ val viewModelModule = module {
         RegionSelectionViewModel(
             regionInteractor = get(),
             filtersInteractor = get(),
-            utilities = get()
         )
     }
 

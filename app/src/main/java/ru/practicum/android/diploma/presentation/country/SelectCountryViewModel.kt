@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.areas.AreasInteractor
 import ru.practicum.android.diploma.domain.models.AreaFilters
-import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.areas.AreaCountry
 import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
