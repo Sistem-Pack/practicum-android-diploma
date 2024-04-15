@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.domain.sharing.SharingInteractor
 import ru.practicum.android.diploma.ui.vacancy.JobVacancyScreenState
 import ru.practicum.android.diploma.util.Utilities
 import java.net.SocketTimeoutException
+import java.sql.SQLException
 import java.util.Calendar
 
 class JobVacancyViewModel(
@@ -87,6 +88,7 @@ class JobVacancyViewModel(
             when (it) {
                 is FavoriteVacanciesIdState.FailedRequest ->
                     Log.e(ERROR_TAG, "ошибка: ${it.error}")
+
                 is FavoriteVacanciesIdState.SuccessfulRequest -> isFavorite =
                     it.vacanciesIdArrayList.contains(vacancyId)
             }
@@ -115,16 +117,21 @@ class JobVacancyViewModel(
                 }
 
                 ResponseStatus.NO_CONNECTION -> {
-                    Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
-                    if (isFavorite) {
-                        getFavoriteVacancyFromDataBase(vacancyId)
-                    } else {
+                    try {
+                        if (isFavorite) {
+                            getFavoriteVacancyFromDataBase(vacancyId)
+                        } else {
+                            jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.NoConnection)
+                        }
+                    } catch (e: SQLException) {
+                        Log.e(ERROR_TAG, "Нет связи. Пробуем загрузить вакансию из БД.")
                         jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.NoConnection)
                     }
                 }
 
                 ResponseStatus.LOADING ->
                     jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.UploadingProcess)
+
                 ResponseStatus.DEFAULT -> Unit
             }
         }
@@ -138,24 +145,29 @@ class JobVacancyViewModel(
     }
 
     private suspend fun getFavoriteVacancyFromDataBase(vacancyId: String) {
-        favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect { favoriteVacancyState ->
-            when (favoriteVacancyState) {
-                is FavoriteVacancyState.SuccessfulRequest -> {
-                    jobVacancyScreenStateLiveData.postValue(
-                        JobVacancyScreenState.VacancyUploaded(
-                            updateVacancy(
-                                favoriteVacancyState.vacancy,
-                                favoriteVacancyState.vacancy.vacancyIdInDatabase
+        try {
+            favoriteVacanciesInteractor.getFavoriteVacancy(vacancyId).collect { favoriteVacancyState ->
+                when (favoriteVacancyState) {
+                    is FavoriteVacancyState.SuccessfulRequest -> {
+                        jobVacancyScreenStateLiveData.postValue(
+                            JobVacancyScreenState.VacancyUploaded(
+                                updateVacancy(
+                                    favoriteVacancyState.vacancy,
+                                    favoriteVacancyState.vacancy.vacancyIdInDatabase
+                                )
                             )
                         )
+                    }
+
+                    is FavoriteVacancyState.FailedRequest -> jobVacancyScreenStateLiveData.postValue(
+                        JobVacancyScreenState.FailedRequest(favoriteVacancyState.error)
                     )
+
                 }
-
-                is FavoriteVacancyState.FailedRequest -> jobVacancyScreenStateLiveData.postValue(
-                    JobVacancyScreenState.FailedRequest(favoriteVacancyState.error)
-                )
-
             }
+        } catch (e: NullPointerException) {
+            Log.e(ERROR_TAG, "Ошибка загрузки вакансии из БД")
+            jobVacancyScreenStateLiveData.postValue(JobVacancyScreenState.FailedRequest(""))
         }
     }
 

@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -71,6 +72,9 @@ class RetrofitNetworkClient(
                         }
                     }
                 } catch (error: SocketTimeoutException) {
+                    Log.d(ERROR_TAG, error.message.toString())
+                    Response().apply { resultResponse = ResponseStatus.BAD }
+                } catch (error: IOException) {
                     Log.d(ERROR_TAG, error.message.toString())
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
