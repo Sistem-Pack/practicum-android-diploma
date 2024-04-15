@@ -94,19 +94,23 @@ class PlacesOfWorkFragment : Fragment() {
                 binding!!.tietCountry.setText(data.countryName)
                 binding!!.tietRegion.setText(data.regionName)
                 if (data.countryName.isNotEmpty()) {
-                    binding!!.tilCountry.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.black_white)
+                    binding!!.tilCountry.defaultHintTextColor =
+                        ContextCompat.getColorStateList(requireContext(), R.color.black_white)
                     binding!!.bChoose.visibility = View.VISIBLE
                     binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_clear)
                 } else {
-                    binding!!.tilCountry.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.gray)
+                    binding!!.tilCountry.defaultHintTextColor =
+                        ContextCompat.getColorStateList(requireContext(), R.color.gray)
                     binding!!.ivArrowRightCountry.setImageResource(R.drawable.ic_arrow_right)
                     binding!!.bChoose.visibility = View.GONE
                 }
                 if (data.regionName.isNotEmpty()) {
-                    binding!!.tilRegion.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.black_white)
+                    binding!!.tilRegion.defaultHintTextColor =
+                        ContextCompat.getColorStateList(requireContext(), R.color.black_white)
                     binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_clear)
                 } else {
-                    binding!!.tilRegion.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.gray)
+                    binding!!.tilRegion.defaultHintTextColor =
+                        ContextCompat.getColorStateList(requireContext(), R.color.gray)
                     binding!!.ivArrowRightRegion.setImageResource(R.drawable.ic_arrow_right)
                 }
             }

@@ -38,11 +38,14 @@ class FilteringSettingsFragment : Fragment() {
         // последним сохраненным фильтром
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
-                binding!!.tilSalaryLayout.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.blue)
+                binding!!.tilSalaryLayout.defaultHintTextColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.blue)
             } else if (binding!!.tietSalary.text!!.isNotEmpty()) {
-                binding!!.tilSalaryLayout.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.black)
+                binding!!.tilSalaryLayout.defaultHintTextColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.black)
             } else {
-                binding!!.tilSalaryLayout.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
+                binding!!.tilSalaryLayout.defaultHintTextColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
             }
         }
         // (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
@@ -65,7 +68,8 @@ class FilteringSettingsFragment : Fragment() {
         }
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
-            binding!!.tilSalaryLayout.defaultHintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
+            binding!!.tilSalaryLayout.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
             installButtonResetVisibility()
         }
         binding!!.bReset.setOnClickListener {
