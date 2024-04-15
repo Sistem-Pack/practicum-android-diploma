@@ -176,21 +176,21 @@ class RegionSelectionViewModel(
         return if (findParentInCountry != null) {
             AreaCountry(id = findParentInCountry.id, name = findParentInCountry.name)
         } else {
-            while(getP().parentId != null)
-
-
-            /*
-            var findRegions = regions.find { it.parentId == parentId } // это вернет какого-то родителя из регионов
-            if (findRegions != null) { //
-                while (findRegions?.parentId != null) {
-                    findRegions = regions.find { it.parentId == parentId }
+            var listParent: AreaSubject?
+            var oldParents: AreaSubject?
+            while (true) {
+                listParent = getP(parentId)
+                if (listParent != null) {
+                    if (oldParents?.parentId == null) {
+                        findParentInCountry = AreaCountry()
+                    } else {
+                        oldParents = listParent
+                    }
+                } else {
+                  val findCountry = oldParents.find { it.id == parentId }
                 }
-                findParentInCountry = parentRegions.find { it.id == findRegions?.parentId }
-                AreaCountry(id = findParentInCountry!!.id, name = findParentInCountry!!.name)
-            } else {
-                findParentInCountry = parentRegions.find { it.id == findRegions?.parentId }
-                AreaCountry(id = findParentInCountry!!.id, name = findParentInCountry!!.name)
-            }*/
+            }
+            return findParentInCountry!!
         }
     }
 
