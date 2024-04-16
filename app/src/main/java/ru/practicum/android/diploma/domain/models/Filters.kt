@@ -14,14 +14,14 @@ data class Filters(
         if (this === other) return true
         if (other !is Filters) return false
 
-        if (compareData(this, other)) return false
+        if (compareHalfOfFilters(this, other)) return false
         if (salary != other.salary) return false
         if (doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting) return false
 
         return true
     }
 
-    private fun compareData(firstFilter: Filters, secondFilter: Filters): Boolean {
+    private fun compareHalfOfFilters(firstFilter: Filters, secondFilter: Filters): Boolean {
         return firstFilter.countryId != secondFilter.countryId
             || firstFilter.countryName != secondFilter.countryName
             || firstFilter.regionId != secondFilter.regionId
