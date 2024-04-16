@@ -153,12 +153,16 @@ class FilteringSettingsFragment : Fragment() {
     private fun insertFilterData(filter: Filters) {
         if (filter.countryName.isNotEmpty()) {
             (binding!!.tietJobPlace as TextView).text = filter.countryName
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         }
         if (filter.regionName.isNotEmpty()) {
             (binding!!.tietJobPlace as TextView).text = filter.countryName + ", " + filter.regionName
         }
         if (filter.industryName.isNotEmpty()) {
             (binding!!.tietIndustry as TextView).text = filter.industryName
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         }
         if (filter.salary != 0) {
             (binding!!.tietSalary as TextView).text = filter.salary.toString()
