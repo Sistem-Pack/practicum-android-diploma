@@ -41,6 +41,9 @@ class MainViewModel(
     private var _startNewSearch: MutableLiveData<Boolean> = MutableLiveData(false)
     val startNewSearch: LiveData<Boolean> = _startNewSearch
 
+    private var _actualFilterIsEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    val actualFilterIsEmpty: LiveData<Boolean> = _actualFilterIsEmpty
+
     fun onDestroy() {
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
@@ -143,11 +146,8 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             filter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
             filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
+            _actualFilterIsEmpty.postValue(filter.equals(EMPTY_FILTER))
         }
-    }
-
-    fun checkForFilter(): Boolean {
-        return filter.equals(EMPTY_FILTER)
     }
 
     fun getStarSearchStatusFromSharedPrefs() {

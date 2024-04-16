@@ -46,7 +46,6 @@ class MainFragment : Fragment() {
         createTextWatcher()
         createClickListeners()
         viewModel.getFilterFromSharedPref()
-        setFilterButtonImage()
         viewModel.getStarSearchStatusFromSharedPrefs()
 
         adapter.itemClickListener = { vacancy ->
@@ -67,6 +66,9 @@ class MainFragment : Fragment() {
         }
         viewModel.startNewSearch.observe(viewLifecycleOwner) {
             startNewSearch(it)
+        }
+        viewModel.actualFilterIsEmpty.observe(viewLifecycleOwner) {
+            setFilterButtonImage(it)
         }
         createScrollListener()
     }
@@ -263,8 +265,8 @@ class MainFragment : Fragment() {
             requireContext().resources.getQuantityString(R.plurals.vacancy, viewModel.getFoundVacancies())
     }
 
-    private fun setFilterButtonImage() {
-        if (viewModel.checkForFilter()) {
+    private fun setFilterButtonImage(actualFilterIsEmpty: Boolean) {
+        if (actualFilterIsEmpty) {
             binding!!.ivFilter.setImageResource(R.drawable.ic_filter_off)
         } else {
             binding!!.ivFilter.setImageResource(R.drawable.ic_filter_on)
@@ -272,7 +274,7 @@ class MainFragment : Fragment() {
     }
 
     private fun startNewSearch(value: Boolean) {
-        if (value) {
+        if (value && binding!!.etSearch.text.toString().isNotEmpty()) {
             startSearch()
         }
     }

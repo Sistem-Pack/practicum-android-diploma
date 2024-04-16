@@ -74,7 +74,6 @@ class FilteringSettingsFragment : Fragment() {
             makeCurrentFilter()
             binding!!.tilSalaryLayout.defaultHintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
-            installButtonResetVisibility()
         }
         binding!!.bReset.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
@@ -87,7 +86,6 @@ class FilteringSettingsFragment : Fragment() {
         }
         binding!!.cbNoSalary.setOnClickListener {
             makeCurrentFilter()
-            installButtonResetVisibility()
         }
         binding!!.bApply.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(true)
@@ -98,13 +96,11 @@ class FilteringSettingsFragment : Fragment() {
     private fun createSecondHalfClickListeners() {
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
-            installButtonResetVisibility()
             makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.ivIndustryClear.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
-            installButtonResetVisibility()
             makeCurrentFilter()
             checkTIETContent()
         }
@@ -123,10 +119,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun createTextWatcher() {
         (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
             binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
-            if (binding!!.tietSalary.isFocused) {
-                makeCurrentFilter()
-            }
-            installButtonResetVisibility()
+            makeCurrentFilter()
         }
     }
 
@@ -137,7 +130,7 @@ class FilteringSettingsFragment : Fragment() {
             || binding!!.cbNoSalary.isChecked
 
         binding!!.bReset.isVisible = buttonsVisibility
-        binding!!.bApply.isVisible = !viewModel.compareFilters()
+        binding!!.bApply.isVisible = viewModel.compareFilters()
     }
 
     private fun checkTIETContent() {
@@ -171,6 +164,7 @@ class FilteringSettingsFragment : Fragment() {
             (binding!!.tietSalary as TextView).text = filter.salary.toString()
         }
         binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
+        installButtonResetVisibility()
     }
 
     private fun makeCurrentFilter() {
