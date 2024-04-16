@@ -236,7 +236,6 @@ class MainFragment : Fragment() {
     }
 
     private fun showBadStatus() {
-        vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
         Toast.makeText(
