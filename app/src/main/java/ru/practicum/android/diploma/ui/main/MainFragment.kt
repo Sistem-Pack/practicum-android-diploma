@@ -187,6 +187,10 @@ class MainFragment : Fragment() {
             is MainFragmentStatus.NoConnection -> {
                 showNoConnectionStatus()
             }
+
+            is MainFragmentStatus.SocketTimeout -> {
+                showSocketTimeout()
+            }
         }
     }
 
@@ -234,7 +238,6 @@ class MainFragment : Fragment() {
     }
 
     private fun showBadStatus() {
-        vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
         Toast.makeText(
@@ -244,8 +247,17 @@ class MainFragment : Fragment() {
         ).show()
     }
 
+    private fun showSocketTimeout() {
+        binding!!.rvVacancyList.isVisible = false
+        binding!!.tvServerErrorPlaceholder.isVisible = true
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.socket_timeout_loading),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     private fun showNoConnectionStatus() {
-        vacancies.clear()
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true

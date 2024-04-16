@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -137,7 +138,8 @@ class MainViewModel(
                 }
             } catch (e: SocketTimeoutException) {
                 Log.d(ERROR_TAG, "ошибка: ${e.message}")
-                // _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
+                _listOfVacancies.postValue(MainFragmentStatus.SocketTimeout)
+                this.coroutineContext.job.cancel()
             }
         }
     }
