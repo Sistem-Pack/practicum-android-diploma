@@ -35,8 +35,11 @@ class FilteringSettingsFragment : Fragment() {
         createTextWatcher()
         viewModel.onCreate()
 
-        viewModel.liveData.observe(viewLifecycleOwner) {
+        viewModel.filter.observe(viewLifecycleOwner) {
             insertFilterData(it)
+        }
+        viewModel.oldFilter.observe(viewLifecycleOwner) {
+            binding!!.bApply.isVisible = viewModel.compareFilters()
         }
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
@@ -55,7 +58,7 @@ class FilteringSettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkTIETContent()
-        installButtonResetVisibility()
+        makeCurrentFilter()
     }
 
     override fun onDestroyView() {
@@ -67,6 +70,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun createFirstHalfClickListeners() {
         binding!!.ivBack.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(false)
+            makeCurrentFilter()
             findNavController().navigateUp()
         }
         binding!!.ivSalaryClear.setOnClickListener {
@@ -89,6 +93,8 @@ class FilteringSettingsFragment : Fragment() {
         }
         binding!!.bApply.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(true)
+            makeCurrentFilter()
+            viewModel.changeOldFilterInSharedPrefs()
             findNavController().navigateUp()
         }
     }
@@ -105,11 +111,13 @@ class FilteringSettingsFragment : Fragment() {
             checkTIETContent()
         }
         binding!!.ivArrowRightJobPlace.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToPlacesOfWorkFragment()
             )
         }
         binding!!.ivArrowRightIndustry.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToIndustrySelectionFragment()
             )

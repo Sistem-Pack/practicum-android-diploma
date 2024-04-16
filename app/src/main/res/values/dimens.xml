@@ -20,6 +20,7 @@
     <dimen name="eleven_space">44dp</dimen>
     <dimen name="twelve_space">48dp</dimen>
     <dimen name="twelve_and_a_half_space">50dp</dimen>
+    <dimen name="thirteen_space">52dp</dimen>
     <dimen name="fourteen_space">56dp</dimen>
     <dimen name="fifteen_space">60dp</dimen>
     <dimen name="sixteen_space">64dp</dimen>
