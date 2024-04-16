@@ -52,6 +52,9 @@ class MainViewModel(
 
     fun breakSearch() {
         searchDebounceJob?.cancel()
+        foundVacancies = 0
+        _page.postValue(0)
+        _listOfVacancies.postValue(MainFragmentStatus.Default)
     }
 
     fun getMaxPages(): Int {

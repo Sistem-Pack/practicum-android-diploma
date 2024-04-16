@@ -19,15 +19,17 @@ class FilteringSettingsViewModel(
     private var jobStarSearchStatus: Job? = null
 
     private val _filter = MutableLiveData(EMPTY_FILTER)
-    val liveData: LiveData<Filters> = _filter
+    val filter: LiveData<Filters> = _filter
 
-    private var oldFilter = EMPTY_FILTER
+    private val _oldFilter = MutableLiveData(EMPTY_FILTER)
+    val oldFilter: LiveData<Filters> = _oldFilter
+
     private var currentFilter = _filter.value
 
     fun onCreate() {
         jobGet = viewModelScope.launch(Dispatchers.IO) {
             currentFilter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
-            oldFilter = filtersInteractorImpl.getOldFilterFromSharedPrefs()
+            _oldFilter.postValue(filtersInteractorImpl.getOldFilterFromSharedPrefs())
             _filter.postValue(currentFilter)
         }
     }
@@ -71,11 +73,17 @@ class FilteringSettingsViewModel(
         }
     }
 
+    fun changeOldFilterInSharedPrefs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractorImpl.putOldFilterInSharedPrefs(currentFilter!!)
+        }
+    }
+
     fun compareFilters(): Boolean {
-        if (currentFilter!!.equals(EMPTY_FILTER) && oldFilter.equals(EMPTY_FILTER)) {
+        if (currentFilter!!.equals(EMPTY_FILTER) && _oldFilter.value!!.equals(EMPTY_FILTER)) {
             return false
         }
-        return !currentFilter!!.equals(oldFilter)
+        return !currentFilter!!.equals(_oldFilter)
     }
 
     companion object {

@@ -35,8 +35,11 @@ class FilteringSettingsFragment : Fragment() {
         createTextWatcher()
         viewModel.onCreate()
 
-        viewModel.liveData.observe(viewLifecycleOwner) {
+        viewModel.filter.observe(viewLifecycleOwner) {
             insertFilterData(it)
+        }
+        viewModel.oldFilter.observe(viewLifecycleOwner) {
+            binding!!.bApply.isVisible = viewModel.compareFilters()
         }
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
@@ -67,6 +70,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun createFirstHalfClickListeners() {
         binding!!.ivBack.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(false)
+            makeCurrentFilter()
             findNavController().navigateUp()
         }
         binding!!.ivSalaryClear.setOnClickListener {
@@ -89,6 +93,8 @@ class FilteringSettingsFragment : Fragment() {
         }
         binding!!.bApply.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(true)
+            makeCurrentFilter()
+            viewModel.changeOldFilterInSharedPrefs()
             findNavController().navigateUp()
         }
     }

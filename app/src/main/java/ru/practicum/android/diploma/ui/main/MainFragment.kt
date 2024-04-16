@@ -196,12 +196,14 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        binding!!.chip.isVisible = false
     }
 
     private fun showLoadingStatus() {
         if (viewModel.page.value!! == 0) {
             binding!!.pbSearch.isVisible = true
+            binding!!.chip.isVisible = false
+        } else {
+            binding!!.chip.isVisible = true
         }
     }
 
@@ -245,7 +247,6 @@ class MainFragment : Fragment() {
     }
 
     private fun showNoConnectionStatus() {
-        vacancies.clear()
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
@@ -254,6 +255,7 @@ class MainFragment : Fragment() {
     private fun breakSearch() {
         viewModel.breakSearch()
         vacancies.clear()
+        adapter.notifyDataSetChanged()
         binding!!.ivSearchPlaceholder.isVisible = true
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
