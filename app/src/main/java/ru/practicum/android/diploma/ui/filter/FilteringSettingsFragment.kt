@@ -164,6 +164,7 @@ class FilteringSettingsFragment : Fragment() {
             (binding!!.tietSalary as TextView).text = filter.salary.toString()
         }
         binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
+        checkTIETContent()
         installButtonResetVisibility()
     }
 

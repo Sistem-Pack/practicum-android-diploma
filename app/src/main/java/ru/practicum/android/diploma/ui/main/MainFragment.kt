@@ -196,6 +196,7 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
+        binding!!.chip.isVisible = false
     }
 
     private fun showLoadingStatus() {
@@ -275,6 +276,7 @@ class MainFragment : Fragment() {
 
     private fun startNewSearch(value: Boolean) {
         if (value && binding!!.etSearch.text.toString().isNotEmpty()) {
+            hideAllView()
             startSearch()
         }
     }
