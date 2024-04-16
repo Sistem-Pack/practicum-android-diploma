@@ -11,6 +11,8 @@ import ru.practicum.android.diploma.di.viewModelModule
 
 const val PRACTICUM_DIPLOMA_PREFERENCES = "practicum_diploma_preferences"
 const val FILTERS_KEY = "key_for_filters"
+const val FILTERS_OLD_KEY = "key_for_old_filter"
+const val START_NEW_SEARCH = "key_for_start_new_search"
 const val FILTERS_KEY_AREA = "key_for_filters_area"
 
 class App : Application() {

@@ -1,27 +1,36 @@
 package ru.practicum.android.diploma.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.domain.search.VacancyInteractor
+import ru.practicum.android.diploma.domain.sharedprefs.FiltersInteractor
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.util.Utilities
+import java.net.SocketTimeoutException
 
 class MainViewModel(
     private val vacancyInteractor: VacancyInteractor,
-    private val utilities: Utilities
+    private val utilities: Utilities,
+    private val filtersInteractorImpl: FiltersInteractor
 ) : ViewModel() {
     private var requestText = ""
-    private var job: Job? = null
+    private var searchDebounceJob: Job? = null
+    private var getDataFromSharedPrefsJob: Job? = null
+    private var jobStarSearchStatus: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
     private var maxPages: Int = 0
+    private var filter: Filters = EMPTY_FILTER
 
     private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
     val listOfVacancies: LiveData<MainFragmentStatus> = _listOfVacancies
@@ -29,13 +38,21 @@ class MainViewModel(
     private var _page: MutableLiveData<Int> = MutableLiveData(0)
     val page: LiveData<Int> = _page
 
+    private var _startNewSearch: MutableLiveData<Boolean> = MutableLiveData(false)
+    val startNewSearch: LiveData<Boolean> = _startNewSearch
+
+    private var _actualFilterIsEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    val actualFilterIsEmpty: LiveData<Boolean> = _actualFilterIsEmpty
+
     fun onDestroy() {
-        job?.cancel()
+        searchDebounceJob?.cancel()
+        getDataFromSharedPrefsJob?.cancel()
+        jobStarSearchStatus?.cancel()
     }
 
-//    fun getCurrentPage(): Int {
-//        return page
-//    }
+    fun breakSearch() {
+        searchDebounceJob?.cancel()
+    }
 
     fun getMaxPages(): Int {
         return maxPages
@@ -54,8 +71,8 @@ class MainViewModel(
     }
 
     fun searchDebounce() {
-        job?.cancel()
-        job = viewModelScope.launch {
+        searchDebounceJob?.cancel()
+        searchDebounceJob = viewModelScope.launch(Dispatchers.IO) {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search()
         }
@@ -83,40 +100,65 @@ class MainViewModel(
     }
 
     private fun sendRequest() {
-        viewModelScope.launch {
-            vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
-                when (result.responseStatus) {
-                    ResponseStatus.OK -> {
-                        if (_page.value!! == 0) {
-                            list.clear()
-                            list.addAll(result.results)
-                            foundVacancies = result.found
-                            _listOfVacancies.postValue(
-                                MainFragmentStatus.ListOfVacancies(result.results)
-                            )
-                            maxPages = result.pages
-                        } else {
-                            list.addAll(result.results)
-                            _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
+                    when (result.responseStatus) {
+                        ResponseStatus.OK -> {
+                            if (_page.value!! == 0) {
+                                list.clear()
+                                list.addAll(result.results)
+                                foundVacancies = result.found
+                                _listOfVacancies.postValue(
+                                    MainFragmentStatus.ListOfVacancies(result.results)
+                                )
+                                maxPages = result.pages
+                            } else {
+                                list.addAll(result.results)
+                                _listOfVacancies.postValue(MainFragmentStatus.ListOfVacancies(list))
+                            }
                         }
-                    }
 
-                    ResponseStatus.BAD -> {
-                        list.clear()
-                        _listOfVacancies.postValue(MainFragmentStatus.Bad)
-                    }
+                        ResponseStatus.BAD -> {
+                            list.clear()
+                            _listOfVacancies.postValue(MainFragmentStatus.Bad)
+                        }
 
-                    ResponseStatus.DEFAULT -> {
-                        _listOfVacancies.postValue(MainFragmentStatus.Default)
-                    }
+                        ResponseStatus.DEFAULT -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.Default)
+                        }
 
-                    ResponseStatus.NO_CONNECTION -> {
-                        _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
-                    }
+                        ResponseStatus.NO_CONNECTION -> {
+                            _listOfVacancies.postValue(MainFragmentStatus.NoConnection)
+                        }
 
-                    ResponseStatus.LOADING -> Unit
+                        ResponseStatus.LOADING -> Unit
+                    }
                 }
+            } catch (e: SocketTimeoutException) {
+                Log.d(ERROR_TAG, "ошибка: ${e.message}")
+                // _listOfVacancies.postValue(MainFragmentStatus.showToastOnLoadingTrouble)
             }
+        }
+    }
+
+    fun getFilterFromSharedPref() {
+        viewModelScope.launch(Dispatchers.IO) {
+            filter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
+            filtersInteractorImpl.putOldFilterInSharedPrefs(filter)
+            _actualFilterIsEmpty.postValue(filter.equals(EMPTY_FILTER))
+        }
+    }
+
+    fun getStarSearchStatusFromSharedPrefs() {
+        getDataFromSharedPrefsJob = viewModelScope.launch(Dispatchers.IO) {
+            _startNewSearch.postValue(filtersInteractorImpl.getStarSearchStatus())
+        }
+    }
+
+    fun putStarSearchStatusInSharedPrefs(value: Boolean) {
+        jobStarSearchStatus = viewModelScope.launch(Dispatchers.IO) {
+            filtersInteractorImpl.putStarSearchStatus(value)
         }
     }
 
@@ -124,5 +166,15 @@ class MainViewModel(
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val ERROR_TAG = "ErrorLoadingProcess"
+        private val EMPTY_FILTER = Filters(
+            countryId = "",
+            countryName = "",
+            regionId = "",
+            regionName = "",
+            industryId = "",
+            industryName = "",
+            salary = 0,
+            doNotShowWithoutSalarySetting = false
+        )
     }
 }
