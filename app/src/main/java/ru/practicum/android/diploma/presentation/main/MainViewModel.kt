@@ -102,7 +102,7 @@ class MainViewModel(
     private fun sendRequest() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                vacancyInteractor.searchVacancy(requestText, _page.value!!).collect { result ->
+                vacancyInteractor.searchVacancy(requestText, filter, _page.value!!).collect { result ->
                     when (result.responseStatus) {
                         ResponseStatus.OK -> {
                             if (_page.value!! == 0) {

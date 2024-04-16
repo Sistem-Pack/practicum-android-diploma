@@ -11,7 +11,6 @@ import ru.practicum.android.diploma.data.dto.details.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesRequest
 import ru.practicum.android.diploma.data.dto.industry.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequestTemp
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.util.Utilities
 import java.io.IOException
@@ -23,7 +22,7 @@ class RetrofitNetworkClient(
     private val util: Utilities
 ) : NetworkClient {
 
-    override suspend fun doVacancySearch(request: VacancySearchRequestTemp): Response {
+    override suspend fun doVacancySearch(request: VacancySearchRequest): Response {
         if (util.isConnected()) {
             return withContext(Dispatchers.IO) {
                 try {
@@ -33,32 +32,6 @@ class RetrofitNetworkClient(
                     }
                 } catch (e: UnknownHostException) {
                     Log.d(ERROR_TAG, "$e")
-                    Response().apply { resultResponse = ResponseStatus.BAD }
-                }
-            }
-        } else {
-            return Response().apply {
-                resultResponse = ResponseStatus.NO_CONNECTION
-            }
-        }
-    }
-
-    override suspend fun doVacancySearch(request: VacancySearchRequest): Response {
-        if (util.isConnected()) {
-            return withContext(Dispatchers.IO) {
-                try {
-                    val response = hhApi.searchVacancies(request.expression, request.page, request.perPage)
-                    response.apply {
-                        resultResponse = ResponseStatus.OK
-                    }
-                } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, error.message.toString())
-                    Response().apply { resultResponse = ResponseStatus.BAD }
-                } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, error.message.toString())
-                    Response().apply { resultResponse = ResponseStatus.BAD }
-                } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, error.message.toString())
                     Response().apply { resultResponse = ResponseStatus.BAD }
                 }
             }

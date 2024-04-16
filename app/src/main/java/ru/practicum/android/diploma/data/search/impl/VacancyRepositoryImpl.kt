@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
-import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequestTemp
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
@@ -20,47 +19,8 @@ class VacancyRepositoryImpl(
 ) : VacancyRepository {
     override fun searchVacancy(expression: String, filters: Filters, page: Int): Flow<VacancySearchResult> = flow {
         val response = networkClient.doVacancySearch(
-            VacancySearchRequestTemp(formatToQueryMap(expression, filters, page))
+            VacancySearchRequest(formatToQueryMap(expression, filters, page))
         )
-        when (response.resultResponse) {
-            ResponseStatus.OK -> {
-                val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
-                    formatToVacancy(it)
-                } ?: emptyList()
-                emit(
-                    VacancySearchResult(
-                        vacancies,
-                        ResponseStatus.OK,
-                        response.found ?: 0,
-                        response.page ?: 0,
-                        response.pages ?: 0
-                    )
-                )
-            }
-
-            ResponseStatus.NO_CONNECTION -> {
-                emit(
-                    NO_CONNECTION
-                )
-            }
-
-            ResponseStatus.BAD -> {
-                emit(
-                    BAD_RESPONSE
-                )
-            }
-
-            ResponseStatus.DEFAULT -> emit(
-                DEFAULT
-            )
-
-            else -> {
-            }
-        }
-    }
-
-    override fun searchVacancy(expression: String, page: Int): Flow<VacancySearchResult> = flow {
-        val response = networkClient.doVacancySearch(VacancySearchRequest(expression, page = page))
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
