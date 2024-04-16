@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.filter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ class FilteringSettingsFragment : Fragment() {
         }
         viewModel.oldFilter.observe(viewLifecycleOwner) {
             binding!!.bApply.isVisible = viewModel.compareFilters()
-            Log.d("OBSERVER_OLD_FILTER", "str 44")
         }
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
@@ -60,7 +58,7 @@ class FilteringSettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkTIETContent()
-        //installButtonResetVisibility()
+        makeCurrentFilter()
     }
 
     override fun onDestroyView() {
@@ -73,13 +71,11 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.ivBack.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(false)
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 75")
             findNavController().navigateUp()
         }
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 81")
             binding!!.tilSalaryLayout.defaultHintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
         }
@@ -90,17 +86,14 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.cbNoSalary.isChecked = false
             binding!!.bReset.isVisible = false
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 92")
             checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 97")
         }
         binding!!.bApply.setOnClickListener {
             viewModel.putStarSearchStatusInSharedPrefs(true)
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 103")
             viewModel.changeOldFilterInSharedPrefs()
             findNavController().navigateUp()
         }
@@ -110,21 +103,21 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 112")
             checkTIETContent()
         }
         binding!!.ivIndustryClear.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 118")
             checkTIETContent()
         }
         binding!!.ivArrowRightJobPlace.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToPlacesOfWorkFragment()
             )
         }
         binding!!.ivArrowRightIndustry.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToIndustrySelectionFragment()
             )
@@ -135,7 +128,6 @@ class FilteringSettingsFragment : Fragment() {
         (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
             binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
             makeCurrentFilter()
-            Log.d("OBSERVER_OLD_FILTER", "str 137")
         }
     }
 
@@ -147,7 +139,6 @@ class FilteringSettingsFragment : Fragment() {
 
         binding!!.bReset.isVisible = buttonsVisibility
         binding!!.bApply.isVisible = viewModel.compareFilters()
-        Log.d("OBSERVER_OLD_FILTER", "str 141")
     }
 
     private fun checkTIETContent() {
@@ -187,7 +178,6 @@ class FilteringSettingsFragment : Fragment() {
         binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
         checkTIETContent()
         installButtonResetVisibility()
-        Log.d("OBSERVER_OLD_FILTER", "str 181")
     }
 
     private fun makeCurrentFilter() {
@@ -198,6 +188,5 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.cbNoSalary.isChecked
         )
         installButtonResetVisibility()
-        Log.d("OBSERVER_OLD_FILTER", "str 192")
     }
 }
