@@ -14,18 +14,9 @@ data class Filters(
         if (this === other) return true
         if (other !is Filters) return false
 
-        if (countryId != other.countryId || countryName != other.countryName
-            || regionId != other.regionId || regionName != other.regionName
-
-        ) {
-            return false
-        }
-        if (industryId != other.industryId || industryName != other.industryName) return false
-        if (salary != other.salary
-            || doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting
-        ) {
-            return false
-        }
+        if (countryId != other.countryId || countryName != other.countryName || regionId != other.regionId) return false
+        if (regionName != other.regionName || industryId != other.industryId || industryName != other.industryName) return false
+        if (salary != other.salary || doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting) return false
 
         return true
     }
