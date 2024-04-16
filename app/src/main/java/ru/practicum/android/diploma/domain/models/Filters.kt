@@ -14,19 +14,14 @@ data class Filters(
         if (this === other) return true
         if (other !is Filters) return false
 
-        if (compareHalfOfFilters(this, other)) return false
+        //if (compareHalfOfFilters(this, other)) return false
+        if (countryId != other.countryId || countryName != other.countryName
+            || regionId != other.regionId || regionName != other.regionName
+            || industryId != other.industryId || industryName != other.industryName
+        ) return false
         if (salary != other.salary) return false
         if (doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting) return false
 
         return true
-    }
-
-    private fun compareHalfOfFilters(firstFilter: Filters, secondFilter: Filters): Boolean {
-        return firstFilter.countryId != secondFilter.countryId
-            || firstFilter.countryName != secondFilter.countryName
-            || firstFilter.regionId != secondFilter.regionId
-            || firstFilter.regionName != secondFilter.regionName
-            || firstFilter.industryId != secondFilter.industryId
-            || firstFilter.industryName != secondFilter.industryName
     }
 }
