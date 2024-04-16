@@ -83,7 +83,7 @@ class FilteringSettingsViewModel(
         if (currentFilter!!.equals(EMPTY_FILTER) && _oldFilter.value!!.equals(EMPTY_FILTER)) {
             return false
         }
-        return !currentFilter!!.equals(_oldFilter)
+        return !currentFilter!!.equals(_oldFilter.value!!)
     }
 
     companion object {
