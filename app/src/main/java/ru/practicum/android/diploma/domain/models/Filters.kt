@@ -11,25 +11,15 @@ data class Filters(
     val doNotShowWithoutSalarySetting: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Filters) return false
-
-        if (one(this, other)) return false
-        if (two(this, other)) return false
-        if (salary != other.salary || doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting) return false
-
-        return true
-    }
-
-    private fun one(firstFilter: Filters, secondFilter: Filters): Boolean {
-        return firstFilter.countryId != secondFilter.countryId
-            || firstFilter.countryName != secondFilter.countryName
-            || firstFilter.regionId != secondFilter.regionId
-    }
-
-    private fun two(firstFilter: Filters, secondFilter: Filters): Boolean {
-        return firstFilter.regionName != secondFilter.regionName
-            || firstFilter.industryId != secondFilter.industryId
-            || firstFilter.industryName != secondFilter.industryName
+        return when {
+            this === other -> true
+            other !is Filters -> false
+            countryId != other.countryId || countryName != other.countryName -> false
+            regionId != other.regionId || regionName != other.regionName -> false
+            industryId != other.industryId || industryName != other.industryName -> false
+            salary != other.salary -> false
+            doNotShowWithoutSalarySetting != other.doNotShowWithoutSalarySetting -> false
+            else -> true
+        }
     }
 }
