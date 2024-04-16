@@ -77,7 +77,7 @@ class VacancyRepositoryImpl(
         val queryParameters: HashMap<String, String> = HashMap()
         queryParameters["text"] = expression
         queryParameters["page"] = page.toString()
-        queryParameters["per_page"] = "20" // пока заглушка
+        queryParameters["per_page"] = PER_PAGE_20
         if (filters.countryId.isNotEmpty()) queryParameters["area"] = filters.countryId
         if (filters.regionId.isNotEmpty()) queryParameters["area"] = filters.regionId
         if (filters.salary != 0) queryParameters["salary"] = filters.salary.toString()
@@ -87,6 +87,8 @@ class VacancyRepositoryImpl(
     }
 
     companion object {
+        private const val PER_PAGE_20 = "20"
+
         val BAD_RESPONSE = VacancySearchResult(
             emptyList(),
             ResponseStatus.BAD,
