@@ -84,10 +84,7 @@ class RetrofitNetworkClient(
             withContext(Dispatchers.IO) {
                 try {
                     val response = hhApi.getIndustries(request.locale, request.host)
-                    IndustriesResponse(
-                        response.toList(),
-                        resultResponseStatus = ResponseStatus.OK
-                    )
+                    IndustriesResponse( response.toList(), resultResponseStatus = ResponseStatus.OK )
                 } catch (error: UnknownHostException) {
                     Log.d(ERROR_TAG, error.message.toString())
                     IndustriesResponse(
@@ -107,10 +104,7 @@ class RetrofitNetworkClient(
                     )
                 } catch (error: SocketTimeoutException) {
                     Log.d(ERROR_TAG, error.message.toString())
-                    IndustriesResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD
-                    )
+                    IndustriesResponse( emptyList(), resultResponseStatus = ResponseStatus.BAD )
                 }
             }
         }
