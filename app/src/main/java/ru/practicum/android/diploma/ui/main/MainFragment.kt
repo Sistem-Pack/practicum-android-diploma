@@ -62,7 +62,8 @@ class MainFragment : Fragment() {
             processingSearchStatus(it)
         }
         viewModel.page.observe(viewLifecycleOwner) {
-            loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
+            var vis = viewModel.page.value!! != viewModel.getMaxPages() - 1
+            loadingItemAdapter.visible = viewModel.page.value!! != viewModel.getMaxPages() - 1
         }
         viewModel.startNewSearch.observe(viewLifecycleOwner) {
             startNewSearch(it)
