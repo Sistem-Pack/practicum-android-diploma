@@ -30,7 +30,7 @@ class MainViewModel(
     private var jobStarSearchStatus: Job? = null
     private var list = ArrayList<Vacancy>()
     private var foundVacancies: Int = 0
-    private var maxPages: Int = -1
+    private var maxPages: Int = 0
     private var filter: Filters = EMPTY_FILTER
 
     private val _listOfVacancies: MutableLiveData<MainFragmentStatus> = MutableLiveData(MainFragmentStatus.Default)
@@ -46,8 +46,8 @@ class MainViewModel(
     val actualFilterIsEmpty: LiveData<Boolean> = _actualFilterIsEmpty
 
     fun onDestroy() {
-        _page.postValue(-1)
-        maxPages = -1
+        _page.postValue(0)
+        maxPages = 0
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
         jobStarSearchStatus?.cancel()
