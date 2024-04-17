@@ -14,7 +14,6 @@ class FilteringSettingsViewModel(
     private val filtersInteractorImpl: FiltersInteractor
 ) : ViewModel() {
     private var jobGet: Job? = null
-    private var jobClear: Job? = null
     private var jobPut: Job? = null
     private var jobStarSearchStatus: Job? = null
     private var currentFilter: Filters? = null
@@ -34,12 +33,10 @@ class FilteringSettingsViewModel(
     }
 
     fun onDestroy() {
+        _filter.postValue(null)
         currentFilter = null
         oldFilter = null
         jobGet?.cancel()
-        jobClear?.cancel()
-        jobPut?.cancel()
-        jobStarSearchStatus?.cancel()
     }
 
     fun makeCurrentFilter(

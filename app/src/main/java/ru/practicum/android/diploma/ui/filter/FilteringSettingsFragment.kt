@@ -40,7 +40,6 @@ class FilteringSettingsFragment : Fragment() {
                 insertFilterData(it)
             }
         }
-
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor =
