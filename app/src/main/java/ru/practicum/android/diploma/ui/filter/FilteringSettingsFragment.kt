@@ -36,11 +36,13 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.onCreate()
 
         viewModel.filter.observe(viewLifecycleOwner) {
-            insertFilterData(it)
+            if(it != null) {
+                insertFilterData(it)
+            }
         }
-        viewModel.oldFilter.observe(viewLifecycleOwner) {
-            binding!!.bApply.isVisible = viewModel.compareFilters()
-        }
+//        viewModel.oldFilter.observe(viewLifecycleOwner) {
+//            binding!!.bApply.isVisible = viewModel.compareFilters()
+//        }
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor =
@@ -176,6 +178,7 @@ class FilteringSettingsFragment : Fragment() {
             (binding!!.tietSalary as TextView).text = filter.salary.toString()
         }
         binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
+        viewModel.turnSwitch()
         checkTIETContent()
         installButtonResetVisibility()
     }

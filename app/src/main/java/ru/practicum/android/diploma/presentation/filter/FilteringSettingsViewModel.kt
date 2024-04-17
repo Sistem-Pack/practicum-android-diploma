@@ -17,19 +17,18 @@ class FilteringSettingsViewModel(
     private var jobClear: Job? = null
     private var jobPut: Job? = null
     private var jobStarSearchStatus: Job? = null
+    private var currentFilter: Filters? = null
+    private var oldFilter: Filters? = null
+    private var switch: Boolean = false
 
-    private val _filter = MutableLiveData(EMPTY_FILTER)
-    val filter: LiveData<Filters> = _filter
-
-    private val _oldFilter = MutableLiveData(EMPTY_FILTER)
-    val oldFilter: LiveData<Filters> = _oldFilter
-
-    private var currentFilter = _filter.value
+    private val _filter: MutableLiveData<Filters?> = MutableLiveData(null)
+    val filter: LiveData<Filters?> = _filter
 
     fun onCreate() {
+        switch = false
         jobGet = viewModelScope.launch(Dispatchers.IO) {
             currentFilter = filtersInteractorImpl.getActualFilterFromSharedPrefs()
-            _oldFilter.postValue(filtersInteractorImpl.getOldFilterFromSharedPrefs())
+            oldFilter = filtersInteractorImpl.getOldFilterFromSharedPrefs()
             _filter.postValue(currentFilter)
         }
     }
@@ -47,18 +46,20 @@ class FilteringSettingsViewModel(
         salary: String,
         doNotShowWithoutSalary: Boolean
     ) {
-        val filter = Filters(
-            countryId = if (jobPlaceEmpty) "" else _filter.value!!.countryId,
-            countryName = if (jobPlaceEmpty) "" else _filter.value!!.countryName,
-            regionId = if (jobPlaceEmpty) "" else _filter.value!!.regionId,
-            regionName = if (jobPlaceEmpty) "" else _filter.value!!.regionName,
-            industryId = if (industryIsEmpty) "" else _filter.value!!.industryId,
-            industryName = if (industryIsEmpty) "" else _filter.value!!.industryName,
-            salary = if (salary.isEmpty()) 0 else salary.toInt(),
-            doNotShowWithoutSalarySetting = doNotShowWithoutSalary
-        )
-        currentFilter = filter
-        putFilterInSharedPrefs()
+        if (switch) {
+            var filter = Filters(
+                countryId = if (jobPlaceEmpty) "" else _filter.value!!.countryId,
+                countryName = if (jobPlaceEmpty) "" else _filter.value!!.countryName,
+                regionId = if (jobPlaceEmpty) "" else _filter.value!!.regionId,
+                regionName = if (jobPlaceEmpty) "" else _filter.value!!.regionName,
+                industryId = if (industryIsEmpty) "" else _filter.value!!.industryId,
+                industryName = if (industryIsEmpty) "" else _filter.value!!.industryName,
+                salary = if (salary.isEmpty()) 0 else salary.toInt(),
+                doNotShowWithoutSalarySetting = doNotShowWithoutSalary
+            )
+            currentFilter = filter
+            putFilterInSharedPrefs()
+        }
     }
 
     private fun putFilterInSharedPrefs() {
@@ -80,10 +81,14 @@ class FilteringSettingsViewModel(
     }
 
     fun compareFilters(): Boolean {
-//        if (currentFilter!!.equals(EMPTY_FILTER) && _oldFilter.value!!.equals(EMPTY_FILTER)) {
-//            return false
-//        }
-        return !currentFilter!!.equals(_oldFilter.value!!)
+        if (oldFilter == null || currentFilter == null) return false
+        return !currentFilter!!.equals(oldFilter)
+    }
+
+    fun turnSwitch(){
+        if (_filter.value != null){
+            switch = true
+        }
     }
 
     companion object {
