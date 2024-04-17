@@ -1,12 +1,12 @@
 package ru.practicum.android.diploma.data.sharedprefs
 
+import ru.practicum.android.diploma.domain.models.AreaFilters
+import ru.practicum.android.diploma.domain.models.Filters
+import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
 import ru.practicum.android.diploma.app.FILTERS_KEY
 import ru.practicum.android.diploma.app.FILTERS_OLD_KEY
 import ru.practicum.android.diploma.app.START_NEW_SEARCH
 import ru.practicum.android.diploma.app.FILTERS_KEY_AREA
-import ru.practicum.android.diploma.domain.models.AreaFilters
-import ru.practicum.android.diploma.domain.models.Filters
-import ru.practicum.android.diploma.domain.sharedprefs.FiltersRepository
 import com.google.gson.Gson
 import android.content.SharedPreferences
 
