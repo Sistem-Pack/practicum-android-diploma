@@ -58,7 +58,7 @@ class FilteringSettingsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         checkTIETContent()
-        makeCurrentFilter()
+        installButtonResetVisibility()
     }
 
     override fun onDestroyView() {

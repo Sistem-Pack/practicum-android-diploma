@@ -34,6 +34,8 @@ class FilteringSettingsViewModel(
     }
 
     fun onDestroy() {
+        currentFilter = null
+        oldFilter = null
         jobGet?.cancel()
         jobClear?.cancel()
         jobPut?.cancel()
@@ -47,7 +49,7 @@ class FilteringSettingsViewModel(
         doNotShowWithoutSalary: Boolean
     ) {
         if (switch) {
-            var filter = Filters(
+            var newFilter = Filters(
                 countryId = if (jobPlaceEmpty) "" else _filter.value!!.countryId,
                 countryName = if (jobPlaceEmpty) "" else _filter.value!!.countryName,
                 regionId = if (jobPlaceEmpty) "" else _filter.value!!.regionId,
@@ -57,7 +59,7 @@ class FilteringSettingsViewModel(
                 salary = if (salary.isEmpty()) 0 else salary.toInt(),
                 doNotShowWithoutSalarySetting = doNotShowWithoutSalary
             )
-            currentFilter = filter
+            currentFilter = newFilter
             putFilterInSharedPrefs()
         }
     }
