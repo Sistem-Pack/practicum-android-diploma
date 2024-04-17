@@ -36,7 +36,7 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.onCreate()
 
         viewModel.filter.observe(viewLifecycleOwner) {
-            if(it != null) {
+            if (it != null) {
                 insertFilterData(it)
             }
         }

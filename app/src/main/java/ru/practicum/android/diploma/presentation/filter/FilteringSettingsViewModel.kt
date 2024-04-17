@@ -49,13 +49,31 @@ class FilteringSettingsViewModel(
         doNotShowWithoutSalary: Boolean
     ) {
         if (switch) {
-            var newFilter = Filters(
-                countryId = if (jobPlaceEmpty) "" else _filter.value!!.countryId,
-                countryName = if (jobPlaceEmpty) "" else _filter.value!!.countryName,
-                regionId = if (jobPlaceEmpty) "" else _filter.value!!.regionId,
-                regionName = if (jobPlaceEmpty) "" else _filter.value!!.regionName,
-                industryId = if (industryIsEmpty) "" else _filter.value!!.industryId,
-                industryName = if (industryIsEmpty) "" else _filter.value!!.industryName,
+            var countryId: String = ""
+            var countryName: String = ""
+            var regionId: String = ""
+            var regionName: String = ""
+            var industryId: String = ""
+            var industryName: String = ""
+
+            if (!jobPlaceEmpty) {
+                countryId = _filter.value!!.countryId
+                countryName = _filter.value!!.countryName
+                regionId = _filter.value!!.regionId
+                regionName = _filter.value!!.regionName
+            }
+            if (!industryIsEmpty) {
+                industryId = _filter.value!!.industryId
+                industryName = _filter.value!!.industryName
+            }
+
+            val newFilter = Filters(
+                countryId = countryId,
+                countryName = countryName,
+                regionId = regionId,
+                regionName = regionName,
+                industryId = industryId,
+                industryName = industryName,
                 salary = if (salary.isEmpty()) 0 else salary.toInt(),
                 doNotShowWithoutSalarySetting = doNotShowWithoutSalary
             )
@@ -87,8 +105,8 @@ class FilteringSettingsViewModel(
         return !currentFilter!!.equals(oldFilter)
     }
 
-    fun turnSwitch(){
-        if (_filter.value != null){
+    fun turnSwitch() {
+        if (_filter.value != null) {
             switch = true
         }
     }
