@@ -81,31 +81,41 @@ class RetrofitNetworkClient(
                 resultResponseStatus = ResponseStatus.NO_CONNECTION
             )
         } else {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = hhApi.getIndustries(request.locale, request.host)
-                    IndustriesResponse( response.toList(), resultResponseStatus = ResponseStatus.OK )
-                } catch (error: UnknownHostException) {
-                    Log.d(ERROR_TAG, error.message.toString())
-                    IndustriesResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.BAD
-                    )
-                } catch (error: HttpException) {
-                    Log.d(ERROR_TAG, error.message.toString())
-                    IndustriesResponse(
-                        emptyList(),
-                        resultResponseStatus = ResponseStatus.NO_CONNECTION,
-                        resultCode = if (error.message.equals("HTTP 404 ")) {
-                            ABSENCE_CODE
-                        } else {
-                            0
-                        }
-                    )
-                } catch (error: SocketTimeoutException) {
-                    Log.d(ERROR_TAG, error.message.toString())
-                    IndustriesResponse( emptyList(), resultResponseStatus = ResponseStatus.BAD )
-                }
+            getIndustriesEx(request)
+        }
+    }
+
+    private suspend fun getIndustriesEx(request: IndustriesRequest): IndustriesResponse {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = hhApi.getIndustries(request.locale, request.host)
+                IndustriesResponse(
+                    response.toList(),
+                    resultResponseStatus = ResponseStatus.OK
+                )
+            } catch (error: UnknownHostException) {
+                Log.d(ERROR_TAG, error.message.toString())
+                IndustriesResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.BAD
+                )
+            } catch (error: HttpException) {
+                Log.d(ERROR_TAG, error.message.toString())
+                IndustriesResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.NO_CONNECTION,
+                    resultCode = if (error.message.equals("HTTP 404 ")) {
+                        ABSENCE_CODE
+                    } else {
+                        0
+                    }
+                )
+            } catch (error: SocketTimeoutException) {
+                Log.d(ERROR_TAG, error.message.toString())
+                IndustriesResponse(
+                    emptyList(),
+                    resultResponseStatus = ResponseStatus.BAD
+                )
             }
         }
     }
