@@ -4,11 +4,19 @@ import ru.practicum.android.diploma.domain.models.AreaFilters
 import ru.practicum.android.diploma.domain.models.Filters
 
 interface FiltersRepository {
-    suspend fun getFiltersFromSharedPrefs(): Filters
+    suspend fun getActualFilterFromSharedPrefs(): Filters
 
-    fun putFiltersInSharedPrefs(filters: Filters)
+    fun putActualFilterInSharedPrefs(filters: Filters)
 
-    fun clearAllFiltersInSharedPrefs()
+    fun clearActualFilterInSharedPrefs()
+
+    suspend fun getOldFilterFromSharedPrefs(): Filters
+
+    fun putOldFilterInSharedPrefs(filters: Filters)
+
+    suspend fun getStarSearchStatus(): Boolean
+
+    fun putStarSearchStatus(value: Boolean)
 
     suspend fun getFiltersFromSharedPrefsForAreas(): AreaFilters
 

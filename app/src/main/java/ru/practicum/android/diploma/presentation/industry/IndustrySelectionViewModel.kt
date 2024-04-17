@@ -40,7 +40,7 @@ class IndustrySelectionViewModel(
     fun getIndustries() {
         industrySelectionScreenStateLiveData.value = IndustrySelectionScreenState.UploadingProcess
         viewModelScope.launch(Dispatchers.IO) {
-            filters = filtersInteractor.getFiltersFromSharedPrefs()
+            filters = filtersInteractor.getActualFilterFromSharedPrefs()
             savedSelectedIndustry = Industry(filters.industryId, filters.industryName)
             industryInteractor.getIndustry().collect { industrySearchResult ->
                 when (industrySearchResult.responseStatus) {
@@ -101,7 +101,7 @@ class IndustrySelectionViewModel(
             salary = filters.salary,
             doNotShowWithoutSalarySetting = filters.doNotShowWithoutSalarySetting
         )
-        filtersInteractor.putFiltersInSharedPrefs(filters)
+        filtersInteractor.putActualFilterInSharedPrefs(filters)
     }
 
     fun industrySearch(textSearch: String) {

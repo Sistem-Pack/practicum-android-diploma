@@ -30,7 +30,7 @@ val interactorModule = module {
         VacancyDetailsInteractorImpl(get())
     }
 
-    factory<SharingInteractor> {
+    single<SharingInteractor> {
         SharingInteractorImpl(get())
     }
 

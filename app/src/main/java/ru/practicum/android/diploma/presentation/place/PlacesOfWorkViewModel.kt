@@ -46,7 +46,7 @@ class PlacesOfWorkViewModel(
     }
 
     private suspend fun preload() {
-        filtersInteractor.getFiltersFromSharedPrefs().apply {
+        filtersInteractor.getActualFilterFromSharedPrefs().apply {
             filtersInteractor.putFiltersInSharedPrefsForAreas(
                 AreaFilters(
                     countryId = this.countryId,
@@ -106,8 +106,8 @@ class PlacesOfWorkViewModel(
     fun setSaveSettings(updateVisualInterface: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             filtersInteractor.getFiltersFromSharedPrefsForAreas().apply {
-                filtersInteractor.getFiltersFromSharedPrefs().let {
-                    filtersInteractor.putFiltersInSharedPrefs(
+                filtersInteractor.getActualFilterFromSharedPrefs().let {
+                    filtersInteractor.putActualFilterInSharedPrefs(
                         Filters(
                             countryId = this.countryId,
                             countryName = this.countryName,

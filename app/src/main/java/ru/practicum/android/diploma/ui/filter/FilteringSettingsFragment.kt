@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.presentation.filter.FilteringSettingsViewModel
 
 class FilteringSettingsFragment : Fragment() {
@@ -31,10 +33,13 @@ class FilteringSettingsFragment : Fragment() {
         createFirstHalfClickListeners()
         createSecondHalfClickListeners()
         createTextWatcher()
-        // нужен слушатеть лайф даты с классом фильтра
-        // нужен метод который из лайфдаты выставит все данные
-        // кнопка применить - ее видимость определяется отдельным методом при сравнении с
-        // последним сохраненным фильтром
+        viewModel.onCreate()
+
+        viewModel.filter.observe(viewLifecycleOwner) {
+            if (it != null) {
+                insertFilterData(it)
+            }
+        }
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor =
@@ -47,7 +52,6 @@ class FilteringSettingsFragment : Fragment() {
                     ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
             }
         }
-        // (binding!!.tietIndustry as TextView).text = "sdfsdfsdfs"
     }
 
     override fun onResume() {
@@ -57,19 +61,22 @@ class FilteringSettingsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        viewModel.onDestroy()
         binding = null
         super.onDestroyView()
     }
 
     private fun createFirstHalfClickListeners() {
         binding!!.ivBack.setOnClickListener {
+            viewModel.putStarSearchStatusInSharedPrefs(false)
+            makeCurrentFilter()
             findNavController().navigateUp()
         }
         binding!!.ivSalaryClear.setOnClickListener {
             binding!!.tietSalary.text!!.clear()
+            makeCurrentFilter()
             binding!!.tilSalaryLayout.defaultHintTextColor =
                 ContextCompat.getColorStateList(requireContext(), R.color.gray_white)
-            installButtonResetVisibility()
         }
         binding!!.bReset.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
@@ -77,30 +84,39 @@ class FilteringSettingsFragment : Fragment() {
             binding!!.tietSalary.text!!.clear()
             binding!!.cbNoSalary.isChecked = false
             binding!!.bReset.isVisible = false
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.cbNoSalary.setOnClickListener {
-            installButtonResetVisibility()
+            makeCurrentFilter()
+        }
+        binding!!.bApply.setOnClickListener {
+            viewModel.putStarSearchStatusInSharedPrefs(true)
+            makeCurrentFilter()
+            viewModel.changeOldFilterInSharedPrefs()
+            findNavController().navigateUp()
         }
     }
 
     private fun createSecondHalfClickListeners() {
         binding!!.ivJobPlaceClear.setOnClickListener {
             binding!!.tietJobPlace.text!!.clear()
-            installButtonResetVisibility()
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.ivIndustryClear.setOnClickListener {
             binding!!.tietIndustry.text!!.clear()
-            installButtonResetVisibility()
+            makeCurrentFilter()
             checkTIETContent()
         }
         binding!!.ivArrowRightJobPlace.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToPlacesOfWorkFragment()
             )
         }
         binding!!.ivArrowRightIndustry.setOnClickListener {
+            makeCurrentFilter()
             findNavController().navigate(
                 FilteringSettingsFragmentDirections.actionFilteringSettingsFragmentToIndustrySelectionFragment()
             )
@@ -110,7 +126,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun createTextWatcher() {
         (binding!!.tietSalary as EditText).doOnTextChanged { p0: CharSequence?, start: Int, before: Int, count: Int ->
             binding!!.ivSalaryClear.isVisible = !p0.isNullOrEmpty()
-            installButtonResetVisibility()
+            makeCurrentFilter()
         }
     }
 
@@ -121,23 +137,64 @@ class FilteringSettingsFragment : Fragment() {
             || binding!!.cbNoSalary.isChecked
 
         binding!!.bReset.isVisible = buttonsVisibility
+        binding!!.bApply.isVisible = viewModel.compareFilters()
     }
 
     private fun checkTIETContent() {
         if (binding!!.tietJobPlace.text!!.isNotEmpty()) {
             binding!!.ivJobPlaceClear.isVisible = true
             binding!!.ivArrowRightJobPlace.isVisible = false
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         } else {
             binding!!.ivJobPlaceClear.isVisible = false
             binding!!.ivArrowRightJobPlace.isVisible = true
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.gray)
         }
         if (binding!!.tietIndustry.text!!.isNotEmpty()) {
             binding!!.ivIndustryClear.isVisible = true
             binding!!.ivArrowRightIndustry.isVisible = false
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         } else {
             binding!!.ivIndustryClear.isVisible = false
             binding!!.ivArrowRightIndustry.isVisible = true
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.gray)
         }
+    }
 
+    private fun insertFilterData(filter: Filters) {
+        if (filter.countryName.isNotEmpty()) {
+            (binding!!.tietJobPlace as TextView).text = filter.countryName
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
+        }
+        if (filter.regionName.isNotEmpty()) {
+            (binding!!.tietJobPlace as TextView).text = filter.countryName + ", " + filter.regionName
+        }
+        if (filter.industryName.isNotEmpty()) {
+            (binding!!.tietIndustry as TextView).text = filter.industryName
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
+        }
+        if (filter.salary != 0) {
+            (binding!!.tietSalary as TextView).text = filter.salary.toString()
+        }
+        binding!!.cbNoSalary.isChecked = filter.doNotShowWithoutSalarySetting
+        viewModel.turnSwitch()
+        checkTIETContent()
+        installButtonResetVisibility()
+    }
+
+    private fun makeCurrentFilter() {
+        viewModel.makeCurrentFilter(
+            binding!!.tietJobPlace.text!!.isEmpty(),
+            binding!!.tietIndustry.text!!.isEmpty(),
+            binding!!.tietSalary.text.toString(),
+            binding!!.cbNoSalary.isChecked
+        )
+        installButtonResetVisibility()
     }
 }
