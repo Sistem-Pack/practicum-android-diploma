@@ -90,17 +90,4 @@ class FilteringSettingsViewModel(
             switch = true
         }
     }
-
-    companion object {
-        private val EMPTY_FILTER = Filters(
-            countryId = "",
-            countryName = "",
-            regionId = "",
-            regionName = "",
-            industryId = "",
-            industryName = "",
-            salary = 0,
-            doNotShowWithoutSalarySetting = false
-        )
-    }
 }

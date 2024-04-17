@@ -40,9 +40,7 @@ class FilteringSettingsFragment : Fragment() {
                 insertFilterData(it)
             }
         }
-//        viewModel.oldFilter.observe(viewLifecycleOwner) {
-//            binding!!.bApply.isVisible = viewModel.compareFilters()
-//        }
+
         binding!!.tietSalary.setOnFocusChangeListener { _, b ->
             if (b) {
                 binding!!.tilSalaryLayout.defaultHintTextColor =
