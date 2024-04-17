@@ -1,7 +1,8 @@
 package ru.practicum.android.diploma.data.sharedprefs
 
-import android.content.SharedPreferences
+
 import com.google.gson.Gson
+import android.content.SharedPreferences
 import ru.practicum.android.diploma.app.FILTERS_KEY
 import ru.practicum.android.diploma.app.FILTERS_OLD_KEY
 import ru.practicum.android.diploma.app.START_NEW_SEARCH
