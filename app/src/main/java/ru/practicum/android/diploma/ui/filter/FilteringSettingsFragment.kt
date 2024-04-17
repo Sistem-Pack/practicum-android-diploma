@@ -145,16 +145,24 @@ class FilteringSettingsFragment : Fragment() {
         if (binding!!.tietJobPlace.text!!.isNotEmpty()) {
             binding!!.ivJobPlaceClear.isVisible = true
             binding!!.ivArrowRightJobPlace.isVisible = false
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         } else {
             binding!!.ivJobPlaceClear.isVisible = false
             binding!!.ivArrowRightJobPlace.isVisible = true
+            binding!!.tilJobPlace.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.gray)
         }
         if (binding!!.tietIndustry.text!!.isNotEmpty()) {
             binding!!.ivIndustryClear.isVisible = true
             binding!!.ivArrowRightIndustry.isVisible = false
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.black_white)
         } else {
             binding!!.ivIndustryClear.isVisible = false
             binding!!.ivArrowRightIndustry.isVisible = true
+            binding!!.tilIndustry.defaultHintTextColor =
+                ContextCompat.getColorStateList(requireContext(), R.color.gray)
         }
     }
 
