@@ -46,6 +46,8 @@ class MainViewModel(
     val actualFilterIsEmpty: LiveData<Boolean> = _actualFilterIsEmpty
 
     fun onDestroy() {
+        _page.postValue(0)
+        maxPages = 0
         searchDebounceJob?.cancel()
         getDataFromSharedPrefsJob?.cancel()
         jobStarSearchStatus?.cancel()

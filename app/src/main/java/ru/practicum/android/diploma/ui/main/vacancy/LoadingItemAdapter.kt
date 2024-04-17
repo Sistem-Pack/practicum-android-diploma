@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.R
 
 class LoadingItemAdapter : RecyclerView.Adapter<LoadingItemViewHolder>() {
 
-    var visible: Boolean = true
+    var visible: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoadingItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_loading, parent, false)

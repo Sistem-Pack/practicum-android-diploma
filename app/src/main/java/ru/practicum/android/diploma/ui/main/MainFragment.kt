@@ -62,9 +62,11 @@ class MainFragment : Fragment() {
             processingSearchStatus(it)
         }
         viewModel.page.observe(viewLifecycleOwner) {
-            loadingItemAdapter.visible = viewModel.page.value!! < viewModel.getMaxPages() - 1
+            loadingItemAdapter.visible = viewModel.page.value!! != viewModel.getMaxPages() - 1
         }
         viewModel.startNewSearch.observe(viewLifecycleOwner) {
+            binding!!.rvVacancyList.isVisible = false
+            binding!!.chip.isVisible = false
             startNewSearch(it)
         }
         viewModel.actualFilterIsEmpty.observe(viewLifecycleOwner) {
@@ -231,6 +233,7 @@ class MainFragment : Fragment() {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
         }
+        loadingItemAdapter.visible = viewModel.page.value!! != viewModel.getMaxPages() - 1
     }
 
     private fun showDefaultStatus() {
