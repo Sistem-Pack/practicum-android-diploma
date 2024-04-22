@@ -6,6 +6,7 @@ import ru.practicum.android.diploma.data.dto.vacancy.VacancyDto
 import ru.practicum.android.diploma.data.dto.vacancy.VacancyResponse
 import ru.practicum.android.diploma.data.dto.vacancy.VacancySearchRequest
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.Filters
 import ru.practicum.android.diploma.domain.models.ResponseStatus
 import ru.practicum.android.diploma.domain.models.VacancySearchResult
 import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
@@ -16,12 +17,10 @@ class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val utils: SalaryInfo
 ) : VacancyRepository {
-    override fun searchVacancy(params: Map<String, String>): Flow<VacancySearchResult> {
-        TODO("Not yet implemented")
-    }
-
-    override fun searchVacancy(expression: String, page: Int): Flow<VacancySearchResult> = flow {
-        val response = networkClient.doVacancySearch(VacancySearchRequest(expression, page = page))
+    override fun searchVacancy(expression: String, filters: Filters, page: Int): Flow<VacancySearchResult> = flow {
+        val response = networkClient.doVacancySearch(
+            VacancySearchRequest(formatToQueryMap(expression, filters, page))
+        )
         when (response.resultResponse) {
             ResponseStatus.OK -> {
                 val vacancies: List<Vacancy> = (response as VacancyResponse).vacancies?.map {
@@ -74,7 +73,22 @@ class VacancyRepositoryImpl(
         )
     }
 
+    private fun formatToQueryMap(expression: String, filters: Filters, page: Int): HashMap<String, String> {
+        val queryParameters: HashMap<String, String> = HashMap()
+        queryParameters["text"] = expression
+        queryParameters["page"] = page.toString()
+        queryParameters["per_page"] = PER_PAGE_20
+        if (filters.countryId.isNotEmpty()) queryParameters["area"] = filters.countryId
+        if (filters.regionId.isNotEmpty()) queryParameters["area"] = filters.regionId
+        if (filters.salary != 0) queryParameters["salary"] = filters.salary.toString()
+        if (filters.industryId.isNotEmpty()) queryParameters["industry"] = filters.industryId
+        queryParameters["only_with_salary"] = filters.doNotShowWithoutSalarySetting.toString()
+        return queryParameters
+    }
+
     companion object {
+        private const val PER_PAGE_20 = "20"
+
         val BAD_RESPONSE = VacancySearchResult(
             emptyList(),
             ResponseStatus.BAD,

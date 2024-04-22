@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,16 +22,17 @@ import ru.practicum.android.diploma.domain.models.vacancy.Vacancy
 import ru.practicum.android.diploma.presentation.main.MainViewModel
 import ru.practicum.android.diploma.ui.main.model.MainFragmentStatus
 import ru.practicum.android.diploma.ui.main.vacancy.EmptyItemAdapter
+import ru.practicum.android.diploma.ui.main.vacancy.LoadingItemAdapter
 import ru.practicum.android.diploma.ui.main.vacancy.VacancyAdapter
 
 class MainFragment : Fragment() {
 
     private var binding: FragmentMainBinding? = null
     private var editTextValue = ""
-    private var pbLoadingVisible = true
     private val vacancies: ArrayList<Vacancy> = ArrayList()
     private val adapter: VacancyAdapter = VacancyAdapter(vacancies)
-    private val concatAdapter: ConcatAdapter = ConcatAdapter(EmptyItemAdapter(), adapter)
+    private var loadingItemAdapter = LoadingItemAdapter()
+    private var concatAdapter: ConcatAdapter = ConcatAdapter()
 
     private val viewModel by viewModel<MainViewModel>()
 
@@ -42,6 +44,9 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createTextWatcher()
+        createClickListeners()
+        viewModel.getFilterFromSharedPref()
+        viewModel.getStarSearchStatusFromSharedPrefs()
 
         adapter.itemClickListener = { vacancy ->
             if (viewModel.clickDebounce()) {
@@ -49,17 +54,49 @@ class MainFragment : Fragment() {
             }
         }
 
+        val emptyItemAdapter = EmptyItemAdapter()
+        concatAdapter = ConcatAdapter(emptyItemAdapter, adapter, loadingItemAdapter)
         binding!!.rvVacancyList.adapter = concatAdapter
+
+        viewModel.listOfVacancies.observe(viewLifecycleOwner) {
+            processingSearchStatus(it)
+        }
+        viewModel.page.observe(viewLifecycleOwner) {
+            loadingItemAdapter.visible = viewModel.page.value!! != viewModel.getMaxPages() - 1
+        }
+        viewModel.startNewSearch.observe(viewLifecycleOwner) {
+            binding!!.rvVacancyList.isVisible = false
+            binding!!.chip.isVisible = false
+            startNewSearch(it)
+        }
+        viewModel.actualFilterIsEmpty.observe(viewLifecycleOwner) {
+            setFilterButtonImage(it)
+        }
+        createScrollListener()
+    }
+
+    override fun onDestroyView() {
+        binding = null
+        viewModel.onDestroy()
+        super.onDestroyView()
+    }
+
+    private fun createClickListeners() {
         binding!!.ivSearch.setOnClickListener {
             binding!!.etSearch.setText("")
             hideAllView()
             breakSearch()
         }
 
-        viewModel.listOfVacancies.observe(viewLifecycleOwner) {
-            processingSearchStatus(it)
+        binding!!.ivFilter.setOnClickListener {
+            if (viewModel.clickDebounce()) {
+                viewModel.putStarSearchStatusInSharedPrefs(false)
+                startFilteringSettingsFragment()
+            }
         }
+    }
 
+    private fun createScrollListener() {
         binding!!.rvVacancyList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -69,18 +106,14 @@ class MainFragment : Fragment() {
                         (binding!!.rvVacancyList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1 && viewModel.scrollDebounce()) {
-                        viewModel.installPage(true)
-                        viewModel.search()
+                        if (viewModel.page.value!! < viewModel.getMaxPages() - 1) {
+                            viewModel.installPage(true)
+                            viewModel.search()
+                        }
                     }
                 }
             }
         })
-    }
-
-    override fun onDestroyView() {
-        binding = null
-        viewModel.onDestroy()
-        super.onDestroyView()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -97,6 +130,12 @@ class MainFragment : Fragment() {
     private fun startJobVacancyFragment(vacancyId: String) {
         findNavController().navigate(
             MainFragmentDirections.actionMainFragmentToJobVacancyFragment(vacancyId)
+        )
+    }
+
+    private fun startFilteringSettingsFragment() {
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToFilteringSettingsFragment()
         )
     }
 
@@ -151,12 +190,8 @@ class MainFragment : Fragment() {
                 showNoConnectionStatus()
             }
 
-            is MainFragmentStatus.showToastOnLoadingTrouble -> {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_in_loading_process),
-                    Toast.LENGTH_SHORT
-                ).show()
+            is MainFragmentStatus.SocketTimeout -> {
+                showSocketTimeout()
             }
         }
     }
@@ -167,23 +202,21 @@ class MainFragment : Fragment() {
         binding!!.tvNoInternetPlaceholder.isVisible = false
         binding!!.tvFailedRequestPlaceholder.isVisible = false
         binding!!.pbSearch.isVisible = false
-        binding!!.pbLoading.isVisible = false
-        binding!!.vBackGroundForPBLoading.isVisible = false
     }
 
     private fun showLoadingStatus() {
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             binding!!.pbSearch.isVisible = true
+            binding!!.chip.isVisible = false
         } else {
-            binding!!.pbLoading.isVisible = true
-            binding!!.vBackGroundForPBLoading.isVisible = true
+            binding!!.chip.isVisible = true
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showOkStatus(listVacancies: List<Vacancy>) {
         vacancies.clear()
-        pbLoadingVisible = viewModel.getCurrentPage() != viewModel.getMaxPages()
-        if (viewModel.getCurrentPage() == 0) {
+        if (viewModel.page.value!! == 0) {
             if (listVacancies.isNotEmpty()) {
                 vacancies.addAll(listVacancies)
                 adapter.notifyDataSetChanged()
@@ -200,6 +233,7 @@ class MainFragment : Fragment() {
             vacancies.addAll(listVacancies)
             adapter.notifyDataSetChanged()
         }
+        loadingItemAdapter.visible = viewModel.page.value!! != viewModel.getMaxPages() - 1
     }
 
     private fun showDefaultStatus() {
@@ -209,21 +243,35 @@ class MainFragment : Fragment() {
     }
 
     private fun showBadStatus() {
-        vacancies.clear()
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvServerErrorPlaceholder.isVisible = true
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.error_in_loading_process),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showSocketTimeout() {
+        binding!!.rvVacancyList.isVisible = false
+        binding!!.tvServerErrorPlaceholder.isVisible = true
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.socket_timeout_loading),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun showNoConnectionStatus() {
-        vacancies.clear()
         binding!!.chip.isVisible = false
         binding!!.rvVacancyList.isVisible = false
         binding!!.tvNoInternetPlaceholder.isVisible = true
     }
 
     private fun breakSearch() {
-        viewModel.onDestroy()
+        viewModel.breakSearch()
         vacancies.clear()
+        adapter.notifyDataSetChanged()
         binding!!.ivSearchPlaceholder.isVisible = true
         binding!!.pbSearch.isVisible = false
         binding!!.chip.isVisible = false
@@ -234,5 +282,20 @@ class MainFragment : Fragment() {
         return requireContext().resources.getQuantityString(R.plurals.found, viewModel.getFoundVacancies()) +
             " " + viewModel.getFoundVacancies().toString() + " " +
             requireContext().resources.getQuantityString(R.plurals.vacancy, viewModel.getFoundVacancies())
+    }
+
+    private fun setFilterButtonImage(actualFilterIsEmpty: Boolean) {
+        if (actualFilterIsEmpty) {
+            binding!!.ivFilter.setImageResource(R.drawable.ic_filter_off)
+        } else {
+            binding!!.ivFilter.setImageResource(R.drawable.ic_filter_on)
+        }
+    }
+
+    private fun startNewSearch(value: Boolean) {
+        if (value && binding!!.etSearch.text.toString().isNotEmpty()) {
+            hideAllView()
+            startSearch()
+        }
     }
 }

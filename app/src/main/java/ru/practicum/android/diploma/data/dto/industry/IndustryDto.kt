@@ -1,14 +1,14 @@
-package ru.practicum.android.diploma.data.dto.vacancy
+package ru.practicum.android.diploma.data.dto.industry
 
 /**
  * Data-класс dto Возвращает двухуровневый справочник всех отраслей
  * @param id - id
  * @param name - наименование отрасли
- * @param name - список отраслей
+ * @param industries - список отраслей
  */
 
 data class IndustryDto(
     val id: String,
     val name: String,
-    val industries: List<IndustryDto>?,
+    val industries: List<IndustryNestedDto>?,
 )

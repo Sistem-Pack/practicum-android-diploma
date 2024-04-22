@@ -104,7 +104,7 @@ class JobVacancyFragment : Fragment() {
             ivShare.visibility = View.VISIBLE
             tvVacancyName.text = vacancyDetails?.vacancyName
             tvSalary.text = vacancyDetails?.salary
-            showAdress(vacancyDetails)
+            showAddress(vacancyDetails)
             tvCompanyName.text = vacancyDetails?.employer
             tvExperienceField.text = vacancyDetails?.experienceName
             tvTypeOfEmployment.text = vacancyDetails?.employmentType
@@ -144,7 +144,7 @@ class JobVacancyFragment : Fragment() {
         }
     }
 
-    private fun showAdress(vacancyDetails: VacancyDetails?) {
+    private fun showAddress(vacancyDetails: VacancyDetails?) {
         binding?.apply {
             if (vacancyDetails?.areaId == "null") {
                 tvCity.text = vacancyDetails.areaRegion
@@ -178,8 +178,11 @@ class JobVacancyFragment : Fragment() {
         binding?.apply {
             group.visibility = View.GONE
             pbVacancy.visibility = View.GONE
+            ivFavorites.visibility = View.VISIBLE
+            ivShare.visibility = View.VISIBLE
             tvNoInternetPlaceholderVacancy.visibility = View.GONE
             tvServerErrorVacancyPlaceholder.visibility = View.VISIBLE
+            ivFavorites.isEnabled = false
         }
     }
 
@@ -187,6 +190,7 @@ class JobVacancyFragment : Fragment() {
         binding?.apply {
             group.visibility = View.GONE
             tvNoInternetPlaceholderVacancy.visibility = View.VISIBLE
+            ivFavorites.isEnabled = false
         }
     }
 

@@ -4,6 +4,7 @@
     <dimen name="one_point_space">1dp</dimen>
     <dimen name="half_space">2dp</dimen>
     <dimen name="one_space">4dp</dimen>
+    <dimen name="one_and_a_half_space">6dp</dimen>
     <dimen name="two_space">8dp</dimen>
     <dimen name="three_space">12dp</dimen>
     <dimen name="three_and_a_half_space">14dp</dimen>
@@ -19,6 +20,7 @@
     <dimen name="eleven_space">44dp</dimen>
     <dimen name="twelve_space">48dp</dimen>
     <dimen name="twelve_and_a_half_space">50dp</dimen>
+    <dimen name="thirteen_space">52dp</dimen>
     <dimen name="fourteen_space">56dp</dimen>
     <dimen name="fifteen_space">60dp</dimen>
     <dimen name="sixteen_space">64dp</dimen>
